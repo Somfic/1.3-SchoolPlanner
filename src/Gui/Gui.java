@@ -4,6 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
@@ -11,17 +15,28 @@ import java.awt.*;
 
 public class Gui extends Application {
 
-    Scene scene;
-    Canvas canvas;
+    private Scene scene;
+    private Canvas canvas;
+
+    private TabPane tabs;
+    private BorderPane schedulePane = new BorderPane();
+    private BorderPane simulationPane = new BorderPane();
+    private BorderPane settingsPane = new BorderPane();
 
     @Override
     public void start(Stage stage) {
         canvas = new Canvas(600, 600);
-        scene = new Scene(new Group(canvas));
 
-        FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
+        tabs = new TabPane();
+        tabs.getTabs().add(new Tab("Schedule", schedulePane));
+        tabs.getTabs().add(new Tab("Simulation", simulationPane));
+        tabs.getTabs().add(new Tab("Settings", settingsPane));
 
-        draw(graphics);
+        schedulePane.setCenter(canvas);
+
+        scene = new Scene(new Group(tabs));
+
+        draw();
 
         stage.setScene(scene);
         stage.setResizable(false);
@@ -29,7 +44,9 @@ public class Gui extends Application {
         stage.show();
     }
 
-    void draw(FXGraphics2D graphics) {
+    void draw() {
+        FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
+
         for (int x = 0; x < canvas.getWidth(); x++) {
             for (int y = 0; y < canvas.getHeight(); y++) {
                 float xPercentage = (float) ((float) x / canvas.getWidth());
