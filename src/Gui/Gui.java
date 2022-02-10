@@ -6,57 +6,48 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
 
 public class Gui extends Application {
-
     private Scene scene;
     private Canvas canvas;
+    private FXGraphics2D graphics;
 
-    private TabPane tabs;
+    //Views
+    private ScheduleView scheduleView = new ScheduleView();
+
+    //TabPane
+    private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private BorderPane simulationPane = new BorderPane();
     private BorderPane settingsPane = new BorderPane();
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(600, 600);
+        this.canvas = new Canvas(1920, 1080);
 
-        tabs = new TabPane();
-        tabs.getTabs().add(new Tab("Schedule", schedulePane));
-        tabs.getTabs().add(new Tab("Simulation", simulationPane));
-        tabs.getTabs().add(new Tab("Settings", settingsPane));
+        //Making tabs
+        this.tabPane = new TabPane();
+        this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        this.tabPane.getTabs().add(new Tab("Schedule", this.schedulePane));
+        this.tabPane.getTabs().add(new Tab("Simulation", this.simulationPane));
+        this.tabPane.getTabs().add(new Tab("Settings", this.settingsPane));
 
-        schedulePane.setCenter(canvas);
+        //SchedulePane
+        this.schedulePane.setCenter(this.scheduleView);
 
-        scene = new Scene(new Group(tabs));
+        //Other
+        this.scene = new Scene(new Group(this.tabPane));
+        this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
-        draw();
-
-        stage.setScene(scene);
+        stage.setScene(this.scene);
         stage.setResizable(false);
         stage.setTitle("School Planner");
         stage.show();
-    }
-
-    void draw() {
-        FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
-
-        for (int x = 0; x < canvas.getWidth(); x++) {
-            for (int y = 0; y < canvas.getHeight(); y++) {
-                float xPercentage = (float) ((float) x / canvas.getWidth());
-                float yPercentage = (float) ((float) y / canvas.getHeight());
-
-                Color color = Color.getHSBColor(xPercentage, yPercentage, 1f);
-
-                graphics.setColor(color);
-                graphics.fillRect(x, y, 1,1);
-            }
-        }
     }
 }
