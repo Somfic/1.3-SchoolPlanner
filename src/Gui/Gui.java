@@ -42,7 +42,8 @@ public class Gui extends Application {
         this.schedulePane.setCenter(this.scheduleView);
 
         //Other
-        this.scene = new Scene(new Group(this.tabPane));
+        this.scene = new Scene(scheduleView.getContent());
+//        this.scene = new Scene(new Group(this.tabPane));
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
         stage.setScene(this.scene);
