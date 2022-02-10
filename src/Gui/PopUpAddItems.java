@@ -46,11 +46,28 @@ public class PopUpAddItems {
         Button teacherButton = new Button("Confirm");
         teacherButton.setOnAction(event -> {
 
-            Gender teacherGender = Gender.valueOf(radioButtonToggleGroup.getSelectedToggle().getUserData().toString());
-            String teacherName = teacherTextField.getText();
+            Gender teacherGender;
+            if (maleRadioButton.isSelected()) {
+                teacherGender = Gender.MALE;
+                System.out.println("male");
+            } else if (femaleRadioButton.isSelected()) {
+                teacherGender = Gender.FEMALE;
+                System.out.println("female");
+            } else {
+                teacherGender = Gender.OTHER;
+                System.out.println("other");
+            }
+            if (!teacherTextField.getText().equals("New teacher name") && teacherTextField.getText().length() <= 25) {
+                String teacherName = teacherTextField.getText();
+                Teacher teacher = new Teacher(teacherGender, teacherName);
+                //TODO save teacher somewhere...
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("Teacher name not valid");
+                errorAlert.setContentText("Teacher name is either not changed, or too long. Please edit the name and try again");
+                errorAlert.showAndWait();
+            }
 
-            Teacher teacher = new Teacher(teacherGender, teacherName);
-            //TODO save teacher somewhere...
         });
 
         teacherHBox.getChildren().addAll(teacherLabel, teacherTextField, radioVBox, teacherButton);
