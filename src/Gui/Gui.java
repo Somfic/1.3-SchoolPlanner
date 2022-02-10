@@ -1,9 +1,7 @@
 package Gui;
 
-import Data.Classroom;
-import Data.StudentGroup;
+import Data.*;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,16 +11,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.jfree.fx.FXGraphics2D;
-import Data.StudentGroup;
-
-import javax.xml.soap.Text;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Observable;
 
 
 public class Gui extends Application {
@@ -33,6 +23,7 @@ public class Gui extends Application {
     private BorderPane schedulePane = new BorderPane();
     private BorderPane simulationPane = new BorderPane();
     private BorderPane settingsPane = new BorderPane();
+    private ScheduleItem scheduleItems;
 
 
 
@@ -64,6 +55,7 @@ public class Gui extends Application {
         vbox.getChildren().add(hbox2);
         vbox.setSpacing(10);
         schedulePane.setBottom(vbox);
+
 
 
         tabs = new TabPane();

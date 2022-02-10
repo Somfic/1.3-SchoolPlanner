@@ -1,5 +1,8 @@
 package Data;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class ScheduleItem {
 	private Teacher teacher;
 	private StudentGroup Class;
@@ -9,6 +12,10 @@ public class ScheduleItem {
 	private StudentGroup[] studentGroup;
 	private Classroom classroom;
 	private Lesson lesson;
+	private ArrayList<StudentGroup> studentgroups;
+	private ArrayList<Classroom> classrooms;
+	private ArrayList<Teacher> teachers;
+	private ArrayList<Lesson> lessons;
 
     public ScheduleItem(Teacher teacher, StudentGroup aClass, Data.Classroom classroom, int startPeriod, int endPeriod, StudentGroup[] studentGroup, Data.Classroom classroom1, Lesson lesson) {
         this.teacher = teacher;
@@ -25,4 +32,27 @@ public class ScheduleItem {
 		return false;
 	}
 
+
+
+
+
+
+
+
+
+
+	public ArrayList<StudentGroup> getStudentGroups(){
+        return studentgroups;
+    }
+    public ArrayList<Classroom> getClassRooms(){
+        return classrooms;
+    }
+    public ArrayList<Teacher> getTeachers(){
+        return teachers;
+    }
+    public ArrayList<Lesson> getLessons(){
+        return lessons;
+    }
+
 }
+
