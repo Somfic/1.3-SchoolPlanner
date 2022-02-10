@@ -1,9 +1,7 @@
+package Data;
+import java.util.ArrayList;
+
 public class StudentGroup {
-
-	private Student Students;
-
+	private ArrayList<Student> students;
 	private String name;
-
-	private Student student;
-
 }
