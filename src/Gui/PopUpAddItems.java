@@ -1,6 +1,7 @@
 package Gui;
 
 import Data.Gender;
+import Data.Lesson;
 import Data.Teacher;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,7 +24,9 @@ public class PopUpAddItems {
         Label label = new Label();
         label.setText("Add whatever you need... or kill them, what do i care?");
 
-        HBox teacherHBox = new HBox();
+        //region Teacher
+        HBox teacherHBox = new HBox(10);
+        teacherHBox.setAlignment(Pos.CENTER);
         Label teacherLabel = new Label("Teacher: ");
         TextField teacherTextField = new TextField();
         teacherTextField.setText("New teacher name");
@@ -39,7 +42,7 @@ public class PopUpAddItems {
         RadioButton otherRadioButton = new RadioButton("Other");
         otherRadioButton.setToggleGroup(radioButtonToggleGroup);
 
-        VBox radioVBox = new VBox();
+        VBox radioVBox = new VBox(2);
         radioVBox.getChildren().addAll(maleRadioButton, femaleRadioButton, otherRadioButton);
 
 
@@ -64,13 +67,36 @@ public class PopUpAddItems {
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("Teacher name not valid");
-                errorAlert.setContentText("Teacher name is either not changed, or too long. Please edit the name and try again");
+                errorAlert.setContentText("Teacher name is either not changed, or too long. Please edit the teacher and try again");
                 errorAlert.showAndWait();
             }
 
         });
 
         teacherHBox.getChildren().addAll(teacherLabel, teacherTextField, radioVBox, teacherButton);
+        //endregion
+
+        //region Subject
+        HBox subjectHBox = new HBox(10);
+        subjectHBox.setAlignment(Pos.CENTER);
+        Label subjectLabel = new Label("Subject: ");
+        TextField subjectTextField = new TextField();
+        subjectTextField.setText("New subject name");
+        subjectTextField.setOnMouseClicked(event -> {
+            subjectTextField.setText(null);
+        });
+
+        if (!subjectTextField.getText().equals("New subject name") && subjectTextField.getText().length() <= 25) {
+            String subjectName = subjectTextField.getText();
+            //TODO save subject somewhere...
+        } else {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Subject name not valid");
+            errorAlert.setContentText("Subject name is either not changed, or too long. Please edit the subject and try again");
+            errorAlert.showAndWait();
+        }
+        Lesson subject = new Lesson(subjectTextField.getText());
+        //endregion
 
 
         Button closeButton = new Button("Close");
