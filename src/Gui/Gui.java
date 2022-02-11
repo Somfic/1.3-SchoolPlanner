@@ -1,17 +1,15 @@
 package Gui;
 
+import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
-
-import java.awt.*;
 
 public class Gui extends Application {
     private Scene scene;
@@ -25,7 +23,7 @@ public class Gui extends Application {
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private BorderPane simulationPane = new BorderPane();
-    private BorderPane settingsPane = new BorderPane();
+    private SettingView settingsPane = new SettingView();
 
     @Override
     public void start(Stage stage) {
@@ -36,7 +34,7 @@ public class Gui extends Application {
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         this.tabPane.getTabs().add(new Tab("Schedule", this.schedulePane));
         this.tabPane.getTabs().add(new Tab("Simulation", this.simulationPane));
-        this.tabPane.getTabs().add(new Tab("Settings", this.settingsPane));
+        this.tabPane.getTabs().add(new Tab("Settings", this.settingsPane.getContent()));
 
         //SchedulePane
         this.schedulePane.setCenter(this.scheduleView);
