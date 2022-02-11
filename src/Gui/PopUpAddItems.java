@@ -30,12 +30,13 @@ public class PopUpAddItems {
         Label teacherLabel = new Label("Teacher: ");
         TextField teacherTextField = new TextField();
         teacherTextField.setText("New teacher name");
-        teacherTextField.requestFocus();
-        teacherTextField.setOnMouseClicked(event -> {
-            teacherTextField.setText(null);
-        });
+        if (teacherTextField.getText().equals("New teacher name")) {
+            teacherTextField.setText("");
+        }
         ToggleGroup radioButtonToggleGroup = new ToggleGroup();
         RadioButton maleRadioButton = new RadioButton("Male");
+        maleRadioButton.requestFocus();
+        maleRadioButton.setSelected(true);
         maleRadioButton.setToggleGroup(radioButtonToggleGroup);
         RadioButton femaleRadioButton = new RadioButton("Female");
         femaleRadioButton.setToggleGroup(radioButtonToggleGroup);
@@ -52,22 +53,22 @@ public class PopUpAddItems {
             Gender teacherGender;
             if (maleRadioButton.isSelected()) {
                 teacherGender = Gender.MALE;
-                System.out.println("male");
             } else if (femaleRadioButton.isSelected()) {
                 teacherGender = Gender.FEMALE;
-                System.out.println("female");
             } else {
                 teacherGender = Gender.OTHER;
-                System.out.println("other");
             }
-            if (!teacherTextField.getText().equals("New teacher name") && teacherTextField.getText().length() <= 25) {
+            if (!teacherTextField.getText().equals("New teacher name") && teacherTextField.getText().length() <= 25 && teacherTextField.getText().length() >= 2) {
                 String teacherName = teacherTextField.getText();
                 Teacher teacher = new Teacher(teacherGender, teacherName);
+                System.out.println("TeacherName: " + teacher.getName() + "\nGender: " + teacher.getGender());
+
+                teacherTextField.setText("");
                 //TODO save teacher somewhere...
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("Teacher name not valid");
-                errorAlert.setContentText("Teacher name is either not changed, or too long. Please edit the teacher and try again");
+                errorAlert.setContentText("Teacher name is either not changed, or you filled in garbage. Please edit the teacher and try again");
                 errorAlert.showAndWait();
             }
 
@@ -83,19 +84,30 @@ public class PopUpAddItems {
         TextField subjectTextField = new TextField();
         subjectTextField.setText("New subject name");
         subjectTextField.setOnMouseClicked(event -> {
-            subjectTextField.setText(null);
+            if (subjectTextField.getText().equals("New subject name")) {
+                subjectTextField.setText("");
+            }
         });
 
-        if (!subjectTextField.getText().equals("New subject name") && subjectTextField.getText().length() <= 25) {
-            String subjectName = subjectTextField.getText();
-            //TODO save subject somewhere...
-        } else {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Subject name not valid");
-            errorAlert.setContentText("Subject name is either not changed, or too long. Please edit the subject and try again");
-            errorAlert.showAndWait();
-        }
-        Lesson subject = new Lesson(subjectTextField.getText());
+        Button subjectButton = new Button("Confirm");
+        subjectButton.setOnAction(event -> {
+            if (!subjectTextField.getText().equals("New subject name") && subjectTextField.getText().length() <= 25 && subjectTextField.getText().length() >= 2) {
+                String subjectName = subjectTextField.getText();
+                Lesson subject = new Lesson(subjectTextField.getText());
+                System.out.println("SubjectName: " + subject.getName());
+
+                subjectTextField.setText("");
+                //TODO save subject somewhere...
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("Subject name not valid");
+                errorAlert.setContentText("Subject name is either not changed, or you filled in garbage. Please edit the subject and try again");
+                errorAlert.showAndWait();
+            }
+        });
+
+
+        subjectHBox.getChildren().addAll(subjectLabel, subjectTextField, subjectButton);
         //endregion
 
 
@@ -105,7 +117,7 @@ public class PopUpAddItems {
         });
 
         VBox VBox = new VBox(10);
-        VBox.getChildren().addAll(label, teacherHBox, closeButton);
+        VBox.getChildren().addAll(label, teacherHBox, subjectHBox, closeButton);
         VBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(VBox);
