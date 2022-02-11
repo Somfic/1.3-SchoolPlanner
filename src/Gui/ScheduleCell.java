@@ -24,7 +24,7 @@ public class ScheduleCell extends Pane {
         String border = "-fx-border-width: 1; -fx-border-style: solid";
 
         //Background and border of cell
-        switch (type) {
+        switch (type) {         //0 = odd (class block) cell | 1 = even cell | 2 = top row
             case 0:
                 super.setStyle(border);
                 break;

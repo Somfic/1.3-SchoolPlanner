@@ -3,14 +3,16 @@ package Data;
 public class Classroom {
 	private int capacity;
 	private String name;
+    private int index;
 
     public Classroom() {
 
     }
 
-    public Classroom(int capacity, String name) {
+    public Classroom(int capacity, String name, int index) {
         this.capacity = capacity;
         this.name = name;
+        this.index = index;
     }
 
     public int getCapacity() {
@@ -27,5 +29,13 @@ public class Classroom {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

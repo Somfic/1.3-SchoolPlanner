@@ -11,6 +11,7 @@ public class StudentGroup {
 	}
 
 	public StudentGroup(String name) {
+        this.name = name;
 		this.students = new ArrayList<>();
 	}
 
@@ -27,7 +28,7 @@ public class StudentGroup {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
