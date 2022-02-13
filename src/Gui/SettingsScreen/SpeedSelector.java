@@ -30,13 +30,11 @@ public class SpeedSelector {
         speedSlider.setBlockIncrement(incrementValue);
         speedSlider.setSnapToTicks(false);
         speedSlider.setShowTickLabels(true);
-        speedSlider.setShowTickMarks(true);
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         speedSpinner = new Spinner(valueFactory);
         speedSlider.valueProperty().bindBidirectional(speedSpinner.getValueFactory().valueProperty());
 
         speedSlider.setOnMousePressed(event -> {
-            System.out.println("clicked");
             speedSlider.valueProperty().addListener((obs, oldval, newVal) -> {
                 speedSlider.setValue(Math.round(newVal.doubleValue()));
             });
