@@ -8,25 +8,38 @@ import javafx.scene.paint.Color;
 public class ColorSelector {
     private ColorCallback callback;
     private HBox hBox;
-    private Color color;
     private ColorPicker colorPicker;
     private Rectangle rectangle;
+    private Color colorCurrent;
+    private Color colorMemory;
 
     public ColorSelector(ColorCallback callback) {
         this.callback = callback;
         this.colorPicker = new ColorPicker();
-        this.color = Color.AQUAMARINE;
-        this.colorPicker.setValue(color);
+        this.colorCurrent = Color.AQUAMARINE;
+        this.colorMemory = colorCurrent;
+        this.colorPicker.setValue(colorCurrent);
         this.rectangle = new Rectangle(50, 50);
         this.rectangle.setFill(colorPicker.getValue());
 
         this.colorPicker.setOnAction(event -> {
-            color = colorPicker.getValue();
-            rectangle.setFill(color);
-            callback.onColourChange(color);
+            colorCurrent = colorPicker.getValue();
+            rectangle.setFill(colorCurrent);
         });
 
         this.hBox = new HBox(rectangle, colorPicker);
+        this.hBox.setSpacing(15);
+    }
+
+    public void confirm() {
+        this.colorMemory = this.colorCurrent;
+        callback.onColourChange(colorCurrent);
+    }
+
+    public void cancel() {
+        this.colorCurrent = this.colorMemory;
+        this.colorPicker.setValue(colorCurrent);
+        this.rectangle.setFill(colorCurrent);
     }
 
     public HBox getContent() {

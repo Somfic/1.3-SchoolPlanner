@@ -3,38 +3,51 @@ package Gui.SettingsScreen;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 
 public class ClassBlock {
     //ClassBlockLength equels the amount of minutes a class block takes
-    private int CBL;
     private Label label;
-    private Spinner CBLSpinner;
+    private Spinner<Integer> CBLSpinner;
     private HBox hBox;
     private int minimumValue = 15;
     private int maximumValue = 75;
     private int initialValue = 60;
     private int incrementValue = 5;
     private ClassBlockCallback callback;
+    private int CBLCurrent;
+    private int CBLMemory;
 
     public ClassBlock(ClassBlockCallback callback) {
         this.label = new Label("Select ");
-        SpinnerValueFactory valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
+        SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.CBLSpinner = new Spinner(valueFactory);
-        this.CBL = initialValue;
+        this.CBLCurrent = initialValue;
+        this.CBLMemory = this.CBLCurrent;
 
         this.CBLSpinner.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-//                callback.ClassBlockLengthChanged((Integer) CBLSpinner.valueProperty().getValue());
-                System.out.println(CBLSpinner.getValue());
+                CBLCurrent = CBLSpinner.getValue();
+                System.out.println( CBLSpinner.getValue());
             }
         });
 
         this.hBox = new HBox(label, CBLSpinner);
         this.hBox.setSpacing(15);
+    }
+
+    public void confirm() {
+        this.CBLMemory = this.CBLCurrent;
+//        callback.ClassBlockLengthChanged(this.CBLMemory);
+    }
+
+    public void cancel() {
+        this.CBLCurrent = this.CBLMemory;
+        this.CBLSpinner.getValueFactory().setValue(this.CBLCurrent);
     }
 
     public HBox getContent() {

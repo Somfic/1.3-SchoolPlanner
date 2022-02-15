@@ -7,7 +7,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.util.converter.IntegerStringConverter;
 
 import java.text.NumberFormat;
@@ -16,16 +15,18 @@ public class SpeedSelector {
     private Label speedLabel;
     private Slider speedSlider;
     private Spinner speedSpinner;
-    private VBox componentVBox;
+    private HBox componentHBox;
     private final int minimumValue = 1;
     private final int maximumValue = 10;
     private final int initialValue = 5;
     private final int incrementValue = 1;
+    private int speedCurrent;
+    private int speedMemory;
+    private SpeedSelectorCallback callback;
 
-    public SpeedSelector() {
-        this.componentVBox = new VBox();
+    public SpeedSelector(SpeedSelectorCallback callback) {
+        this.callback = callback;
         this.speedLabel = new Label("Speed");
-
         speedSlider = new Slider(minimumValue, maximumValue, initialValue);
         speedSlider.setBlockIncrement(incrementValue);
         speedSlider.setSnapToTicks(false);
@@ -39,11 +40,28 @@ public class SpeedSelector {
                 speedSlider.setValue(Math.round(newVal.doubleValue()));
             });
         });
+//        speedSlider.getOnMouseReleased(event ->
+//            this.speedCurrent = speedSlider.valueProperty().intValue() );
 
-        componentVBox.getChildren().add(new HBox(speedLabel, speedSlider, speedSpinner));
+        this.componentHBox = new HBox(speedLabel, speedSlider, speedSpinner);
+        componentHBox.setSpacing(15);
     }
 
-    public VBox getContent() {
-        return this.componentVBox;
+    public void confirm() {
+        this.speedMemory = this.speedCurrent;
+        callback.onSpeedChange(speedCurrent);
+    }
+
+    public void cancel() {
+        this.speedCurrent = this.speedMemory;
+        speedSlider.setValue(this.speedMemory);
+    }
+
+    public int getSpeed() {
+        return this.speedCurrent;
+    }
+
+    public HBox getContent() {
+        return this.componentHBox;
     }
 }
