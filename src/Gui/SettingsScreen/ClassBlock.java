@@ -33,7 +33,6 @@ public class ClassBlock {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CBLCurrent = CBLSpinner.getValue();
-                System.out.println( CBLSpinner.getValue());
             }
         });
 

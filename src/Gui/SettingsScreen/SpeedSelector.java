@@ -27,21 +27,21 @@ public class SpeedSelector {
     public SpeedSelector(SpeedSelectorCallback callback) {
         this.callback = callback;
         this.speedLabel = new Label("Speed");
-        speedSlider = new Slider(minimumValue, maximumValue, initialValue);
-        speedSlider.setBlockIncrement(incrementValue);
-        speedSlider.setSnapToTicks(false);
-        speedSlider.setShowTickLabels(true);
+        this.speedSlider = new Slider(minimumValue, maximumValue, initialValue);
+        this.speedSlider.setBlockIncrement(incrementValue);
+        this.speedSlider.setSnapToTicks(false);
+        this.speedSlider.setShowTickLabels(true);
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
-        speedSpinner = new Spinner(valueFactory);
-        speedSlider.valueProperty().bindBidirectional(speedSpinner.getValueFactory().valueProperty());
+        this.speedSpinner = new Spinner(valueFactory);
+        this.speedSlider.valueProperty().bindBidirectional(speedSpinner.getValueFactory().valueProperty());
+        this.speedCurrent = initialValue;
+        this.speedMemory = this.speedCurrent;
 
         speedSlider.setOnMousePressed(event -> {
             speedSlider.valueProperty().addListener((obs, oldval, newVal) -> {
                 speedSlider.setValue(Math.round(newVal.doubleValue()));
             });
         });
-//        speedSlider.getOnMouseReleased(event ->
-//            this.speedCurrent = speedSlider.valueProperty().intValue() );
 
         this.componentHBox = new HBox(speedLabel, speedSlider, speedSpinner);
         componentHBox.setSpacing(15);
