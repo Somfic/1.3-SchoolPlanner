@@ -33,7 +33,7 @@ public class ColorSelector {
 
     public void confirm() {
         this.colorMemory = this.colorCurrent;
-        callback.onColourChange(colorCurrent);
+        callback.onColorChange(colorCurrent);
     }
 
     public void cancel() {

@@ -14,7 +14,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private ColorSelector colorSelector;
     private ClassBlock classBlock;
     private VBox centralPane;
-    private Button confirm = new Button("confirm");
+    private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
 
     public SettingView() {
@@ -48,7 +48,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     }
 
     @Override
-    public void onColourChange(Color color) {
+    public void onColorChange(Color color) {
     }
 
     @Override
