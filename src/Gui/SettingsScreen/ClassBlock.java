@@ -27,6 +27,7 @@ public class ClassBlock {
         this.CBLSpinner = new Spinner(valueFactory);
         this.CBLCurrent = initialValue;
         this.CBLMemory = this.CBLCurrent;
+        this.callback = callback;
 
         this.CBLSpinner.valueProperty().addListener(new ChangeListener() {
             @Override
@@ -42,7 +43,7 @@ public class ClassBlock {
 
     public void confirm() {
         this.CBLMemory = this.CBLCurrent;
-//        callback.ClassBlockLengthChanged(this.CBLMemory);
+        callback.ClassBlockLengthChanged(CBLCurrent);
     }
 
     public void cancel() {

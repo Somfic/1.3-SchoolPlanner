@@ -49,16 +49,13 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void onColourChange(Color color) {
-        System.out.println(color);
     }
 
     @Override
     public void ClassBlockLengthChanged(int length) {
-        System.out.println(length);
     }
 
     @Override
     public void onSpeedChange(int speed) {
-        System.out.println(speed);
     }
 }
