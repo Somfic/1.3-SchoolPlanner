@@ -51,12 +51,16 @@ public class Gui extends Application {
 
 
         //Other
+      //  this.scene = new Scene(scheduleView.getContent());
         this.scene = new Scene(new Group(this.tabPane));
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
+        this.schedulePane.setCenter(this.scheduleView);
+
         stage.setScene(this.scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setTitle("School Planner");
         stage.show();
+        this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 }
