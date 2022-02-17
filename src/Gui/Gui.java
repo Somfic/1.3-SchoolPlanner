@@ -1,68 +1,62 @@
 package Gui;
 
-import Data.*;
+import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.*;
-
-
 public class Gui extends Application {
-
     private Scene scene;
     private Canvas canvas;
-    private TabPane tabs;
+    private FXGraphics2D graphics;
+
+    //Views
+    private ScheduleView scheduleView = new ScheduleView();
+
+    //TabPane
+    private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private BorderPane simulationPane = new BorderPane();
-    private BorderPane settingsPane = new BorderPane();
-    private ScheduleItem scheduleItems;
-
-
+    private SettingView settingsPane = new SettingView();
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(600, 600);
-        tabs = new TabPane();
-        tabs.getTabs().add(new Tab("Schedule", schedulePane));
-        tabs.getTabs().add(new Tab("Simulation", simulationPane));
-        tabs.getTabs().add(new Tab("Settings", settingsPane));
+        this.canvas = new Canvas(1920, 1080);
 
-        schedulePane.setCenter(canvas);
+        //Making tabs
+        this.tabPane = new TabPane();
+        this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        this.tabPane = new TabPane(new Tab("Schedule", schedulePane), new Tab("Simulation", simulationPane), new Tab("Settings", settingsPane.getContent()));
 
-        scene = new Scene(new Group(tabs));
+        //SchedulePane
+        Button button = new Button("Testing pop-up function");
+        button.setOnAction(event -> {
+                PopUpAddItems.PupUp("Testing");
+        });
+        this.schedulePane.setCenter(button);
+        this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
-        draw();
+        //SimulationPane
+        this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
-        stage.setScene(scene);
+        //SettingsPane
+        //this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
+
+        //Other
+        this.scene = new Scene(new Group(this.tabPane));
+        this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
+
+        stage.setScene(this.scene);
         stage.setResizable(false);
         stage.setTitle("School Planner");
         stage.show();
     }
-
-    void draw() {
-        FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
-
-        for (int x = 0; x < canvas.getWidth(); x++) {
-            for (int y = 0; y < canvas.getHeight(); y++) {
-                float xPercentage = (float) ((float) x / canvas.getWidth());
-                float yPercentage = (float) ((float) y / canvas.getHeight());
-
-                Color color = Color.getHSBColor(xPercentage, yPercentage, 1f);
-
-                graphics.setColor(color);
-                graphics.fillRect(x, y, 1,1);
-            }
-        }
-   }
 }

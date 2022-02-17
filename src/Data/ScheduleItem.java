@@ -2,14 +2,14 @@ package Data;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScheduleItem {
 	private Teacher teacher;
 	private StudentGroup Class;
-	private Classroom Classroom;
 	private int startPeriod;
 	private int endPeriod;
-	private StudentGroup[] studentGroup;
+	private List<StudentGroup> studentGroup;
 	private Classroom classroom;
 	private Lesson lesson;
 	private ArrayList<StudentGroup> studentgroups;
@@ -17,14 +17,13 @@ public class ScheduleItem {
 	private ArrayList<Teacher> teachers;
 	private ArrayList<Lesson> lessons;
 
-    public ScheduleItem(Teacher teacher, StudentGroup aClass, Data.Classroom classroom, int startPeriod, int endPeriod, StudentGroup[] studentGroup, Data.Classroom classroom1, Lesson lesson) {
+    public ScheduleItem(Teacher teacher, StudentGroup aClass, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         this.teacher = teacher;
-        Class = aClass;
-        Classroom = classroom;
+        this.Class = aClass;
+        this.classroom = classroom;
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
-        this.studentGroup = studentGroup;
-        this.classroom = classroom1;
+        this.studentGroup = new ArrayList<>();
         this.lesson = lesson;
     }
 
