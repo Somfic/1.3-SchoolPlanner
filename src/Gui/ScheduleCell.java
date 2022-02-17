@@ -10,7 +10,7 @@ public class ScheduleCell extends Pane {
         this.setStyle(type, isLeft);
 
         Label label = new Label(text);
-        label.setFont(new Font(35));
+        label.setFont(new Font(18));
         label.layoutXProperty().bind(this.widthProperty().subtract(label.widthProperty()).divide(2));
         this.getChildren().add(label);
     }
@@ -39,7 +39,7 @@ public class ScheduleCell extends Pane {
 
         //Size of cell
         if (isLeft) {
-            this.setPrefSize(300, 50);
+            this.setPrefSize(200, 50);
         } else {
             this.setPrefSize(215, 50);
         }

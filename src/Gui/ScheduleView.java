@@ -25,7 +25,7 @@ public class ScheduleView extends Pane {
     private Button remove = new Button("Remove");
 
     public ScheduleView () {
-        super.setPrefSize(1920, 1080);
+        //super.setPrefSize(1920, 1080);
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
 
@@ -68,8 +68,8 @@ public class ScheduleView extends Pane {
     public void build(int width) {
         //Move into place
         this.width = width;
-        this.scheduleGridPane.setTranslateX((1920f - this.width) / 2);
-        this.scheduleGridPane.setTranslateY(150);
+        //this.scheduleGridPane.setTranslateX((1920f - this.width) / 2);
+        //this.scheduleGridPane.setTranslateY(150);
 
         this.addSchedule();
     }
@@ -80,7 +80,7 @@ public class ScheduleView extends Pane {
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
 
-            pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 300 + 215 * scheduleItem.getClassroom().getIndex());     //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
+            pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());     //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
             pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());                     //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
 
             //Content
@@ -116,7 +116,7 @@ public class ScheduleView extends Pane {
         Label divider2 = new Label("|");
 
         //Setting style
-        Font font = Font.font("Veranda", FontWeight.BOLD, 25);
+        Font font = Font.font("Veranda", FontWeight.BOLD, 18);
         lessonLabel.setFont(font);
         teacherLabel.setFont(font);
         studentGroupsLabel.setFont(font);
