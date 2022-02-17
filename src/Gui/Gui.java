@@ -6,12 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
-
-import java.awt.*;
 
 public class Gui extends Application {
     private Scene scene;
@@ -42,13 +39,16 @@ public class Gui extends Application {
         this.schedulePane.setCenter(this.scheduleView);
 
         //Other
-        this.scene = new Scene(scheduleView.getContent());
-//        this.scene = new Scene(new Group(this.tabPane));
+      //  this.scene = new Scene(scheduleView.getContent());
+        this.scene = new Scene(new Group(this.tabPane));
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
+        this.schedulePane.setCenter(this.scheduleView);
+
         stage.setScene(this.scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setTitle("School Planner");
         stage.show();
+        this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 }
