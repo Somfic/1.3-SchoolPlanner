@@ -49,7 +49,7 @@ public class Gui extends Application {
         this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
         //SettingsPane
-        this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+        //this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
 
         //Other
