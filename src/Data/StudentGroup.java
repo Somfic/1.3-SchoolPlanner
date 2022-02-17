@@ -8,5 +8,6 @@ public class StudentGroup {
 
 	public StudentGroup(String name) {
 		this.students = new ArrayList<>();
+        this.name = name;
 	}
 }
