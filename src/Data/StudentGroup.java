@@ -13,6 +13,7 @@ public class StudentGroup {
 	public StudentGroup(String name) {
         this.name = name;
 		this.students = new ArrayList<>();
+        this.name = name;
 	}
 
 	public void addStudent(Student student) {

@@ -1,9 +1,11 @@
 package Gui;
 
+import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +24,7 @@ public class Gui extends Application {
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private BorderPane simulationPane = new BorderPane();
-    private BorderPane settingsPane = new BorderPane();
+    private SettingView settingsPane = new SettingView();
 
     @Override
     public void start(Stage stage) {
@@ -31,12 +33,22 @@ public class Gui extends Application {
         //Making tabs
         this.tabPane = new TabPane();
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        this.tabPane.getTabs().add(new Tab("Schedule", this.schedulePane));
-        this.tabPane.getTabs().add(new Tab("Simulation", this.simulationPane));
-        this.tabPane.getTabs().add(new Tab("Settings", this.settingsPane));
+        this.tabPane = new TabPane(new Tab("Schedule", schedulePane), new Tab("Simulation", simulationPane), new Tab("Settings", settingsPane.getContent()));
 
         //SchedulePane
-        this.schedulePane.setCenter(this.scheduleView);
+        Button button = new Button("Testing pop-up function");
+        button.setOnAction(event -> {
+                PopUpAddItems.PupUp("Testing");
+        });
+        this.schedulePane.setCenter(button);
+        this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
+        //SimulationPane
+        this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
+        //SettingsPane
+        //this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
 
         //Other
       //  this.scene = new Scene(scheduleView.getContent());
