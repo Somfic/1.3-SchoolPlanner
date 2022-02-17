@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -37,7 +38,19 @@ public class Gui extends Application {
         this.tabPane.getTabs().add(new Tab("Settings", this.settingsPane.getContent()));
 
         //SchedulePane
-        this.schedulePane.setCenter(this.scheduleView);
+        Button button = new Button("Testing pop-up function");
+        button.setOnAction(event -> {
+                PopUpAddItems.PupUp("Testing");
+        });
+        this.schedulePane.setCenter(button);
+        this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
+        //SimulationPane
+        this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
+        //SettingsPane
+        this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+
 
         //Other
         this.scene = new Scene(new Group(this.tabPane));
