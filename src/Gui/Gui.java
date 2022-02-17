@@ -33,9 +33,7 @@ public class Gui extends Application {
         //Making tabs
         this.tabPane = new TabPane();
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        this.tabPane.getTabs().add(new Tab("Schedule", this.schedulePane));
-        this.tabPane.getTabs().add(new Tab("Simulation", this.simulationPane));
-        this.tabPane.getTabs().add(new Tab("Settings", this.settingsPane.getContent()));
+        this.tabPane = new TabPane(new Tab("Schedule", schedulePane), new Tab("Simulation", simulationPane), new Tab("Settings", settingsPane.getContent()));
 
         //SchedulePane
         Button button = new Button("Testing pop-up function");
