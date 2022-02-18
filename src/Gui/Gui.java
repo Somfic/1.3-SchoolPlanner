@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -59,9 +60,10 @@ public class Gui extends Application {
 
         this.schedulePane.setCenter(this.scheduleView);
 
-        stage.initStyle(StageStyle.UNDECORATED );
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
         stage.setResizable(true);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.setTitle("School Planner");
         stage.show();
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
