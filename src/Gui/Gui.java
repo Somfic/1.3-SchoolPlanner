@@ -45,7 +45,7 @@ public class Gui extends Application {
         //SchedulePane
         Button button = new Button("Testing pop-up function");
         button.setOnAction(event -> {
-                PopUpAddItems.PupUp("Testing");
+            PopUpAddItems.PupUp("Testing");
         });
         this.schedulePane.setCenter(button);
         this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
@@ -71,12 +71,7 @@ public class Gui extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
         stage.setResizable(true);
-        try {
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        stage.setTitle("School Planner");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }

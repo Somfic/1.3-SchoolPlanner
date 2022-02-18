@@ -3,20 +3,29 @@ package Gui;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class WindowBar {
     private double mousePressedX, mousePressedY;
-    private Pane headerPane;
-    private HBox hBox;
+    private Stage stage;
+    private BorderPane headerPane;
+    private HBox buttonBox;
+    private HBox titleBox;
+    private ImageView image = new ImageView(new Image(getClass().getResourceAsStream("/Icon.png")));
     private Button close, minimize, maximize;
     private Circle circle;
-    private Stage stage;
     private String buttonStyle = "-fx-background-color: ";
     private String paneStyle = "-fx-text-alignment: center; -fx-background-color: ";
     private int buttonSize = 5;
@@ -42,13 +51,23 @@ public class WindowBar {
         this.close.setStyle(buttonStyle + "#E23838");
         this.minimize.setStyle(buttonStyle + "#FFB900");
         this.maximize.setStyle(buttonStyle + "#61BB46");
-        this.hBox = new HBox(close, minimize, maximize);
-        this.hBox.setSpacing(5);
+        this.buttonBox = new HBox(maximize, minimize, close);
+        this.buttonBox.setSpacing(3);
 
-        //Image
+        //Image + Title
+        Text text = new Text("/School Planner");
+        text.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        text.setFill(Color.BLACK);
+        this.image.autosize();
+        this.titleBox = new HBox(image, text);
+        this.titleBox.setSpacing(2);
 
         //Pane
-        this.headerPane = new Pane(hBox);
+        this.headerPane = new BorderPane();
+        this.headerPane.setRight(buttonBox);
+        this.headerPane.setLeft(titleBox);
+        this.headerPane.autosize();
+        update("#FFFFFF");
 
         //Dragging ability
         headerPane.addEventFilter(MouseEvent.MOUSE_PRESSED, (EventHandler<MouseEvent>) mouseEvent -> {
@@ -56,11 +75,13 @@ public class WindowBar {
             mousePressedY = mouseEvent.getY();
         });
         headerPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, (EventHandler<MouseEvent>) mouseEvent -> {
+            if (stage.isMaximized()) stage.setMaximized(false);
             double crrX = mouseEvent.getScreenX();
             double crrY = mouseEvent.getScreenY();
             this.stage.setX(crrX - mousePressedX);
             this.stage.setY(crrY - mousePressedY);
         });
+
         //Button functionality
         close.setOnMouseClicked((ActionEvent) -> {
             stage.close();
@@ -81,7 +102,7 @@ public class WindowBar {
         this.headerPane.setStyle("-fx-background-color: " + hexCodeColor);
     }
 
-    public Pane getContent() {
+    public BorderPane getContent() {
         return this.headerPane;
     }
 }
