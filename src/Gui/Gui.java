@@ -10,7 +10,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
+
+import java.awt.event.MouseEvent;
 
 public class Gui extends Application {
     private Scene scene;
@@ -49,14 +52,14 @@ public class Gui extends Application {
         //SettingsPane
         //this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
-
         //Other
-      //  this.scene = new Scene(scheduleView.getContent());
+        //  this.scene = new Scene(scheduleView.getContent());
         this.scene = new Scene(new Group(this.tabPane));
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
         this.schedulePane.setCenter(this.scheduleView);
 
+        stage.initStyle(StageStyle.UNDECORATED );
         stage.setScene(this.scene);
         stage.setResizable(true);
         stage.setTitle("School Planner");
