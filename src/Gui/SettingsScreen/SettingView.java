@@ -14,11 +14,13 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private Label speedLabel;
     private Label colorSelectorLabel;
     private Label classBlockLabel;
-    private Label breakLabel;
+    private Label breakfastLabel;
+    private Label breakLunchLabel;
     private SpeedSelector speedSelector;
     private ColorSelector colorSelector;
     private ClassBlock classBlock;
-    private Break aBreak;
+    private Breakfast breakfast;
+    private BreakLunch breakLunch;
     private VBox centralPane;
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
@@ -29,12 +31,14 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.speedLabel = new Label("Simulator Speed");
         this.colorSelectorLabel = new Label("Theme Color");
         this.classBlockLabel = new Label("Class Block Length (in minutes)");
-        this.breakLabel = new Label("breakfast (length in minutes, starts after class X)");
+        this.breakfastLabel = new Label("Breakfast (length in minutes, starts after class X)");
+        this.breakLunchLabel = new Label("Lunch break (length in minutes, starts after class X)");
         this.speedSelector = new SpeedSelector(this);
         this.colorSelector = new ColorSelector(this);
         this.classBlock = new ClassBlock(this);
-        this.aBreak = new Break(this);
-        this.centralPane = new VBox(speedLabel, speedSelector.getContent(),colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakLabel, aBreak.getContent(), new HBox(confirm, cancel));
+        this.breakfast = new Breakfast(this);
+        this.breakLunch = new BreakLunch(this);
+        this.centralPane = new VBox(speedLabel, speedSelector.getContent(),colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, breakfast.getContent(), breakLunchLabel, breakLunch.getContent(), new HBox(confirm, cancel));
         this.centralPane.setFillWidth(true);
         this.centralPane.setSpacing(15);
         
@@ -42,14 +46,14 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             speedSelector.confirm();
             colorSelector.confirm();
             classBlock.confirm();
-            aBreak.confirm();
+            breakfast.confirm();
         });
         
         cancel.setOnAction(event -> {
             speedSelector.cancel();
             colorSelector.cancel();
             classBlock.cancel();
-            aBreak.cancel();
+            breakfast.cancel();
 
         });
         
