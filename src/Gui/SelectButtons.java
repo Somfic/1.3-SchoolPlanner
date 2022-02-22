@@ -28,7 +28,7 @@ public class SelectButtons extends Application {
     @Override
     public void start(Stage stage) {
         canvas = new Canvas(1600, 800);
-        TextField startTime = new TextField("Start time");
+        TextField startTime = new TextField();
         TextField endTime = new TextField("End time");
         ComboBox classRoomSelect = new ComboBox();
         ComboBox teacherSelect = new ComboBox();

@@ -1,8 +1,8 @@
 package Gui;
+
 import Data.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.*;
@@ -60,6 +60,8 @@ public class ScheduleView extends Pane {
             //Design
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+
+            pane.setOnMouseClicked(event -> System.out.println("ye?"));
 
             //Add to view
             this.getChildren().add(pane);

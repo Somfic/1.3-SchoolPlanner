@@ -1,25 +1,22 @@
 package Gui;
 
+import Data.Classroom;
+import Data.Lesson;
+import Data.StudentGroup;
+import Data.Teacher;
 import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
-
-import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
 
 public class Gui extends Application {
     private Scene scene;
@@ -89,16 +86,25 @@ public class Gui extends Application {
         HBox buttons = new HBox();
 
         // Buttons
-        TextField startTime = new TextField("Start time");
-        TextField endTime = new TextField("End time");
-        ComboBox classRoomSelect = new ComboBox();
-        ComboBox teacherSelect = new ComboBox();
-        ComboBox courseSelect = new ComboBox();
-        ComboBox classSelect = new ComboBox();
-        classRoomSelect.setValue("Classroom");
-        teacherSelect.setValue("Teacher  ");
-        courseSelect.setValue("Course     ");
-        classSelect.setValue("Class       ");
+        TextField startTime = new TextField();
+        startTime.setPromptText("Start time");
+        TextField endTime = new TextField();
+        endTime.setPromptText("End time");
+        ComboBox<Classroom> classRoomSelect = new ComboBox<>();
+        ComboBox<Teacher> teacherSelect = new ComboBox<>();
+        ComboBox<Lesson> courseSelect = new ComboBox<>();
+        ComboBox<StudentGroup> classSelect = new ComboBox<>();
+        classRoomSelect.setPromptText("Classroom");
+        teacherSelect.setPromptText("Teacher  ");
+        courseSelect.setPromptText("Course     ");
+        classSelect.setPromptText("Class       ");
+
+        classRoomSelect.getItems().add(new Classroom(30, "Classroom 1", 0));
+        classRoomSelect.getItems().add(new Classroom(30, "Classroom 2", 0));
+        classRoomSelect.getItems().add(new Classroom(30, "Classroom 3", 0));
+        classRoomSelect.getItems().add(new Classroom(30, "Classroom 4", 0));
+        classRoomSelect.getItems().add(new Classroom(30, "Classroom 5", 0));
+        classRoomSelect.getItems().add(new Classroom(30, "Classroom 6", 0));
         HBox hbox = new HBox();
         VBox vbox = new VBox();
         hbox.getChildren().add(startTime);
