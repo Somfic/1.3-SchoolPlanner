@@ -113,3 +113,9 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij
 .idea/runConfigurations/SchoolPlanner.xml
+
+.idea/runConfigurations.xml
+
+.idea/inspectionProfiles/Project_Default.xml
+
+.idea/misc.xml
