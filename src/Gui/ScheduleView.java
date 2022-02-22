@@ -22,6 +22,11 @@ public class ScheduleView extends Pane {
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
     private int width;
+    private int classBlockLength;
+    private int lunchBreakTime;
+    private int lunchBreakLength;
+    private int fastBreakTime;
+    private int fastBreakLength;
 
     public ScheduleView () {
         //super.setPrefSize(1920, 1080);
@@ -154,15 +159,18 @@ public class ScheduleView extends Pane {
         /**
          * get these values from SettingsScreen
          */
-        int classBlockLength = 60;
-        int lunchBreakTime = 3;
-        int lunchBreakLength = 60;
-        int fastBreakTime = 6;
-        int fastBreakLength = 60;
+//        this.classBlockLength = 60;
+//        this.lunchBreakTime = 3;
+//        this.lunchBreakLength = 60;
+//        this.fastBreakTime = 6;
+//        this.fastBreakLength = 60;
+        int[] test ={60,3,15,4,30};
+        updateScheduleTime(test);
         LocalTime endTime;
 
         for(int i = 1; i<=10; i++) {
             endTime = ChronoUnit.MINUTES.addTo(startTime,classBlockLength);
+            System.out.println(classBlockLength);
             times.add(i + "\t" + startTime + " - " + endTime);
             if(i == fastBreakTime) {
                 startTime = ChronoUnit.MINUTES.addTo(endTime,fastBreakLength);
@@ -187,6 +195,16 @@ public class ScheduleView extends Pane {
             for (columnIndex++; columnIndex < 7; columnIndex++) {
                 this.scheduleGridPane.add(new ScheduleCell(type, false), columnIndex, rowIndex);
             }
+        }
+    }
+
+    public void updateScheduleTime(int[] times) {
+        int[] options = {classBlockLength, lunchBreakTime, lunchBreakLength, fastBreakTime, fastBreakLength};
+        for (int i = 0; i < options.length; i++) {
+            options[i] = times[i];
+        }
+        for (int option : options) {
+            System.out.print(option + ", ");
         }
     }
 
