@@ -14,11 +14,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ScheduleView extends Pane {
+    private Gui parent;
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
     private int width;
 
-    public ScheduleView () {
+    public ScheduleView (Gui parent) {
+        this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
 
@@ -29,7 +31,7 @@ public class ScheduleView extends Pane {
     private void TESTMETHOD() {
         //hardcoding a schedule
         ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("B3"), new StudentGroup("B4"));
+        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Pieter"), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
@@ -58,9 +60,7 @@ public class ScheduleView extends Pane {
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
 
-            pane.setOnMouseClicked(event -> {
-                //todo
-            });
+            pane.setOnMouseClicked(event -> this.parent.selectButtons.selectItem(scheduleItem));
 
             //Add to view
             this.getChildren().add(pane);
@@ -75,9 +75,9 @@ public class ScheduleView extends Pane {
         //Get string of studentGroups
         StringBuilder studentGroups = new StringBuilder();
         for (StudentGroup studentGroup : scheduleItem.getStudentGroups()) {
-            studentGroups.append(studentGroup.getName()).append(" -");
+            studentGroups.append(studentGroup.getName()).append(", ");
         }
-        //Delete last 2 characters " -"
+        //Delete last 2 characters ", "
         studentGroups.reverse().delete(0, 2).reverse();
 
         //Make labels
@@ -172,7 +172,7 @@ public class ScheduleView extends Pane {
         }
     }
 
-    public GridPane getGridPane () {
+    public GridPane getGridPane() {
         return this.scheduleGridPane;
     }
 }

@@ -20,8 +20,8 @@ public class Gui extends Application {
     private FXGraphics2D graphics;
 
     //Views
-    private ScheduleView scheduleView = new ScheduleView();
-    private SelectButtons selectButtons = new SelectButtons();
+    private ScheduleView scheduleView = new ScheduleView(this);
+    SelectButtons selectButtons = new SelectButtons();
 
     //TabPane
     private VBox mainPane;
