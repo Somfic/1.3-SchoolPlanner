@@ -167,8 +167,6 @@ public class ScheduleView extends Pane {
                 startTime = endTime;
             }
         }
-        System.out.println(times.toString());
-
 
         //Generate rows: time + 6 blank cells
         int rowIndex = 0;
@@ -188,12 +186,12 @@ public class ScheduleView extends Pane {
 
     public void updateScheduleTime(int classBlockLength, int lunchBreakTime, int lunchBreakLength, int fastBreakTime,
                                    int fastBreakLength) {
-        System.out.println(classBlockLength + ", " + lunchBreakTime + ", " + lunchBreakLength + ", " + fastBreakTime + ", " + fastBreakLength);
         this.fastBreakLength = fastBreakLength;
         this.fastBreakTime = fastBreakTime;
         this.lunchBreakLength = lunchBreakLength;
         this.lunchBreakTime = lunchBreakTime;
         this.classBlockLength = classBlockLength;
+        this.scheduleGridPane.getChildren().clear();
         this.buildScheduleTable();
     }
 
