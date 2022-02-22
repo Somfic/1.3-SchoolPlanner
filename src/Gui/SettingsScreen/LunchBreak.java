@@ -26,7 +26,7 @@ public class LunchBreak {
     private int BLMemory;
     private int BTCurrent;
     private int BTMemory;
-    private String[] lessons = {"N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private String[] lessons = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     public LunchBreak(BreakTimeCallback callback) {
         this.label = new Label("Select ");
@@ -37,7 +37,7 @@ public class LunchBreak {
 
         this.BTDropdown = new Dropdown();
         BTDropdown.setDropdownItems(lessons);
-        this.BTCurrent = initialValue;
+        this.BTCurrent = Integer.valueOf(lessons[4]);
         this.BTMemory = this.BLCurrent;
 
         this.callback = callback;
@@ -55,7 +55,7 @@ public class LunchBreak {
     public void confirm() {
         this.BLMemory = this.BLCurrent;
         this.BTMemory = this.BTCurrent;
-        callback.onBreakTimeChange(new Pair<>(BLCurrent, BTCurrent));
+        callback.onLunchBreakTimeChange(new Pair<>(BLCurrent, BTCurrent));
     }
 
     public void cancel() {
