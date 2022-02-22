@@ -34,8 +34,9 @@ public class ScheduleView extends Pane {
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
 
-        this.TESTMETHOD();
-        this.buildScheduleTable();
+        updateScheduleTime(60, 3, 15, 4, 30);
+
+//        this.TESTMETHOD();
     }
 
     private void TESTMETHOD() {
@@ -50,9 +51,6 @@ public class ScheduleView extends Pane {
     public void build(int width) {
         //Move into place
         this.width = width;
-        //this.scheduleGridPane.setTranslateX((1920f - this.width) / 2);
-        //this.scheduleGridPane.setTranslateY(150);
-
         this.addSchedule();
     }
 
@@ -156,11 +154,6 @@ public class ScheduleView extends Pane {
         ArrayList<String> times = new ArrayList<>();
 
         LocalTime startTime = LocalTime.of(8, 00);
-
-        /**
-         * get these values from SettingsScreen
-         */
-        updateScheduleTime(60, 3, 15, 4, 30);
         LocalTime endTime;
 
         for (int i = 1; i <= 10; i++) {
@@ -195,11 +188,13 @@ public class ScheduleView extends Pane {
 
     public void updateScheduleTime(int classBlockLength, int lunchBreakTime, int lunchBreakLength, int fastBreakTime,
                                    int fastBreakLength) {
+        System.out.println(classBlockLength + ", " + lunchBreakTime + ", " + lunchBreakLength + ", " + fastBreakTime + ", " + fastBreakLength);
         this.fastBreakLength = fastBreakLength;
         this.fastBreakTime = fastBreakTime;
         this.lunchBreakLength = lunchBreakLength;
         this.lunchBreakTime = lunchBreakTime;
         this.classBlockLength = classBlockLength;
+        this.buildScheduleTable();
     }
 
     public GridPane getGridPane() {

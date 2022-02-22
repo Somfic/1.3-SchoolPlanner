@@ -24,8 +24,15 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private VBox centralPane;
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
+    private int speedSave;
+    private Color themeColorSave;
+    private int classBlockLengthSave;
+    private Pair<Integer, Integer> fastBreakSave;
+    private Pair<Integer, Integer> lunchBreakSave;
+    private SettingCallback callback;
 
-    public SettingView() {
+    public SettingView(SettingCallback callback) {
+        this.callback = callback;
         this.borderPane = new BorderPane();
         this.titleLabel = new Label("Settings");
         this.speedLabel = new Label("Simulator Speed");
@@ -38,16 +45,17 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.classBlock = new ClassBlock(this);
         this.fastBreak = new FastBreak(this);
         this.lunchBreak = new LunchBreak(this);
-        this.centralPane = new VBox(speedLabel, speedSelector.getContent(),colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), new HBox(confirm, cancel));
+        this.centralPane = new VBox(speedLabel, speedSelector.getContent(), colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), new HBox(confirm, cancel));
         this.centralPane.setFillWidth(true);
         this.centralPane.setSpacing(15);
-        
+
         confirm.setOnAction(event -> {
             speedSelector.confirm();
             colorSelector.confirm();
             classBlock.confirm();
             fastBreak.confirm();
             lunchBreak.confirm();
+            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();
@@ -66,26 +74,31 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void onSpeedChange(int speed) {
-        System.out.println("running speed "+speed);
+//        System.out.println("running speed " + speed);
+        this.speedSave = speed;
     }
 
     @Override
     public void onColorChange(Color color) {
-        System.out.println("Color: " + color);
+//        System.out.println("Color: " + color);
+        this.themeColorSave = color;
     }
 
     @Override
     public void ClassBlockLengthChanged(int length) {
-        System.out.println("ClassBlockLength: " + length);
+//        System.out.println("ClassBlockLength: " + length);
+        this.classBlockLengthSave = length;
     }
 
     @Override
     public void onFastBreakTimeChange(Pair<Integer, Integer> time) {
-        System.out.println("Fast break: " + time);
+//        System.out.println("Fast break: " + time);
+        this.fastBreakSave = time;
     }
 
     @Override
     public void onLunchBreakTimeChange(Pair<Integer, Integer> time) {
-        System.out.println("Lunch break: " + time);
+//        System.out.println("Lunch break: " + time);
+        this.lunchBreakSave = time;
     }
 }
