@@ -19,7 +19,6 @@ public class ScheduleView extends Pane {
     private int width;
 
     public ScheduleView () {
-        //super.setPrefSize(1920, 1080);
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
 
@@ -39,8 +38,6 @@ public class ScheduleView extends Pane {
     public void build(int width) {
         //Move into place
         this.width = width;
-        //this.scheduleGridPane.setTranslateX((1920f - this.width) / 2);
-        //this.scheduleGridPane.setTranslateY(150);
 
         this.addSchedule();
     }
@@ -61,7 +58,9 @@ public class ScheduleView extends Pane {
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
 
-            pane.setOnMouseClicked(event -> System.out.println("ye?"));
+            pane.setOnMouseClicked(event -> {
+                //todo
+            });
 
             //Add to view
             this.getChildren().add(pane);

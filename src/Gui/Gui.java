@@ -1,18 +1,14 @@
 package Gui;
 
-import Data.Classroom;
-import Data.Lesson;
-import Data.StudentGroup;
-import Data.Teacher;
 import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -25,6 +21,7 @@ public class Gui extends Application {
 
     //Views
     private ScheduleView scheduleView = new ScheduleView();
+    private SelectButtons selectButtons = new SelectButtons();
 
     //TabPane
     private VBox mainPane;
@@ -80,75 +77,9 @@ public class Gui extends Application {
 
 //        this.schedulePane.setTop(new WindowBar(stage).getContent());
         this.schedulePane.setCenter(this.scheduleView);
+        this.schedulePane.setBottom(this.selectButtons);
 
         stage.initStyle(StageStyle.UNDECORATED);
-        // Bottom buttons
-        HBox buttons = new HBox();
-
-        // Buttons
-        TextField startTime = new TextField();
-        startTime.setPromptText("Start time");
-        TextField endTime = new TextField();
-        endTime.setPromptText("End time");
-        ComboBox<Classroom> classRoomSelect = new ComboBox<>();
-        ComboBox<Teacher> teacherSelect = new ComboBox<>();
-        ComboBox<Lesson> courseSelect = new ComboBox<>();
-        ComboBox<StudentGroup> classSelect = new ComboBox<>();
-        classRoomSelect.setPromptText("Classroom");
-        teacherSelect.setPromptText("Teacher  ");
-        courseSelect.setPromptText("Course     ");
-        classSelect.setPromptText("Class       ");
-
-        classRoomSelect.getItems().add(new Classroom(30, "Classroom 1", 0));
-        classRoomSelect.getItems().add(new Classroom(30, "Classroom 2", 0));
-        classRoomSelect.getItems().add(new Classroom(30, "Classroom 3", 0));
-        classRoomSelect.getItems().add(new Classroom(30, "Classroom 4", 0));
-        classRoomSelect.getItems().add(new Classroom(30, "Classroom 5", 0));
-        classRoomSelect.getItems().add(new Classroom(30, "Classroom 6", 0));
-        HBox hbox = new HBox();
-        VBox vbox = new VBox();
-        hbox.getChildren().add(startTime);
-        hbox.getChildren().add(classRoomSelect);
-        hbox.getChildren().add(teacherSelect);
-        hbox.setSpacing(10);
-        vbox.getChildren().add(hbox);
-        HBox hbox2 = new HBox();
-        hbox2.getChildren().add(endTime);
-        hbox2.getChildren().add(courseSelect);
-        hbox2.getChildren().add(classSelect);
-        hbox2.setSpacing(10);
-        vbox.getChildren().add(hbox2);
-        vbox.setSpacing(10);
-        buttons.getChildren().add(vbox);
-
-        // Apply, Remove, and Reset
-        Button apply = new Button("Apply");
-        Button reset = new Button("Reset");
-        Button remove = new Button("Remove");
-        HBox applyRemoveButtons = new HBox(apply, remove);
-        applyRemoveButtons.setSpacing(10);
-
-        VBox applyRemoveResetButtons = new VBox(applyRemoveButtons, reset);
-        applyRemoveResetButtons.setAlignment(Pos.CENTER);
-        applyRemoveResetButtons.setSpacing(10);
-
-        buttons.getChildren().add(applyRemoveResetButtons);
-
-        // Save and Load
-        Button save = new Button("Save");
-        Button load = new Button("Load");
-
-        VBox saveLoadButtons = new VBox(save, load);
-        saveLoadButtons.setSpacing(10);
-
-        buttons.getChildren().add(saveLoadButtons);
-
-        buttons.setSpacing(10);
-        buttons.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-
-        this.schedulePane.setBottom(buttons);
-
-
         stage.setScene(this.scene);
         stage.setResizable(true);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
