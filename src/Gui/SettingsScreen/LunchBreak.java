@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 
 
-public class BreakLunch {
+public class LunchBreak {
     //BreakLength means the amount of minutes a break takes
     //BreakTime means after which lesson a break starts
     private Label label;
@@ -28,7 +28,7 @@ public class BreakLunch {
     private int BTMemory;
     private String[] lessons = {"N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
-    public BreakLunch(BreakTimeCallback callback) {
+    public LunchBreak(BreakTimeCallback callback) {
         this.label = new Label("Select ");
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.BLSpinner = new Spinner(valueFactory);

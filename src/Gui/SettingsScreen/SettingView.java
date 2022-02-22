@@ -19,8 +19,8 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private SpeedSelector speedSelector;
     private ColorSelector colorSelector;
     private ClassBlock classBlock;
-    private Breakfast breakfast;
-    private BreakLunch breakLunch;
+    private FastBreak fastBreak;
+    private LunchBreak lunchBreak;
     private VBox centralPane;
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
@@ -36,9 +36,9 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.speedSelector = new SpeedSelector(this);
         this.colorSelector = new ColorSelector(this);
         this.classBlock = new ClassBlock(this);
-        this.breakfast = new Breakfast(this);
-        this.breakLunch = new BreakLunch(this);
-        this.centralPane = new VBox(speedLabel, speedSelector.getContent(),colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, breakfast.getContent(), breakLunchLabel, breakLunch.getContent(), new HBox(confirm, cancel));
+        this.fastBreak = new FastBreak(this);
+        this.lunchBreak = new LunchBreak(this);
+        this.centralPane = new VBox(speedLabel, speedSelector.getContent(),colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), new HBox(confirm, cancel));
         this.centralPane.setFillWidth(true);
         this.centralPane.setSpacing(15);
         
@@ -46,14 +46,14 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             speedSelector.confirm();
             colorSelector.confirm();
             classBlock.confirm();
-            breakfast.confirm();
+            fastBreak.confirm();
         });
         
         cancel.setOnAction(event -> {
             speedSelector.cancel();
             colorSelector.cancel();
             classBlock.cancel();
-            breakfast.cancel();
+            fastBreak.cancel();
 
         });
         
