@@ -3,12 +3,13 @@ package Gui.SettingsScreen;
 import Gui.Dropdown;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
-
 
 public class LunchBreak {
     //BreakLength means the amount of minutes a break takes
@@ -48,6 +49,11 @@ public class LunchBreak {
                 BLCurrent = BLSpinner.getValue();
             }
         });
+
+        this.BTDropdown.setOnDropdownAction(event -> {
+            BTCurrent = Integer.parseInt(BTDropdown.getValue());
+        });
+
         this.hBox = new HBox(label, BLSpinner, BTDropdown);
         this.hBox.setSpacing(15);
     }

@@ -167,8 +167,13 @@ public class ScheduleView extends Pane {
         updateScheduleTime(60, 3, 15, 4, 30);
         LocalTime endTime;
 
+<<<<<<< Updated upstream
         for (int i = 1; i <= 10; i++) {
             endTime = ChronoUnit.MINUTES.addTo(startTime, classBlockLength);
+=======
+        for(int i = 1; i<=10; i++) {
+            endTime = ChronoUnit.MINUTES.addTo(startTime,classBlockLength);
+>>>>>>> Stashed changes
             times.add(i + "\t" + startTime + " - " + endTime);
             if (i == fastBreakTime) {
                 startTime = ChronoUnit.MINUTES.addTo(endTime, fastBreakLength);
@@ -197,12 +202,22 @@ public class ScheduleView extends Pane {
         }
     }
 
+<<<<<<< Updated upstream
     public void updateScheduleTime(int classBlockLength, int lunchBreakTime, int lunchBreakLength, int fastBreakTime, int fastBreakLength) {
         this.fastBreakLength = fastBreakLength;
         this.fastBreakTime = fastBreakTime;
         this.lunchBreakLength = lunchBreakLength;
         this.lunchBreakTime = lunchBreakTime;
         this.classBlockLength = classBlockLength;
+=======
+    public void updateScheduleTime(int[] times) {
+        int[] options = {classBlockLength, lunchBreakTime, lunchBreakLength, fastBreakTime, fastBreakLength};
+        for (int i = 0; i < options.length; i++) {
+            options[i] = times[i];
+        }
+        for (int option : options) {
+        }
+>>>>>>> Stashed changes
     }
 
     public GridPane getGridPane () {

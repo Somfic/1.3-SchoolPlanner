@@ -47,6 +47,11 @@ public class FastBreak {
                 BLCurrent = BLSpinner.getValue();
             }
         });
+
+        this.BTDropdown.setOnDropdownAction(event -> {
+            BTCurrent = Integer.parseInt(BTDropdown.getValue());
+        });
+        
         this.hBox = new HBox(label, BLSpinner, BTDropdown);
         this.hBox.setSpacing(15);
     }
