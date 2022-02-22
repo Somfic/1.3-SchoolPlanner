@@ -31,7 +31,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.speedLabel = new Label("Simulator Speed");
         this.colorSelectorLabel = new Label("Theme Color");
         this.classBlockLabel = new Label("Class Block Length (in minutes)");
-        this.breakfastLabel = new Label("Breakfast (length in minutes, Starts after Class Block X)");
+        this.breakfastLabel = new Label("Fast break (length in minutes, Starts after Class Block X)");
         this.breakLunchLabel = new Label("Lunch break (length in minutes, Starts after Class Block X)");
         this.speedSelector = new SpeedSelector(this);
         this.colorSelector = new ColorSelector(this);

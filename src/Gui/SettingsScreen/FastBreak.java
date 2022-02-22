@@ -41,10 +41,9 @@ public class FastBreak {
         this.BTMemory = this.BLCurrent;
 
         this.callback = callback;
-
-        this.BLSpinner.valueProperty().addListener(new ChangeListener() {
+        this.BLSpinner.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 BLCurrent = BLSpinner.getValue();
             }
         });
