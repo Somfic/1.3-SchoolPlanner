@@ -31,7 +31,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.speedLabel = new Label("Simulator Speed");
         this.colorSelectorLabel = new Label("Theme Color");
         this.classBlockLabel = new Label("Class Block Length (in minutes)");
-        this.breakfastLabel = new Label("Breakfast (length in minutes, Starts after Class Block X)");
+        this.breakfastLabel = new Label("Fast break (length in minutes, Starts after Class Block X)");
         this.breakLunchLabel = new Label("Lunch break (length in minutes, Starts after Class Block X)");
         this.speedSelector = new SpeedSelector(this);
         this.colorSelector = new ColorSelector(this);
@@ -47,16 +47,15 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             colorSelector.confirm();
             classBlock.confirm();
             fastBreak.confirm();
+            lunchBreak.confirm();
         });
-        
         cancel.setOnAction(event -> {
             speedSelector.cancel();
             colorSelector.cancel();
             classBlock.cancel();
             fastBreak.cancel();
-
+            lunchBreak.cancel();
         });
-        
         borderPane.setTop(titleLabel);
         borderPane.setCenter(centralPane);
     }
@@ -66,18 +65,27 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     }
 
     @Override
+    public void onSpeedChange(int speed) {
+        System.out.println("running speed "+speed);
+    }
+
+    @Override
     public void onColorChange(Color color) {
+        System.out.println("Color: " + color);
     }
 
     @Override
     public void ClassBlockLengthChanged(int length) {
+        System.out.println("ClassBlockLength: " + length);
     }
 
     @Override
-    public void onSpeedChange(int speed) {
+    public void onFastBreakTimeChange(Pair<Integer, Integer> time) {
+        System.out.println("Fast break: " + time);
     }
 
     @Override
-    public void onBreakTimeChange(Pair<Integer, Integer> time) {
+    public void onLunchBreakTimeChange(Pair<Integer, Integer> time) {
+        System.out.println("Lunch break: " + time);
     }
 }

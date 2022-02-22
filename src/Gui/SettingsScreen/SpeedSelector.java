@@ -34,13 +34,17 @@ public class SpeedSelector {
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.speedSpinner = new Spinner(valueFactory);
         this.speedSlider.valueProperty().bindBidirectional(speedSpinner.getValueFactory().valueProperty());
-        this.speedCurrent = initialValue;
+        this.speedCurrent = (int) Math.round(speedSlider.getValue());
         this.speedMemory = this.speedCurrent;
 
         speedSlider.setOnMousePressed(event -> {
             speedSlider.valueProperty().addListener((obs, oldval, newVal) -> {
                 speedSlider.setValue(Math.round(newVal.doubleValue()));
             });
+        });
+
+        speedSlider.setOnMouseReleased(event -> {
+            this.speedCurrent = (int) Math.round(speedSlider.getValue());
         });
 
         this.componentHBox = new HBox(speedLabel, speedSlider, speedSpinner);

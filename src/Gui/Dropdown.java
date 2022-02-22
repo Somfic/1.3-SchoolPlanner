@@ -21,14 +21,18 @@ public class Dropdown extends ComboBox<String> {
         this.setEditable(true);
 
         // Handle every keypress
+        eventHandler = new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                //todo idk
+            }
+        };
         this.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
-
             // Get the search query from the editor
             this.query = this.getEditor().getText();
 
             // If the query is not empty, filter the list
             if (this.query.length() > 0) {
-
                 // Filter the list based on the query
                 FilteredList<String> filteredList = new FilteredList<>(FXCollections.observableArrayList(this.allItems));
                 filteredList.setPredicate(item -> item.toLowerCase().contains(this.query.toLowerCase()));

@@ -37,14 +37,13 @@ public class FastBreak {
 
         this.BTDropdown = new Dropdown();
         BTDropdown.setDropdownItems(lessons);
-        this.BTCurrent = initialValue;
+        this.BTCurrent = Integer.valueOf(lessons[0]);
         this.BTMemory = this.BLCurrent;
 
         this.callback = callback;
-
-        this.BLSpinner.valueProperty().addListener(new ChangeListener() {
+        this.BLSpinner.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 BLCurrent = BLSpinner.getValue();
             }
         });
@@ -55,7 +54,7 @@ public class FastBreak {
     public void confirm() {
         this.BLMemory = this.BLCurrent;
         this.BTMemory = this.BTCurrent;
-        callback.onBreakTimeChange(new Pair<>(BLCurrent, BTCurrent));
+        callback.onFastBreakTimeChange(new Pair<>(BLCurrent, BTCurrent));
     }
 
     public void cancel() {
