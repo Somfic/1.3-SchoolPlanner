@@ -55,7 +55,8 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.confirm();
             fastBreak.confirm();
             lunchBreak.confirm();
-            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
+//            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
+            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave));
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();

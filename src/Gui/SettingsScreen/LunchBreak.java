@@ -3,8 +3,6 @@ package Gui.SettingsScreen;
 import Gui.Dropdown;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -15,59 +13,59 @@ public class LunchBreak {
     //BreakLength means the amount of minutes a break takes
     //BreakTime means after which lesson a break starts
     private Label label;
-    private Spinner<Integer> BLSpinner;
-    private Dropdown BTDropdown;
+    private Spinner<Integer> breakLengthSpinner;
+    private Dropdown breakTimeDropdown;
     private HBox hBox;
     private int minimumValue = 0;
     private int maximumValue = 60;
     private int initialValue = 30;
     private int incrementValue = 5;
     private BreakTimeCallback callback;
-    private int BLCurrent;
-    private int BLMemory;
-    private int BTCurrent;
-    private int BTMemory;
+    private int breakLengthCurrent;
+    private int breakLengthMemory;
+    private int breakTimeCurrent;
+    private int breakTimeMemory;
     private String[] lessons = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     public LunchBreak(BreakTimeCallback callback) {
         this.label = new Label("Select ");
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
-        this.BLSpinner = new Spinner(valueFactory);
-        this.BLCurrent = initialValue;
-        this.BLMemory = this.BLCurrent;
+        this.breakLengthSpinner = new Spinner(valueFactory);
+        this.breakLengthCurrent = initialValue;
+        this.breakLengthMemory = this.breakLengthCurrent;
 
-        this.BTDropdown = new Dropdown();
-        BTDropdown.setDropdownItems(lessons);
-        this.BTCurrent = Integer.valueOf(lessons[4]);
-        this.BTMemory = this.BLCurrent;
+        this.breakTimeDropdown = new Dropdown();
+        breakTimeDropdown.setDropdownItems(lessons);
+        this.breakTimeCurrent = Integer.valueOf(lessons[4]);
+        this.breakTimeMemory = this.breakLengthCurrent;
 
         this.callback = callback;
 
-        this.BLSpinner.valueProperty().addListener(new ChangeListener() {
+        this.breakLengthSpinner.valueProperty().addListener(new ChangeListener() {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                BLCurrent = BLSpinner.getValue();
+            public void changed(ObservableValue observabreakLengthe, Object oldValue, Object newValue) {
+                breakLengthCurrent = breakLengthSpinner.getValue();
             }
         });
 
-        this.BTDropdown.setOnDropdownAction(event -> {
-            BTCurrent = Integer.parseInt(BTDropdown.getValue());
+        this.breakTimeDropdown.setOnDropdownAction(event -> {
+            breakTimeCurrent = Integer.parseInt(breakTimeDropdown.getValue());
         });
 
-        this.hBox = new HBox(label, BLSpinner, BTDropdown);
+        this.hBox = new HBox(label, breakLengthSpinner, breakTimeDropdown);
         this.hBox.setSpacing(15);
     }
 
     public void confirm() {
-        this.BLMemory = this.BLCurrent;
-        this.BTMemory = this.BTCurrent;
-        callback.onLunchBreakTimeChange(new Pair<>(BLCurrent, BTCurrent));
+        this.breakLengthMemory = this.breakLengthCurrent;
+        this.breakTimeMemory = this.breakTimeCurrent;
+        callback.onLunchBreakTimeChange(new Pair<>(breakLengthCurrent, breakTimeCurrent));
     }
 
     public void cancel() {
-        this.BLCurrent = this.BLMemory;
-        this.BTCurrent = this.BTMemory;
-        this.BLSpinner.getValueFactory().setValue(this.BLCurrent);
+        this.breakLengthCurrent = this.breakLengthMemory;
+        this.breakTimeCurrent = this.breakTimeMemory;
+        this.breakLengthSpinner.getValueFactory().setValue(this.breakLengthCurrent);
     }
 
     public HBox getContent() {

@@ -153,8 +153,9 @@ public class Gui extends Application implements SettingCallback {
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
+
     @Override
-    public void onSettingChange(int speed, Color color, int classBlockLength, Pair<Integer, Integer> fastBreak, Pair<Integer, Integer> lunchBreak) {
-        scheduleView.updateScheduleTime(classBlockLength, lunchBreak.getValue(), lunchBreak.getKey(), fastBreak.getValue(), fastBreak.getKey());
+    public void onSettingChange(ScheduleSettings newSettings) {
+        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey());
     }
 }
