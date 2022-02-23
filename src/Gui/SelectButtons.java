@@ -43,7 +43,8 @@ public class SelectButtons extends Pane {
         this.teacherSelect.setPromptText("Teacher  ");
         this.courseSelect.setPromptText("Course     ");
 
-
+        this.courseSelect.getItems().addAll(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
+        this.teacherSelect.getItems().addAll(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE,"Jessica"));
         this.classRoomSelect.getItems().addAll(new Classroom(30, "Classroom 1", 0), new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2), new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4), new Classroom(30, "Classroom 6", 5));
 
 
@@ -69,11 +70,7 @@ public class SelectButtons extends Pane {
         applyRemoveResetButtons.setSpacing(10);
 
 
-//        Collections.addAll(students, new StudentGroup("A1"), new StudentGroup("A2"));
-        Lesson lesson = new Lesson("Math");
-        Teacher teacher = new Teacher(Gender.MALE, "Jan");
-        courseSelect.getItems().add(lesson);
-        teacherSelect.getItems().add(teacher);
+
         apply.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 students.clear();
@@ -88,7 +85,7 @@ public class SelectButtons extends Pane {
             }
         });
         reset.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event){
+            public void handle(ActionEvent event) {
                 students.clear();
                 scheduleView.resetSchedule();
             }

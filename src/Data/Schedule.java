@@ -27,16 +27,17 @@ public class Schedule {
         items.clear();
         System.out.println(items.size());
     }
-    public void remove(ScheduleItem scheduleItem){
-        if(items.size()<=1){
+    public void remove(ScheduleItem scheduleItem) {
+        if (items.size() <= 1) {
             items.clear();
         }
-        for(ScheduleItem s : items){
-            if(s.getClassroom().getName().equals(scheduleItem.getClassroom().getName()) && s.getStartPeriod()==scheduleItem.getStartPeriod()){
-                items.remove(s);
+        for (int i = 0; i < items.size() - 1; i++) {
+            if (items.get(i).getClassroom().getName().equals(scheduleItem.getClassroom().getName()) && items.get(i).getStartPeriod() == scheduleItem.getStartPeriod()) {
+                items.remove(i);
+                break;
             }
+            System.out.println(items.size());
         }
-        System.out.println(items.size());
     }
 
     public List<ScheduleItem> getItems() {
