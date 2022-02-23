@@ -32,7 +32,7 @@ public class Schedule {
             items.clear();
         }
         for(ScheduleItem s : items){
-            if(s.getClassroom().equals(scheduleItem.getClassroom()) && s.getStartPeriod()==scheduleItem.getStartPeriod()){
+            if(s.getClassroom().getName().equals(scheduleItem.getClassroom().getName()) && s.getStartPeriod()==scheduleItem.getStartPeriod()){
                 items.remove(s);
             }
         }
