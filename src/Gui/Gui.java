@@ -1,5 +1,6 @@
 package Gui;
 
+import Gui.SettingsScreen.SettingCallback;
 import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -14,14 +15,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 
-public class Gui extends Application {
+public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
     private FXGraphics2D graphics;
@@ -35,7 +38,7 @@ public class Gui extends Application {
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private BorderPane simulationPane = new BorderPane();
-    private SettingView settingsPane = new SettingView();
+    private SettingView settingsPane = new SettingView(this);
 
     @Override
     public void start(Stage stage) {
@@ -148,5 +151,11 @@ public class Gui extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
+    }
+
+
+    @Override
+    public void onSettingChange(ScheduleSettings newSettings) {
+        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey());
     }
 }
