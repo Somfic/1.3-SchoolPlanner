@@ -7,7 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SelectButtons extends Pane {
@@ -58,9 +60,27 @@ public class SelectButtons extends Pane {
         applyRemoveResetButtons.setAlignment(Pos.CENTER);
         applyRemoveResetButtons.setSpacing(10);
 
+
         //Save and Load
         Button save = new Button("Save");
+        save.setOnAction(e -> {
+            FileChooser chooser = buildFileChooser("Save schedule");
+            File file = chooser.showSaveDialog(null);
+
+            if (file != null) {
+                //Schedule.saveSchedule(file);
+            }
+        });
+
         Button load = new Button("Load");
+        load.setOnAction(e -> {
+            FileChooser chooser = buildFileChooser("Load schedule");
+            File file = chooser.showOpenDialog(null);
+
+            if (file != null && file.exists()) {
+                //Schedule.loadSchedule(file);
+            }
+        });
 
         VBox saveLoadButtons = new VBox(save, load);
         saveLoadButtons.setSpacing(10);
@@ -90,11 +110,20 @@ public class SelectButtons extends Pane {
 
             for (StudentGroup selectedGroup : selectedGroups) {
                 if (selectedGroup.getName().equals(name))
-                tempItem.setSelected(true);
             }
 
             tempItem.setOnAction(event -> System.out.println("ye"));
             this.studentGroupSelect.getItems().add(tempItem);
         }
+    }
+
+    private FileChooser buildFileChooser(String title) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schedule", "*.schedule"));
+        fileChooser.setInitialFileName("schedule.schedule");
+        fileChooser.setInitialDirectory(new java.io.File("."));
+
+        return fileChooser;
     }
 }
