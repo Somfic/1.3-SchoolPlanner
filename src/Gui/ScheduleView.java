@@ -25,7 +25,7 @@ public class ScheduleView extends Pane {
         this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
-        this.TESTMETHOD();
+//        this.TESTMETHOD();
         this.buildScheduleTable();
     }
 

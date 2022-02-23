@@ -2,6 +2,8 @@ package Gui;
 
 import Data.*;
 import IO.FileManager;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -25,6 +27,7 @@ public class SelectButtons extends Pane {
     private ComboBox<Lesson> courseSelect = new ComboBox<>();
     private MenuButton studentGroupSelect = new MenuButton("Class       ");
     private ScheduleView scheduleView;
+    private ArrayList<StudentGroup> students = new ArrayList<>();
 
     public SelectButtons(ScheduleView scheduleView) {
         this.scheduleView = scheduleView;
@@ -64,21 +67,45 @@ public class SelectButtons extends Pane {
         applyRemoveResetButtons.setAlignment(Pos.CENTER);
         applyRemoveResetButtons.setSpacing(10);
 
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("A1"), new StudentGroup("A2"));
+
+//        Collections.addAll(students, new StudentGroup("A1"), new StudentGroup("A2"));
         Lesson lesson = new Lesson("Math");
         Teacher teacher = new Teacher(Gender.MALE, "Jan");
         courseSelect.getItems().add(lesson);
         teacherSelect.getItems().add(teacher);
-        apply.setOnAction(event ->
-            scheduleView.applyScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue())
-        );
-        reset.setOnAction(event ->
-            scheduleView.resetSchedule()
-        );
-        remove.setOnAction(event ->
-            scheduleView.removeScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue())
-        );
+        apply.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                students.clear();
+                for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
+                    CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
+                    if (temp.isSelected()) {
+                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                    }
+                    ;
+                }
+                scheduleView.applyScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+            }
+        });
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event){
+                students.clear();
+                scheduleView.resetSchedule();
+            }
+
+        });
+        remove.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                students.clear();
+                for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
+                    CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
+                    if (temp.isSelected()) {
+                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                    }
+                    ;
+                }
+                scheduleView.removeScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+            }
+        });
 
         //Save and Load
         Button save = new Button("Save");
