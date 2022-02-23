@@ -23,7 +23,6 @@ public class ScheduleView extends Pane {
         this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
-
         this.TESTMETHOD();
         this.buildScheduleTable();
     }
@@ -36,6 +35,19 @@ public class ScheduleView extends Pane {
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
     }
+    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+        clear();
+        this.schedule.add(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+
+    }
+    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+        this.schedule.remove(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.addSchedule();
+    }
+    public void resetSchedule(){
+        this.schedule.reset();
+        this.addSchedule();
+    }
 
     public void build(int width) {
         //Move into place
@@ -46,6 +58,7 @@ public class ScheduleView extends Pane {
 
     private void addSchedule() {
         for (ScheduleItem scheduleItem : schedule.getItems()) {
+            System.out.println(scheduleItem.getStartPeriod());
             Pane pane = new Pane();
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
@@ -128,6 +141,14 @@ public class ScheduleView extends Pane {
         }
 
         return vBox;
+    }
+    public void clear() {
+        Object[] children = this.getChildren().toArray();
+        for (Object child : children) {
+            if (child.getClass().getName().equals("javafx.scene.layout.Pane")) {
+                this.getChildren().remove(child);
+            }
+        }
     }
 
     private void buildScheduleTable() {

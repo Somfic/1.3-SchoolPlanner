@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SelectButtons extends Pane {
     private HBox buttons = new HBox();
@@ -20,10 +21,14 @@ public class SelectButtons extends Pane {
     private ComboBox<Teacher> teacherSelect = new ComboBox<>();
     private ComboBox<Lesson> courseSelect = new ComboBox<>();
     private MenuButton studentGroupSelect = new MenuButton("Class       ");
+    private Gui gui;
+    private ScheduleView scheduleView;
 
-    public SelectButtons() {
+    public SelectButtons(Gui gui) {
         this.getChildren().add(this.buttons);
         this.buildSelectButtons();
+        this.gui = gui;
+        this.scheduleView = new ScheduleView(gui);
     }
 
     private void buildSelectButtons() {
@@ -58,6 +63,22 @@ public class SelectButtons extends Pane {
         applyRemoveResetButtons.setAlignment(Pos.CENTER);
         applyRemoveResetButtons.setSpacing(10);
 
+        ArrayList<StudentGroup> students = new ArrayList<>();
+        Collections.addAll(students, new StudentGroup("A1"), new StudentGroup("A2"));
+        Lesson lesson = new Lesson("Math");
+        Teacher teacher = new Teacher(Gender.MALE, "Jan");
+        courseSelect.getItems().add(lesson);
+        teacherSelect.getItems().add(teacher);
+        apply.setOnAction(event ->
+            scheduleView.applyScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue())
+        );
+        reset.setOnAction(event ->
+            scheduleView.resetSchedule()
+        );
+        remove.setOnAction(event ->
+            scheduleView.removeScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue())
+        );
+
         //Save and Load
         Button save = new Button("Save");
         Button load = new Button("Load");
@@ -90,11 +111,12 @@ public class SelectButtons extends Pane {
 
             for (StudentGroup selectedGroup : selectedGroups) {
                 if (selectedGroup.getName().equals(name))
-                tempItem.setSelected(true);
+                    tempItem.setSelected(true);
             }
 
             tempItem.setOnAction(event -> System.out.println("ye"));
             this.studentGroupSelect.getItems().add(tempItem);
         }
     }
+
 }

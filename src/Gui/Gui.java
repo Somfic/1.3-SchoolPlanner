@@ -2,6 +2,7 @@ package Gui;
 
 import Gui.SettingsScreen.SettingView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -20,8 +21,8 @@ public class Gui extends Application {
     private FXGraphics2D graphics;
 
     //Views
-    private ScheduleView scheduleView = new ScheduleView(this);
-    SelectButtons selectButtons = new SelectButtons();
+    ScheduleView scheduleView = new ScheduleView(this);
+    SelectButtons selectButtons = new SelectButtons(this);
 
     //TabPane
     private VBox mainPane;

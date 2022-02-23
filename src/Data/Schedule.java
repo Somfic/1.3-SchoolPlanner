@@ -15,12 +15,28 @@ public class Schedule {
 
     public void add(ScheduleItem item) {
         items.add(item);
+        System.out.println(items.size());
     }
 
     public void add(List<ScheduleItem> items) {
         for (ScheduleItem item : items) {
             add(item);
         }
+    }
+    public void reset(){
+        items.clear();
+        System.out.println(items.size());
+    }
+    public void remove(ScheduleItem scheduleItem){
+        if(items.size()<=1){
+            items.clear();
+        }
+        for(ScheduleItem s : items){
+            if(s.getClassroom().equals(scheduleItem.getClassroom()) && s.getStartPeriod()==scheduleItem.getStartPeriod()){
+                items.remove(s);
+            }
+        }
+        System.out.println(items.size());
     }
 
     public List<ScheduleItem> getItems() {
