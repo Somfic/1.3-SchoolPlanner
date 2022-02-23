@@ -19,6 +19,8 @@ public class ScheduleView extends Pane {
     private Schedule schedule = new Schedule();
     private int width;
 
+    SelectButtons selectButtons = new SelectButtons(this);
+
     public ScheduleView (Gui parent) {
         this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
@@ -60,7 +62,7 @@ public class ScheduleView extends Pane {
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
 
-            pane.setOnMouseClicked(event -> this.parent.selectButtons.selectItem(scheduleItem));
+            pane.setOnMouseClicked(event -> this.selectButtons.selectItem(scheduleItem));
 
             //Add to view
             this.getChildren().add(pane);
@@ -174,5 +176,14 @@ public class ScheduleView extends Pane {
 
     public GridPane getGridPane() {
         return this.scheduleGridPane;
+    }
+
+    public Schedule getSchedule() {
+        return this.schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+        //todo: automatically rebuild the schedule table here?
     }
 }
