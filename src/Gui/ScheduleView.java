@@ -184,6 +184,6 @@ public class ScheduleView extends Pane {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
-        //todo: automatically rebuild the schedule table here?
+        this.addSchedule();
     }
 }
