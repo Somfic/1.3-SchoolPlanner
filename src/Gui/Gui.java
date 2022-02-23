@@ -21,7 +21,6 @@ public class Gui extends Application {
 
     //Views
     private ScheduleView scheduleView = new ScheduleView(this);
-    SelectButtons selectButtons = new SelectButtons();
 
     //TabPane
     private VBox mainPane;
@@ -77,7 +76,7 @@ public class Gui extends Application {
 
 //        this.schedulePane.setTop(new WindowBar(stage).getContent());
         this.schedulePane.setCenter(this.scheduleView);
-        this.schedulePane.setBottom(this.selectButtons);
+        this.schedulePane.setBottom(this.scheduleView.selectButtons);
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);

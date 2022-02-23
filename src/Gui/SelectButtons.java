@@ -1,13 +1,16 @@
 package Gui;
 
 import Data.*;
+import IO.FileManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SelectButtons extends Pane {
@@ -20,8 +23,10 @@ public class SelectButtons extends Pane {
     private ComboBox<Teacher> teacherSelect = new ComboBox<>();
     private ComboBox<Lesson> courseSelect = new ComboBox<>();
     private MenuButton studentGroupSelect = new MenuButton("Class       ");
+    private ScheduleView scheduleView;
 
-    public SelectButtons() {
+    public SelectButtons(ScheduleView scheduleView) {
+        this.scheduleView = scheduleView;
         this.getChildren().add(this.buttons);
         this.buildSelectButtons();
     }
@@ -58,9 +63,50 @@ public class SelectButtons extends Pane {
         applyRemoveResetButtons.setAlignment(Pos.CENTER);
         applyRemoveResetButtons.setSpacing(10);
 
+
         //Save and Load
         Button save = new Button("Save");
+        save.setOnAction(e -> {
+            try {
+                FileChooser chooser = buildFileChooser("Save schedule");
+                File file = chooser.showSaveDialog(null);
+
+                if (file != null) {
+                    String json = this.scheduleView.getSchedule().toJson();
+                    FileManager.write(file.getAbsolutePath(), json);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error exporting schedule");
+                alert.setHeaderText("Oh no!");
+                alert.setContentText("Could not export schedule.\n\n" + ex.getMessage());
+                alert.showAndWait();
+            }
+        });
+
         Button load = new Button("Load");
+        load.setOnAction(e -> {
+            try {
+                FileChooser chooser = buildFileChooser("Load schedule");
+
+                File file = chooser.showOpenDialog(null);
+
+                if (file != null && file.exists()) {
+                    String json = FileManager.read(file.getAbsolutePath());
+                    this.scheduleView.setSchedule(Schedule.fromJson(json));
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error importing schedule");
+                alert.setHeaderText("Oh no!");
+                alert.setContentText("Could not import schedule.\n\n" + ex.getMessage());
+                alert.showAndWait();
+            }
+        });
 
         VBox saveLoadButtons = new VBox(save, load);
         saveLoadButtons.setSpacing(10);
@@ -89,12 +135,21 @@ public class SelectButtons extends Pane {
             CheckMenuItem tempItem = new CheckMenuItem(name);
 
             for (StudentGroup selectedGroup : selectedGroups) {
-                if (selectedGroup.getName().equals(name))
-                tempItem.setSelected(true);
+                if (selectedGroup.getName().equals(name)) ;
             }
 
             tempItem.setOnAction(event -> System.out.println("ye"));
             this.studentGroupSelect.getItems().add(tempItem);
         }
+    }
+
+    private FileChooser buildFileChooser(String title) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schedule", "*.schedule"));
+        fileChooser.setInitialFileName("schedule.schedule");
+        fileChooser.setInitialDirectory(new java.io.File("."));
+
+        return fileChooser;
     }
 }
