@@ -109,7 +109,7 @@ public class SelectButtons extends Pane {
             CheckMenuItem tempItem = new CheckMenuItem(name);
 
             for (StudentGroup selectedGroup : selectedGroups) {
-                if (selectedGroup.getName().equals(name))
+                if (selectedGroup.getName().equals(name));
             }
 
             tempItem.setOnAction(event -> System.out.println("ye"));
