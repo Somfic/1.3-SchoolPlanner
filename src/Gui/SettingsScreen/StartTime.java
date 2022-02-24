@@ -1,17 +1,9 @@
 package Gui.SettingsScreen;
 
-import Gui.Dropdown;
 import com.jfoenix.controls.JFXTimePicker;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
-
 import java.time.LocalTime;
 
 
@@ -30,7 +22,7 @@ public class StartTime {
             startTimeCurrent = timePicker.getValue();
         });
 
-        this.timePicker.setDefaultColor(Color.RED);
+        setColor(Color.DIMGRAY);
         this.timePicker.setOverLay(false);
 
         this.callback = callback;
@@ -39,7 +31,7 @@ public class StartTime {
         this.vBox.setSpacing(15);
     }
 
-    public void setColorTheme(Color color) {
+    public void setColor(Color color) {
         this.timePicker.setDefaultColor(color);
     }
 

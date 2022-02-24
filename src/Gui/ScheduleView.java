@@ -218,7 +218,8 @@ public class ScheduleView extends Pane {
         this.lunchBreakTime = lunchBreakTime;
         this.classBlockLength = classBlockLength;
         this.scheduleGridPane.getChildren().clear();
-        this.startTime = startTime;
+        if (startTime != null)
+            this.startTime = startTime;
         this.buildScheduleTable(startTime);
     }
 

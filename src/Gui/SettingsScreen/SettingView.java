@@ -7,8 +7,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
-
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback, StartTimeCallback {
@@ -63,7 +61,6 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             fastBreak.confirm();
             lunchBreak.confirm();
             startTime.confirm();
-//            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
             callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave, startingTime));
         });
         cancel.setOnAction(event -> {
@@ -84,32 +81,28 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void onSpeedChange(int speed) {
-//        System.out.println("running speed " + speed);
         this.speedSave = speed;
     }
 
     @Override
     public void onColorChange(Color color) {
-//        System.out.println("Color: " + color);
+        System.out.println("Color: " + color);
         this.themeColorSave = color;
-        this.startTime.setColorTheme(color);
+        this.startTime.setColor(color);
     }
 
     @Override
     public void ClassBlockLengthChanged(int length) {
-//        System.out.println("ClassBlockLength: " + length);
         this.classBlockLengthSave = length;
     }
 
     @Override
     public void onFastBreakTimeChange(Pair<Integer, Integer> time) {
-//        System.out.println("Fast break: " + time);
         this.fastBreakSave = time;
     }
 
     @Override
     public void onLunchBreakTimeChange(Pair<Integer, Integer> time) {
-//        System.out.println("Lunch break: " + time);
         this.lunchBreakSave = time;
     }
 
