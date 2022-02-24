@@ -180,7 +180,7 @@ public class SelectButtons extends Pane {
                     tempItem.setSelected(true);
             }
 
-            tempItem.setOnAction(event -> System.out.println("ye"));
+            tempItem.setOnAction(event -> {});
             this.studentGroupSelect.getItems().add(tempItem);
         }
     }

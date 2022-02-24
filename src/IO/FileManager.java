@@ -11,7 +11,6 @@ public class FileManager {
         File file = new File(path);
 
         if(!file.exists()) {
-            System.out.println("File not found");
             return "";
         }
 
@@ -36,7 +35,6 @@ public class FileManager {
         try (PrintWriter writer = new PrintWriter(path)) {
             writer.print(contents);
         } catch (FileNotFoundException e) {
-            System.out.println("File not found");
             e.printStackTrace();
         }
     }

@@ -15,7 +15,6 @@ public class Schedule {
 
     public void add(ScheduleItem item) {
         items.add(item);
-        System.out.println(items.size());
     }
 
     public void add(List<ScheduleItem> items) {
@@ -25,7 +24,6 @@ public class Schedule {
     }
     public void reset(){
         items.clear();
-        System.out.println(items.size());
     }
     public void remove(ScheduleItem scheduleItem) {
         if (items.size() <= 1) {
@@ -36,7 +34,6 @@ public class Schedule {
                 items.remove(i);
                 break;
             }
-            System.out.println(items.size());
         }
     }
 

@@ -72,7 +72,6 @@ public class ScheduleView extends Pane {
 
     private void addSchedule() {
         for (ScheduleItem scheduleItem : schedule.getItems()) {
-            System.out.println(scheduleItem.getStartPeriod());
             Pane pane = new Pane();
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
