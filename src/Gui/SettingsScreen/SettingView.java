@@ -8,7 +8,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback {
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback, StartTimeCallback {
     private BorderPane borderPane;
     private Label titleLabel;
     private Label speedLabel;
@@ -30,6 +33,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private Pair<Integer, Integer> fastBreakSave;
     private Pair<Integer, Integer> lunchBreakSave;
     private SettingCallback callback;
+    private StartTime startTime;
 
     public SettingView(SettingCallback callback) {
         this.callback = callback;
@@ -45,9 +49,11 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.classBlock = new ClassBlock(this);
         this.fastBreak = new FastBreak(this);
         this.lunchBreak = new LunchBreak(this);
-        this.centralPane = new VBox(speedLabel, speedSelector.getContent(), colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), new HBox(confirm, cancel));
+        this.startTime = new StartTime(this);
+        this.centralPane = new VBox(speedLabel, speedSelector.getContent(), colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), startTime.getContent(), new HBox(confirm, cancel));
         this.centralPane.setFillWidth(true);
         this.centralPane.setSpacing(15);
+
 
         confirm.setOnAction(event -> {
             speedSelector.confirm();
@@ -101,5 +107,10 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     public void onLunchBreakTimeChange(Pair<Integer, Integer> time) {
 //        System.out.println("Lunch break: " + time);
         this.lunchBreakSave = time;
+    }
+
+    @Override
+    public void newStartTime(LocalTime time) {
+
     }
 }
