@@ -22,9 +22,9 @@ public class SelectButtons extends Pane {
     private TextField startTime = new TextField();                                                      //Time
     private TextField endTime = new TextField();
 
-    private ComboBox<Classroom> classRoomSelect = new ComboBox<>();                                     //ComboBoxes
-    private ComboBox<Teacher> teacherSelect = new ComboBox<>();
-    private ComboBox<Lesson> courseSelect = new ComboBox<>();
+    private Dropdown<Classroom> classRoomSelect = new Dropdown<Classroom>();                                     //ComboBoxes
+    private Dropdown<Teacher> teacherSelect = new Dropdown<Teacher>();
+    private Dropdown<Lesson> courseSelect = new Dropdown<Lesson>();
     private MenuButton studentGroupSelect = new MenuButton("Class       ");
     private ScheduleView scheduleView;
     private ArrayList<StudentGroup> students = new ArrayList<>();
@@ -43,9 +43,9 @@ public class SelectButtons extends Pane {
         this.teacherSelect.setPromptText("Teacher  ");
         this.courseSelect.setPromptText("Course     ");
 
-        this.courseSelect.getItems().addAll(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
-        this.teacherSelect.getItems().addAll(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE,"Jessica"));
-        this.classRoomSelect.getItems().addAll(new Classroom(30, "Classroom 1", 0), new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2), new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4), new Classroom(30, "Classroom 6", 5));
+        this.courseSelect.setDropdownItems(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
+        this.teacherSelect.setDropdownItems(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE,"Jessica"));
+        this.classRoomSelect.setDropdownItems(new Classroom(30, "Classroom 1", 0), new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2), new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4), new Classroom(30, "Classroom 6", 5));
 
 
         this.buildStudentGroups(new ArrayList<>());
@@ -69,8 +69,6 @@ public class SelectButtons extends Pane {
         applyRemoveResetButtons.setAlignment(Pos.CENTER);
         applyRemoveResetButtons.setSpacing(10);
 
-
-
         apply.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 students.clear();
@@ -81,7 +79,7 @@ public class SelectButtons extends Pane {
                     }
                     ;
                 }
-                scheduleView.applyScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+                scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             }
         });
         reset.setOnAction(new EventHandler<ActionEvent>() {
@@ -101,7 +99,7 @@ public class SelectButtons extends Pane {
                     }
                     ;
                 }
-                scheduleView.removeScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+                scheduleView.removeScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             }
         });
 

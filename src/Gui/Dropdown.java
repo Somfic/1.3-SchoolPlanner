@@ -14,6 +14,7 @@ import java.util.List;
 
 public class Dropdown<T> extends ComboBox<T> {
     private EventHandler<Event> eventHandler;
+    private T selectedValue = null;
 
     public Dropdown() {
         super();
@@ -58,6 +59,7 @@ public class Dropdown<T> extends ComboBox<T> {
 
             // If the selected item is valid, redirect the event to the setOnDropdownAction() method
             if (allItems.contains(this.getValue())) {
+                this.selectedValue = this.getValue();
                 eventHandler.handle(event);
             }
         });
@@ -66,12 +68,16 @@ public class Dropdown<T> extends ComboBox<T> {
     private String query = "";
     private List<T> allItems = new ArrayList<>();
 
-    public void setDropdownItems(T[] items) {
+    public void setDropdownItems(T... items) {
         allItems = Arrays.asList(items);
         this.getItems().setAll(allItems);
     }
 
     public void setOnDropdownAction(EventHandler<Event> eventHandler) {
         this.eventHandler = eventHandler;
+    }
+
+    public T getDropdownValue() {
+        return this.selectedValue;
     }
 }
