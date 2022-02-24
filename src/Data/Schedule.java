@@ -14,7 +14,16 @@ public class Schedule {
     }
 
     public void add(ScheduleItem item) {
-        items.add(item);
+        for (int i = 0; i <items.size(); i++) {
+            if(item.getClassroom().getName().equals(items.get(i).getClassroom().getName()) ){
+                if(item.getStartPeriod()>=items.get(i).getStartPeriod() && item.getStartPeriod()<=items.get(i).getEndPeriod() || item.getEndPeriod()>=items.get(i).getStartPeriod()&&item.getEndPeriod()<=items.get(i).getEndPeriod()){
+                    items.remove(i);
+                }
+            }
+        }
+        if(item.getEndPeriod()- item.getStartPeriod()>=0&& item.getEndPeriod()>=1 && item.getEndPeriod()<=10 &&  item.getStartPeriod()>=1 && item.getStartPeriod()<=10){
+            items.add(item);
+        }
     }
 
     public void add(List<ScheduleItem> items) {
