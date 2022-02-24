@@ -3,7 +3,6 @@ package Gui;
 import Data.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.*;
@@ -20,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class ScheduleView extends Pane {
+    private Gui parent;
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
     private int width;
@@ -29,23 +29,39 @@ public class ScheduleView extends Pane {
     private int fastBreakTime;
     private int fastBreakLength;
 
-    public ScheduleView() {
-        //super.setPrefSize(1920, 1080);
+    SelectButtons selectButtons = new SelectButtons(this);
+
+    public ScheduleView (Gui parent) {
+        this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
-
-        updateScheduleTime(60, 3, 15, 4, 30);
-
 //        this.TESTMETHOD();
+        this.buildScheduleTable();
     }
 
     private void TESTMETHOD() {
         //hardcoding a schedule
         ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("B3"), new StudentGroup("B4"));
+        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Pieter"), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
+    }
+    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+        clear();
+        this.schedule.add(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.addSchedule();
+
+    }
+    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+        clear();
+        this.schedule.remove(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.addSchedule();
+    }
+    public void resetSchedule(){
+        clear();
+        this.schedule.reset();
+        this.addSchedule();
     }
 
     public void build(int width) {
@@ -56,6 +72,7 @@ public class ScheduleView extends Pane {
 
     private void addSchedule() {
         for (ScheduleItem scheduleItem : schedule.getItems()) {
+            System.out.println(scheduleItem.getStartPeriod());
             Pane pane = new Pane();
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
@@ -70,6 +87,8 @@ public class ScheduleView extends Pane {
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
 
+            pane.setOnMouseClicked(event -> this.selectButtons.selectItem(scheduleItem));
+
             //Add to view
             this.getChildren().add(pane);
         }
@@ -83,9 +102,9 @@ public class ScheduleView extends Pane {
         //Get string of studentGroups
         StringBuilder studentGroups = new StringBuilder();
         for (StudentGroup studentGroup : scheduleItem.getStudentGroups()) {
-            studentGroups.append(studentGroup.getName()).append(" -");
+            studentGroups.append(studentGroup.getName()).append(", ");
         }
-        //Delete last 2 characters " -"
+        //Delete last 2 characters ", "
         studentGroups.reverse().delete(0, 2).reverse();
 
         //Make labels
@@ -136,6 +155,14 @@ public class ScheduleView extends Pane {
         }
 
         return vBox;
+    }
+    public void clear() {
+        Object[] children = this.getChildren().toArray();
+        for (Object child : children) {
+            if (child.getClass().getName().equals("javafx.scene.layout.Pane")) {
+                this.getChildren().remove(child);
+            }
+        }
     }
 
     private void buildScheduleTable() {
@@ -197,5 +224,14 @@ public class ScheduleView extends Pane {
 
     public GridPane getGridPane() {
         return this.scheduleGridPane;
+    }
+
+    public Schedule getSchedule() {
+        return this.schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+        this.addSchedule();
     }
 }

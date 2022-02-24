@@ -1,71 +1,197 @@
 package Gui;
 
-import Data.ScheduleItem;
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import Data.*;
+import IO.FileManager;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 
-public class SelectButtons extends Application {
-    private Scene scene;
-    private Canvas canvas;
-    private TabPane tabs;
-    private BorderPane schedulePane = new BorderPane();
-    private BorderPane simulationPane = new BorderPane();
-    private BorderPane settingsPane = new BorderPane();
-    private ScheduleItem scheduleItems;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class SelectButtons extends Pane {
+    private HBox buttons = new HBox();
+    //Buttons
+    private TextField startTime = new TextField();                                                      //Time
+    private TextField endTime = new TextField();
+
+    private ComboBox<Classroom> classRoomSelect = new ComboBox<>();                                     //ComboBoxes
+    private ComboBox<Teacher> teacherSelect = new ComboBox<>();
+    private ComboBox<Lesson> courseSelect = new ComboBox<>();
+    private MenuButton studentGroupSelect = new MenuButton("Class       ");
+    private ScheduleView scheduleView;
+    private ArrayList<StudentGroup> students = new ArrayList<>();
+
+    public SelectButtons(ScheduleView scheduleView) {
+        this.scheduleView = scheduleView;
+        this.getChildren().add(this.buttons);
+        this.buildSelectButtons();
+    }
+
+    private void buildSelectButtons() {
+        this.startTime.setPromptText("Start time");
+        this.endTime.setPromptText("End time");
+
+        this.classRoomSelect.setPromptText("Classroom");
+        this.teacherSelect.setPromptText("Teacher  ");
+        this.courseSelect.setPromptText("Course     ");
+
+        this.courseSelect.getItems().addAll(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
+        this.teacherSelect.getItems().addAll(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE,"Jessica"));
+        this.classRoomSelect.getItems().addAll(new Classroom(30, "Classroom 1", 0), new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2), new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4), new Classroom(30, "Classroom 6", 5));
+
+
+        this.buildStudentGroups(new ArrayList<>());
+
+        HBox topRowButtons = new HBox(this.startTime, this.classRoomSelect, this.teacherSelect);                   //Layout
+        HBox bottomRowButtons = new HBox(this.endTime, this.courseSelect, this.studentGroupSelect);
+        topRowButtons.setSpacing(10);
+        bottomRowButtons.setSpacing(10);
+
+        VBox allButtons = new VBox(topRowButtons, bottomRowButtons);
+        allButtons.setSpacing(10);
+
+        //Modifications Buttons
+        Button apply = new Button("Apply");                                                     //Buttons
+        Button reset = new Button("Reset");
+        Button remove = new Button("Remove");
+        HBox applyRemoveHBox = new HBox(apply, remove);
+        applyRemoveHBox.setSpacing(10);
+
+        VBox applyRemoveResetButtons = new VBox(applyRemoveHBox, reset);                            //Layout
+        applyRemoveResetButtons.setAlignment(Pos.CENTER);
+        applyRemoveResetButtons.setSpacing(10);
 
 
 
-    @Override
-    public void start(Stage stage) {
-        canvas = new Canvas(1600, 800);
-        TextField startTime = new TextField("Start time");
-        TextField endTime = new TextField("End time");
-        ComboBox classRoomSelect = new ComboBox();
-        ComboBox teacherSelect = new ComboBox();
-        ComboBox courseSelect = new ComboBox();
-        ComboBox classSelect = new ComboBox();
-        classRoomSelect.setValue("Classroom");
-        teacherSelect.setValue("Teacher  ");
-        courseSelect.setValue("Course     ");
-        classSelect.setValue("Class       ");
-        HBox hbox = new HBox();
-        VBox vbox = new VBox();
-        hbox.getChildren().add(startTime);
-        hbox.getChildren().add(classRoomSelect);
-        hbox.getChildren().add(teacherSelect);
-        hbox.setSpacing(10);
-        vbox.getChildren().add(hbox);
-        HBox hbox2 = new HBox();
-        hbox2.getChildren().add(endTime);
-        hbox2.getChildren().add(courseSelect);
-        hbox2.getChildren().add(classSelect);
-        hbox2.setSpacing(10);
-        vbox.getChildren().add(hbox2);
-        vbox.setSpacing(10);
-        schedulePane.setBottom(vbox);
+        apply.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                students.clear();
+                for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
+                    CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
+                    if (temp.isSelected()) {
+                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                    }
+                    ;
+                }
+                scheduleView.applyScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+            }
+        });
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                students.clear();
+                scheduleView.resetSchedule();
+            }
 
-        tabs = new TabPane();
-        tabs.getTabs().add(new Tab("Schedule", schedulePane));
-        tabs.getTabs().add(new Tab("Simulation", simulationPane));
-        tabs.getTabs().add(new Tab("Settings", settingsPane));
+        });
+        remove.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                students.clear();
+                for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
+                    CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
+                    if (temp.isSelected()) {
+                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                    }
+                    ;
+                }
+                scheduleView.removeScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+            }
+        });
 
-        schedulePane.setCenter(canvas);
+        //Save and Load
+        Button save = new Button("Save");
+        save.setOnAction(e -> {
+            try {
+                FileChooser chooser = buildFileChooser("Save schedule");
+                File file = chooser.showSaveDialog(null);
 
-        scene = new Scene(new Group(tabs));
+                if (file != null) {
+                    String json = this.scheduleView.getSchedule().toJson();
+                    FileManager.write(file.getAbsolutePath(), json);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
 
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setTitle("School Planner");
-        stage.show();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error exporting schedule");
+                alert.setHeaderText("Oh no!");
+                alert.setContentText("Could not export schedule.\n\n" + ex.getMessage());
+                alert.showAndWait();
+            }
+        });
+
+        Button load = new Button("Load");
+        load.setOnAction(e -> {
+            try {
+                FileChooser chooser = buildFileChooser("Load schedule");
+
+                File file = chooser.showOpenDialog(null);
+
+                if (file != null && file.exists()) {
+                    String json = FileManager.read(file.getAbsolutePath());
+                    this.scheduleView.setSchedule(Schedule.fromJson(json));
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error importing schedule");
+                alert.setHeaderText("Oh no!");
+                alert.setContentText("Could not import schedule.\n\n" + ex.getMessage());
+                alert.showAndWait();
+            }
+        });
+
+        VBox saveLoadButtons = new VBox(save, load);
+        saveLoadButtons.setSpacing(10);
+
+        //final
+        this.buttons.getChildren().addAll(allButtons, applyRemoveResetButtons, saveLoadButtons);
+        this.buttons.setSpacing(10);
+        this.buttons.setPadding(new Insets(10, 10, 10, 10));
+    }
+
+    public void selectItem(ScheduleItem scheduleItem) {
+        this.startTime.setText(scheduleItem.getStartPeriod() + "");
+        this.endTime.setText(scheduleItem.getEndPeriod() + "");
+
+        this.classRoomSelect.setValue(scheduleItem.getClassroom());
+        this.teacherSelect.setValue(scheduleItem.getTeacher());
+        this.courseSelect.setValue(scheduleItem.getLesson());
+        this.buildStudentGroups((ArrayList<StudentGroup>) scheduleItem.getStudentGroups());
+    }
+
+    private void buildStudentGroups(ArrayList<StudentGroup> selectedGroups) {
+        this.studentGroupSelect.getItems().clear();
+
+        for (int i = 0; i < 4; i++) {
+            String name = (i + 1) + "";
+            CheckMenuItem tempItem = new CheckMenuItem(name);
+
+            for (StudentGroup selectedGroup : selectedGroups) {
+                if (selectedGroup.getName().equals(name))
+                    tempItem.setSelected(true);
+            }
+
+            tempItem.setOnAction(event -> System.out.println("ye"));
+            this.studentGroupSelect.getItems().add(tempItem);
+        }
+    }
+
+    private FileChooser buildFileChooser(String title) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schedule", "*.schedule"));
+        fileChooser.setInitialFileName("schedule.schedule");
+        fileChooser.setInitialDirectory(new java.io.File("."));
+
+        return fileChooser;
     }
 }
