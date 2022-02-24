@@ -50,6 +50,7 @@ public class Gui extends Application implements SettingCallback {
         settingsTab.setClosable(false);
 
         this.tabPane = new TabPane(scheduleTab, simulationTab, settingsTab);
+        this.tabPane.getSelectionModel().select(2); // select settings pane
 
         //SchedulePane
         Button button = new Button("Testing pop-up function");
