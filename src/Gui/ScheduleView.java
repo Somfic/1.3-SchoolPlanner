@@ -29,6 +29,8 @@ public class ScheduleView extends Pane {
     private int fastBreakTime;
     private int fastBreakLength;
 
+    private Color color = Color.RED;
+
     SelectButtons selectButtons = new SelectButtons(this);
 
     public ScheduleView (Gui parent) {
@@ -84,7 +86,7 @@ public class ScheduleView extends Pane {
 
             //Design
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
-            pane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            pane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
 
             pane.setOnMouseClicked(event -> this.selectButtons.selectItem(scheduleItem));
 
@@ -219,6 +221,11 @@ public class ScheduleView extends Pane {
         this.classBlockLength = classBlockLength;
         this.scheduleGridPane.getChildren().clear();
         this.buildScheduleTable();
+    }
+
+    public void updateColor(Color color) {
+        this.color = color;
+        this.addSchedule();
     }
 
     public GridPane getGridPane() {
