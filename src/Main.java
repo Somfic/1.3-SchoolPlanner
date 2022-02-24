@@ -1,6 +1,8 @@
-public class Main {
+import Gui.Gui;
+import javafx.application.Application;
 
+public class Main {
     public static void main(String[] args) {
-        // Hello world :)
+        Application.launch(Gui.class);
     }
 }
