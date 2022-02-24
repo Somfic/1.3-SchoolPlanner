@@ -61,6 +61,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.confirm();
             fastBreak.confirm();
             lunchBreak.confirm();
+            startTime.confirm();
 //            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
             callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave));
         });
@@ -70,6 +71,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.cancel();
             fastBreak.cancel();
             lunchBreak.cancel();
+            startTime.cancel();
         });
         borderPane.setTop(titleLabel);
         borderPane.setCenter(centralPane);
@@ -89,6 +91,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     public void onColorChange(Color color) {
 //        System.out.println("Color: " + color);
         this.themeColorSave = color;
+        this.startTime.setColorTheme(color);
     }
 
     @Override

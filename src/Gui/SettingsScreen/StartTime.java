@@ -31,7 +31,7 @@ public class StartTime {
         });
 
         this.timePicker.setDefaultColor(Color.RED);
-        this.timePicker.setOverLay(true);
+        this.timePicker.setOverLay(false);
 
         this.callback = callback;
 
