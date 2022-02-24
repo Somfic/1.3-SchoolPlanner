@@ -10,12 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class ScheduleView extends Pane {
@@ -28,6 +25,7 @@ public class ScheduleView extends Pane {
     private int lunchBreakLength;
     private int fastBreakTime;
     private int fastBreakLength;
+    private LocalTime startTime;
 
     private Color color = Color.RED;
 
@@ -38,7 +36,8 @@ public class ScheduleView extends Pane {
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
 //        this.TESTMETHOD();
-        this.buildScheduleTable();
+        this.startTime = LocalTime.of(8, 00);
+        this.buildScheduleTable(startTime);
     }
 
     private void TESTMETHOD() {
@@ -166,7 +165,7 @@ public class ScheduleView extends Pane {
         }
     }
 
-    private void buildScheduleTable() {
+    private void buildScheduleTable(LocalTime startTime) {
         //Top row
         this.scheduleGridPane.addRow(0,
                 new ScheduleCell("Class block / Time", 2, true),
@@ -181,18 +180,17 @@ public class ScheduleView extends Pane {
         //Generate times
         ArrayList<String> times = new ArrayList<>();
 
-        LocalTime startTime = LocalTime.of(8, 00);
         LocalTime endTime;
 
         for (int i = 1; i <= 10; i++) {
-            endTime = ChronoUnit.MINUTES.addTo(startTime, classBlockLength);
-            times.add(i + "\t" + startTime + " - " + endTime);
+            endTime = ChronoUnit.MINUTES.addTo(this.startTime, classBlockLength);
+            times.add(i + "\t" + this.startTime + " - " + endTime);
             if (i == fastBreakTime) {
-                startTime = ChronoUnit.MINUTES.addTo(endTime, fastBreakLength);
+                this.startTime = ChronoUnit.MINUTES.addTo(endTime, fastBreakLength);
             } else if (i == lunchBreakTime) {
-                startTime = ChronoUnit.MINUTES.addTo(endTime, lunchBreakLength);
+                this.startTime = ChronoUnit.MINUTES.addTo(endTime, lunchBreakLength);
             } else {
-                startTime = endTime;
+                this.startTime = endTime;
             }
         }
 
@@ -213,14 +211,15 @@ public class ScheduleView extends Pane {
     }
 
     public void updateScheduleTime(int classBlockLength, int lunchBreakTime, int lunchBreakLength, int fastBreakTime,
-                                   int fastBreakLength) {
+                                   int fastBreakLength, LocalTime startTime) {
         this.fastBreakLength = fastBreakLength;
         this.fastBreakTime = fastBreakTime;
         this.lunchBreakLength = lunchBreakLength;
         this.lunchBreakTime = lunchBreakTime;
         this.classBlockLength = classBlockLength;
         this.scheduleGridPane.getChildren().clear();
-        this.buildScheduleTable();
+        this.startTime = startTime;
+        this.buildScheduleTable(startTime);
     }
 
     public void updateColor(Color color) {
