@@ -16,7 +16,7 @@ public class ColorSelector {
     public ColorSelector(ColorCallback callback) {
         this.callback = callback;
         this.colorPicker = new ColorPicker();
-        this.colorCurrent = Color.RED;
+        this.colorCurrent = Color.INDIANRED;
         this.colorMemory = colorCurrent;
         this.colorPicker.setValue(colorCurrent);
         this.rectangle = new Rectangle(50, 50);

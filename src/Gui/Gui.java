@@ -11,15 +11,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Pair;
 import org.jfree.fx.FXGraphics2D;
-import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
 
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
@@ -40,7 +34,6 @@ public class Gui extends Application implements SettingCallback {
     @Override
     public void start(Stage stage) {
         // Custom title bar
-        //stage.initStyle(StageStyle.UNDECORATED);
         this.canvas = new Canvas(1920, 900);
 
         //Making tabs
