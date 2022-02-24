@@ -24,6 +24,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private ClassBlock classBlock;
     private FastBreak fastBreak;
     private LunchBreak lunchBreak;
+    private StartTime startTime;
     private VBox centralPane;
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
@@ -32,8 +33,8 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private int classBlockLengthSave;
     private Pair<Integer, Integer> fastBreakSave;
     private Pair<Integer, Integer> lunchBreakSave;
+    private LocalTime startingTime;
     private SettingCallback callback;
-    private StartTime startTime;
 
     public SettingView(SettingCallback callback) {
         this.callback = callback;
@@ -63,7 +64,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             lunchBreak.confirm();
             startTime.confirm();
 //            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
-            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave));
+            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave, startingTime));
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();
@@ -114,6 +115,6 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void newStartTime(LocalTime time) {
-
+        this.startingTime = time;
     }
 }
