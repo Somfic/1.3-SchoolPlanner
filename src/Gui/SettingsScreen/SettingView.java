@@ -86,7 +86,6 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void onColorChange(Color color) {
-        System.out.println("Color: " + color);
         this.themeColorSave = color;
         this.startTime.setColor(color);
     }
