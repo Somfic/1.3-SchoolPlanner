@@ -14,7 +14,7 @@ public class LunchBreak {
     //BreakTime means after which lesson a break starts
     private Label label;
     private Spinner<Integer> breakLengthSpinner;
-    private Dropdown breakTimeDropdown;
+    private Dropdown<String> breakTimeDropdown;
     private HBox hBox;
     private int minimumValue = 0;
     private int maximumValue = 60;
