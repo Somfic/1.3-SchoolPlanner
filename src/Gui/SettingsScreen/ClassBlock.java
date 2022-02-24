@@ -9,7 +9,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 
 public class ClassBlock {
-    //ClassBlockLength equels the amount of minutes a class block takes
+    //ClassBlockLength means the amount of minutes a class block takes
     private Label label;
     private Spinner<Integer> CBLSpinner;
     private HBox hBox;

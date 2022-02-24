@@ -10,7 +10,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 public class ScheduleView extends Pane {
@@ -18,6 +23,11 @@ public class ScheduleView extends Pane {
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
     private int width;
+    private int classBlockLength;
+    private int lunchBreakTime;
+    private int lunchBreakLength;
+    private int fastBreakTime;
+    private int fastBreakLength;
 
     SelectButtons selectButtons = new SelectButtons(this);
 
@@ -57,7 +67,6 @@ public class ScheduleView extends Pane {
     public void build(int width) {
         //Move into place
         this.width = width;
-
         this.addSchedule();
     }
 
@@ -170,17 +179,21 @@ public class ScheduleView extends Pane {
         //Left column
         //Generate times
         ArrayList<String> times = new ArrayList<>();
-        Collections.addAll(times,
-                ("1  / 08:00 - 09:00"),
-                ("2  / 09:00 - 10:00"),
-                ("3  / 10:00 - 11:00"),
-                ("4  / 11:00 - 12:00"),
-                ("5  / 12:30 - 13:30"),
-                ("6  / 13:30 - 14:30"),
-                ("7  / 14:30 - 15:30"),
-                ("8  / 16:00 - 17:00"),
-                ("9  / 17:00 - 18:00"),
-                ("10 / 18:00 - 19:00"));
+
+        LocalTime startTime = LocalTime.of(8, 00);
+        LocalTime endTime;
+
+        for (int i = 1; i <= 10; i++) {
+            endTime = ChronoUnit.MINUTES.addTo(startTime, classBlockLength);
+            times.add(i + "\t" + startTime + " - " + endTime);
+            if (i == fastBreakTime) {
+                startTime = ChronoUnit.MINUTES.addTo(endTime, fastBreakLength);
+            } else if (i == lunchBreakTime) {
+                startTime = ChronoUnit.MINUTES.addTo(endTime, lunchBreakLength);
+            } else {
+                startTime = endTime;
+            }
+        }
 
         //Generate rows: time + 6 blank cells
         int rowIndex = 0;
@@ -196,6 +209,17 @@ public class ScheduleView extends Pane {
                 this.scheduleGridPane.add(new ScheduleCell(type, false), columnIndex, rowIndex);
             }
         }
+    }
+
+    public void updateScheduleTime(int classBlockLength, int lunchBreakTime, int lunchBreakLength, int fastBreakTime,
+                                   int fastBreakLength) {
+        this.fastBreakLength = fastBreakLength;
+        this.fastBreakTime = fastBreakTime;
+        this.lunchBreakLength = lunchBreakLength;
+        this.lunchBreakTime = lunchBreakTime;
+        this.classBlockLength = classBlockLength;
+        this.scheduleGridPane.getChildren().clear();
+        this.buildScheduleTable();
     }
 
     public GridPane getGridPane() {
