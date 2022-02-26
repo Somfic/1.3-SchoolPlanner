@@ -1,4 +1,4 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.scene.control.Label;

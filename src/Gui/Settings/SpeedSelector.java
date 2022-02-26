@@ -1,15 +1,10 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.util.converter.IntegerStringConverter;
-
-import java.text.NumberFormat;
 
 public class SpeedSelector {
     private Label speedLabel;

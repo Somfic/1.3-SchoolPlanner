@@ -1,6 +1,7 @@
-package Gui;
+package Gui.Schedule;
 
 import Data.*;
+import Gui.Gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -29,7 +30,7 @@ public class ScheduleView extends Pane {
 
     private Color color = Color.RED;
 
-    SelectButtons selectButtons = new SelectButtons(this);
+    public SelectButtons selectButtons = new SelectButtons(this);
 
     public ScheduleView (Gui parent) {
         this.parent = parent;

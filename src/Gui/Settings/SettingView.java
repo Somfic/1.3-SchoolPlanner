@@ -1,4 +1,4 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

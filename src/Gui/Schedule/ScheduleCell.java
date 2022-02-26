@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Schedule;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;

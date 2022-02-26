@@ -1,4 +1,4 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
 import javafx.util.Pair;
 

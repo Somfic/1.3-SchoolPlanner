@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Components;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;

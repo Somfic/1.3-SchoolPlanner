@@ -1,9 +1,8 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public interface SettingCallback {

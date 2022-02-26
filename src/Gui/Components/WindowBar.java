@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Components;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

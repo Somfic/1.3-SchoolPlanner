@@ -1,7 +1,10 @@
 package Gui;
 
-import Gui.SettingsScreen.SettingCallback;
-import Gui.SettingsScreen.SettingView;
+import Gui.Components.WindowBar;
+import Gui.Schedule.PopUpAddItems;
+import Gui.Schedule.ScheduleView;
+import Gui.Settings.SettingCallback;
+import Gui.Settings.SettingView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;

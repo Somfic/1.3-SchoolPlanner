@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Schedule;
 
 import Data.Gender;
 import Data.Lesson;

@@ -1,6 +1,6 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
-import Gui.Dropdown;
+import Gui.Components.Dropdown;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;

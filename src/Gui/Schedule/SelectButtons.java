@@ -1,6 +1,7 @@
-package Gui;
+package Gui.Schedule;
 
 import Data.*;
+import Gui.Components.Dropdown;
 import IO.FileManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,7 +15,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SelectButtons extends Pane {
     private HBox buttons = new HBox();
