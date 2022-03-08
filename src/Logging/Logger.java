@@ -21,7 +21,7 @@ public class Logger {
         // Get calling stack trace
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 
-        // Get the index of the first stack trace element that is not part of the alphine.logging framework
+        // Get the index of the first stack trace element that is not part of the logging framework
         int index;
         for (index = 0; index < stackTrace.length; index++) {
             if (!stackTrace[index].getClassName().startsWith("Logging") && !stackTrace[index].getClassName().startsWith("java.lang")) {
