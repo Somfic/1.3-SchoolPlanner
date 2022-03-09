@@ -1,5 +1,6 @@
 package Gui;
 
+import Gui.Components.ResizeHelper;
 import Gui.Components.WindowBar;
 import Gui.Schedule.PopUpAddItems;
 import Gui.Schedule.ScheduleView;
@@ -84,7 +85,7 @@ public class Gui extends Application implements SettingCallback {
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
-        stage.setResizable(true);
+        ResizeHelper.addResizeListener(stage);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());

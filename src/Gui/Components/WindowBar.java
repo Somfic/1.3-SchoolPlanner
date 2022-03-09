@@ -24,9 +24,7 @@ public class WindowBar {
     private Button close, minimize, maximize;
     private Circle circle;
     private String buttonStyle = "-fx-background-color: ";
-    private String paneStyle = "-fx-text-alignment: center; -fx-background-color: ";
-    private int buttonSize = 5;
-    private double r = 7.5;
+    private double radius = 7.5;
 
     public WindowBar(Stage stage) {
         this.stage = stage;
@@ -35,16 +33,16 @@ public class WindowBar {
         this.close = new Button();
         this.minimize = new Button();
         this.maximize = new Button();
-        this.circle = new Circle(r);
+        this.circle = new Circle(radius);
         close.setShape(this.circle);
         this.minimize.setShape(this.circle);
         this.maximize.setShape(this.circle);
-        close.setMinSize(2 * r, 2 * r);
-        close.setMaxSize(2 * r, 2 * r);
-        minimize.setMinSize(2 * r, 2 * r);
-        minimize.setMaxSize(2 * r, 2 * r);
-        maximize.setMinSize(2 * r, 2 * r);
-        maximize.setMaxSize(2 * r, 2 * r);
+        close.setMinSize(2 * radius, 2 * radius);
+        close.setMaxSize(2 * radius, 2 * radius);
+        minimize.setMinSize(2 * radius, 2 * radius);
+        minimize.setMaxSize(2 * radius, 2 * radius);
+        maximize.setMinSize(2 * radius, 2 * radius);
+        maximize.setMaxSize(2 * radius, 2 * radius);
         this.close.setStyle(buttonStyle + "#E23838");
         this.minimize.setStyle(buttonStyle + "#FFB900");
         this.maximize.setStyle(buttonStyle + "#61BB46");
