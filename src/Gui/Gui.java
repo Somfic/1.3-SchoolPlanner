@@ -5,6 +5,7 @@ import Gui.Schedule.PopUpAddItems;
 import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
+import Gui.Simulation.SimulationView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +14,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -31,7 +33,7 @@ public class Gui extends Application implements SettingCallback {
     private WindowBar windowBar;
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
-    private BorderPane simulationPane = new BorderPane();
+    private Pane simulationPane = new SimulationView();
     private SettingView settingsPane = new SettingView(this);
 
     @Override
