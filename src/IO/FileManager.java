@@ -1,5 +1,8 @@
 package IO;
 
+import Logging.Logger;
+import sun.rmi.runtime.Log;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +14,7 @@ public class FileManager {
         File file = new File(path);
 
         if(!file.exists()) {
+            Logger.warn("Could not find file: " + path);
             return "";
         }
 
@@ -24,18 +28,17 @@ public class FileManager {
             }
 
             return source.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.warn(e, "Could not read file: " + path);
+            return "";
         }
-
-        return "";
     }
 
     public static void write(String path, String contents) {
         try (PrintWriter writer = new PrintWriter(path)) {
             writer.print(contents);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.warn(e, "Could not write to file: " + path);
         }
     }
 }
