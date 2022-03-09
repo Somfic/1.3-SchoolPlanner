@@ -66,9 +66,86 @@ public class Map {
 
         Logger.debug("Importing world from: '" + path + "'");
 
-        // Import the tile sets
+        // Import the sprites and layout
+        HashMap<Integer, BufferedImage> sprites = importSprites(tiles.getTileSets());
+        int[][] layout = importLayout(tiles.getLayers(), tiles.getWidth(), tiles.getHeight());
+
+        Map world = new Map(tiles.getWidth(), tiles.getHeight());
+
+        // Add the tiles to the world
+        for (int x = 0; x < tiles.getWidth(); x++) {
+            for (int y = 0; y < tiles.getHeight(); y++) {
+
+                int blockId = layout[x][y];
+                BufferedImage sprite = sprites.get(blockId);
+
+                world.addTile(new Tile(x, y, sprite));
+            }
+        }
+
+        return world;
+    }
+
+    private static int[][] importLayout(List<TilesLayer> layers, int width, int height) {
+        int[][] layout = new int[width][height];
+
+        for (TilesLayer layer : layers) {
+            try {
+                // If the layer does not match the expected size, throw an error
+                if (layer.getWidth() != width || layer.getHeight() != height) {
+                    throw new Exception("Layer size does not match world size, expected: " + width + "x" + height + ", got: " + layer.getWidth() + "x" + layer.getHeight());
+                }
+
+                // Only works with zlib and base64 encoded data (for now?)
+                if (!layer.getCompression().equals("zlib") || !layer.getEncoding().equals("base64")) {
+                    throw new Exception("Unsupported layer encoding: " + layer.getEncoding() + " / " + layer.getCompression());
+                }
+
+                // Decode with base 64
+                byte[] bytes = Base64.getDecoder().decode(layer.getData());
+
+                // Decompress with zlib
+                Inflater inflater = new Inflater();
+                inflater.setInput(bytes, 0, bytes.length);
+                bytes = new byte[4 * layer.getWidth() * layer.getHeight()];
+                inflater.inflate(bytes);
+                inflater.end();
+
+                // For each byte the array, grab the next 4 bytes and convert it to an int
+                int i = 0;
+                int amountOfImportedTiles = 0;
+                for (int x = 0; x < layer.getHeight(); x++) {
+                    for (int y = 0; y < layer.getWidth(); y++) {
+                        int block = Byte.toUnsignedInt(bytes[i])
+                                + (Byte.toUnsignedInt(bytes[i + 1]) << 8)
+                                + (Byte.toUnsignedInt(bytes[i + 2]) << 16)
+                                + (Byte.toUnsignedInt(bytes[i + 3]) << 24);
+
+                        // If the block is not 0, add it to the layout
+                        if (block != 0) {
+                            amountOfImportedTiles++;
+                            layout[y][x] = block;
+                        }
+
+                        // Move to the next block of 4 bytes
+                        i += 4;
+                    }
+                }
+
+                Logger.debug("Imported layer '" + layer.getName() + "' with " + amountOfImportedTiles + " tiles");
+
+            } catch (Exception ex) {
+                Logger.warn(ex, "Failed to import layer '" + layer.getName() + "'");
+            }
+        }
+
+        return layout;
+    }
+
+    private static HashMap<Integer, BufferedImage> importSprites(List<TilesTileSet> tileSets) {
         HashMap<Integer, BufferedImage> sprites = new HashMap<>();
-        for (TilesTileSet tileSet : tiles.getTileSets()) {
+
+        for (TilesTileSet tileSet : tileSets) {
             try {
                 // Load the tileset image
                 InputStream imageStream = FileManager.getResource(tileSet.getImage());
@@ -116,75 +193,6 @@ public class Map {
             }
         }
 
-        // Import the layers
-        int[][] layout = new int[tiles.getWidth()][tiles.getHeight()];
-        for (TilesLayer layer : tiles.getLayers()) {
-            try {
-                // If the layer does not match the expected size, throw an error
-                if (layer.getWidth() != tiles.getWidth() || layer.getHeight() != tiles.getHeight()) {
-                    throw new Exception("Layer size does not match world size, expected: " + tiles.getWidth() + "x" + tiles.getHeight() + ", got: " + layer.getWidth() + "x" + layer.getHeight());
-                }
-
-                // Only works with zlib and base64 encoded data (for now?)
-                if (!layer.getCompression().equals("zlib") || !layer.getEncoding().equals("base64")) {
-                    throw new Exception("Unsupported layer encoding: " + layer.getEncoding() + " / " + layer.getCompression());
-                }
-
-                // Decode with base 64
-                byte[] bytes = Base64.getDecoder().decode(layer.getData());
-
-                // Decompress with zlib
-                Inflater inflater = new Inflater();
-                inflater.setInput(bytes, 0, bytes.length);
-                bytes = new byte[4 * layer.getWidth() * layer.getHeight()];
-                inflater.inflate(bytes);
-                inflater.end();
-
-                // For each byte the array, grab the next 4 bytes and convert it to an int
-                int i = 0;
-                int amountOfImportedTiles = 0;
-                for (int x = 0; x < layer.getHeight(); x++) {
-                    for (int y = 0; y < layer.getWidth(); y++) {
-                        int block = Byte.toUnsignedInt(bytes[i])
-                                + (Byte.toUnsignedInt(bytes[i + 1]) << 8)
-                                + (Byte.toUnsignedInt(bytes[i + 2]) << 16)
-                                + (Byte.toUnsignedInt(bytes[i + 3]) << 24);
-
-                        // If the block is not 0, add it to the layout
-                        if (block != 0) {
-                            amountOfImportedTiles++;
-                            layout[y][x] = block;
-                        }
-
-                        // Move to the next block of 4 bytes
-                        i += 4;
-                    }
-                }
-
-                Logger.debug("Imported layer '" + layer.getName() + "' with " + amountOfImportedTiles + " tiles");
-
-            } catch (Exception ex) {
-                Logger.warn(ex, "Failed to import layer '" + layer.getName() + "'");
-            }
-        }
-
-        // Create the world
-        int width = layout.length;
-        int height = layout[0].length;
-
-        Map world = new Map(width, height);
-
-        // Add the tiles to the world
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-
-                int blockId = layout[x][y];
-                BufferedImage sprite = sprites.get(blockId);
-
-                world.addTile(new Tile(x, y, sprite));
-            }
-        }
-
-        return world;
+        return sprites;
     }
 }
