@@ -2,6 +2,7 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tileset {
@@ -18,7 +19,7 @@ public class Tileset {
     private long tileHeight;
     private TileOffset tileoffset;
     private long tileWidth;
-    private List<WangSet> wangSets;
+    private List<WangSet> wangSets = new ArrayList<>();
 
     @JsonProperty("columns")
     public long getColumns() {

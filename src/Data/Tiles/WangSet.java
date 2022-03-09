@@ -2,14 +2,15 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WangSet {
-    private List<Color> colors;
+    private List<Color> colors = new ArrayList<>();
     private String name;
     private long tile;
     private String type;
-    private List<WangTile> wangTiles;
+    private List<WangTile> wangTiles = new ArrayList<>();
 
     @JsonProperty("colors")
     public List<Color> getColors() {

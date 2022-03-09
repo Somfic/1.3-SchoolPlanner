@@ -2,11 +2,12 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WangTile {
     private long tileId;
-    private List<Long> wangId;
+    private List<Long> wangId = new ArrayList<>();
 
     @JsonProperty("tileid")
     public long getTileId() {

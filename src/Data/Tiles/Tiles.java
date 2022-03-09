@@ -7,20 +7,21 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tiles {
     private long compressionLevel;
     private long height;
     private boolean infinite;
-    private List<Layer> layers;
+    private List<Layer> layers = new ArrayList<>();
     private long nextLayerId;
     private long nextObjectId;
     private String orientation;
     private String renderOrder;
     private String tiledVersion;
     private long tileHeight;
-    private List<Tileset> tileSets;
+    private List<Tileset> tileSets = new ArrayList<>();
     private long tileWidth;
     private String type;
     private String version;
