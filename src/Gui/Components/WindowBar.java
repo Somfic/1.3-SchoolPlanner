@@ -62,6 +62,7 @@ public class WindowBar {
         this.headerPane.setRight(buttonBox);
         this.headerPane.setLeft(titleBox);
         this.headerPane.autosize();
+//        System.out.println(this.headerPane.getHeight());                                              HEIGHT IS 22.0
         update("#FFFFFF");
 
         //Dragging ability

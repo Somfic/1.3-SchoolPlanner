@@ -1,7 +1,6 @@
 package Gui.Schedule;
 
 import Data.*;
-import Gui.Gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -10,11 +9,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ScheduleView extends Pane {
     private GridPane scheduleGridPane = new GridPane();
@@ -25,31 +22,29 @@ public class ScheduleView extends Pane {
     private int fastBreakTime;
     private int fastBreakLength;
     private LocalTime startTime;
-
     private Color color = Color.RED;
-
     public SelectButtons selectButtons = new SelectButtons(this);
 
-    public ScheduleView () {
+    public ScheduleView() {
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
         this.startTime = LocalTime.of(8, 00);
         this.buildScheduleTable(startTime);
-        this.scheduleGridPane.autosize();
     }
 
-    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.add(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.schedule.add(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
+    }
 
-    }
-    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.remove(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.schedule.remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
     }
-    public void resetSchedule(){
+
+    public void resetSchedule() {
         clear();
         this.schedule.reset();
         this.addSchedule();
@@ -65,7 +60,6 @@ public class ScheduleView extends Pane {
             Pane pane = new Pane();
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
-
             pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());     //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
             pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());                     //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
 
@@ -145,6 +139,7 @@ public class ScheduleView extends Pane {
 
         return vBox;
     }
+
     public void clear() {
         Object[] children = this.getChildren().toArray();
         for (Object child : children) {
@@ -228,5 +223,12 @@ public class ScheduleView extends Pane {
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
         this.addSchedule();
+    }
+
+    public void updateSize(double width, double height) {
+        this.scheduleGridPane.setMaxSize(width - 6, height - 150);
+        this.scheduleGridPane.setMinSize(width - 6, height - 150);
+        System.out.println("Scene:\t" + width + ", " + height);
+        System.out.println("Schedule:\t" + scheduleGridPane.getWidth() + ", " + scheduleGridPane.getHeight());
     }
 }

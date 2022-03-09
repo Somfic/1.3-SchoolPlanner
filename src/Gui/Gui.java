@@ -7,6 +7,7 @@ import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -25,18 +26,20 @@ public class Gui extends Application implements SettingCallback {
     private FXGraphics2D graphics;
 
     //Views
-    private ScheduleView scheduleView = new ScheduleView();
+    private ScheduleView scheduleView;
 
     //TabPane
     private VBox mainPane;
     private WindowBar windowBar;
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
+    private VBox scheduleBox = new VBox(3);
     private BorderPane simulationPane = new BorderPane();
     private SettingView settingsPane = new SettingView(this);
 
     @Override
     public void start(Stage stage) {
+
         // Custom title bar
         this.canvas = new Canvas(1920, 900);
 
@@ -44,7 +47,8 @@ public class Gui extends Application implements SettingCallback {
         this.tabPane = new TabPane();
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        Tab scheduleTab = new Tab("Schedule", schedulePane);
+//        Tab scheduleTab = new Tab("Schedule", schedulePane);
+        Tab scheduleTab = new Tab("Schedule", scheduleBox);
         scheduleTab.setClosable(false);
 
         Tab simulationTab = new Tab("Simulation", simulationPane);
@@ -76,19 +80,30 @@ public class Gui extends Application implements SettingCallback {
         this.mainPane = new VBox(windowBar.getContent(), this.tabPane);
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
+        this.scheduleView = new ScheduleView();
         this.scene = new Scene(mainPane, 1500, 700);
+        this.scheduleView.updateSize(this.scene.getWidth(), this.scene.getHeight());
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
-//        this.schedulePane.setTop(new WindowBar(stage).getContent());
-        this.schedulePane.setCenter(this.scheduleView);
-        this.schedulePane.setBottom(this.scheduleView.selectButtons);
+//        this.schedulePane.setCenter(this.scheduleView);
+//        this.schedulePane.setBottom(this.scheduleView.selectButtons);
+        this.scheduleBox.getChildren().add(this.scheduleView);
+        this.scheduleBox.getChildren().add(this.scheduleView.selectButtons);
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
         ResizeHelper.addResizeListener(stage);
+        stage.setMinHeight(350);
+        stage.setMinWidth(250);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
         this.scheduleView.build();
+
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
+                this.scheduleView.updateSize(stage.getWidth(), stage.getHeight());
+
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
     }
 
 

@@ -86,7 +86,6 @@ public class ResizeListener implements EventHandler<MouseEvent> {
                     }
                 }
             }
-
         }
     }
 }

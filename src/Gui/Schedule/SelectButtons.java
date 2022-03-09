@@ -79,7 +79,6 @@ public class SelectButtons extends Pane {
                     if (temp.isSelected()) {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
-                    ;
                 }
                 scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
@@ -104,7 +103,6 @@ public class SelectButtons extends Pane {
                     if (temp.isSelected()) {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
-                    ;
                 }
                 scheduleView.removeScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
