@@ -2,27 +2,27 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TileOffset {
-    private long x;
-    private long y;
+public class TilesTileOffset {
+    private int x;
+    private int y;
 
     @JsonProperty("x")
-    public long getX() {
+    public int getX() {
         return x;
     }
 
     @JsonProperty("x")
-    public void setX(long value) {
+    public void setX(int value) {
         this.x = value;
     }
 
     @JsonProperty("y")
-    public long getY() {
+    public int getY() {
         return y;
     }
 
     @JsonProperty("y")
-    public void setY(long value) {
+    public void setY(int value) {
         this.y = value;
     }
 }

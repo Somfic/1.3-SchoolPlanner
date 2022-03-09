@@ -2,18 +2,18 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Grid {
-    private long height;
+public class TilesGrid {
+    private int height;
     private String orientation;
-    private long width;
+    private int width;
 
     @JsonProperty("height")
-    public long getHeight() {
+    public int getHeight() {
         return height;
     }
 
     @JsonProperty("height")
-    public void setHeight(long value) {
+    public void setHeight(int value) {
         this.height = value;
     }
 
@@ -28,12 +28,12 @@ public class Grid {
     }
 
     @JsonProperty("width")
-    public long getWidth() {
+    public int getWidth() {
         return width;
     }
 
     @JsonProperty("width")
-    public void setWidth(long value) {
+    public void setWidth(int value) {
         this.width = value;
     }
 }

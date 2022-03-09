@@ -5,20 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WangSet {
-    private List<Color> colors = new ArrayList<>();
+public class TilesWangSet {
+    private List<TilesColor> colors = new ArrayList<>();
     private String name;
-    private long tile;
+    private int tile;
     private String type;
-    private List<WangTile> wangTiles = new ArrayList<>();
+    private List<TilesWangTile> wangTiles = new ArrayList<>();
 
     @JsonProperty("colors")
-    public List<Color> getColors() {
+    public List<TilesColor> getColors() {
         return colors;
     }
 
     @JsonProperty("colors")
-    public void setColors(List<Color> value) {
+    public void setColors(List<TilesColor> value) {
         this.colors = value;
     }
 
@@ -33,12 +33,12 @@ public class WangSet {
     }
 
     @JsonProperty("tile")
-    public long getTile() {
+    public int getTile() {
         return tile;
     }
 
     @JsonProperty("tile")
-    public void setTile(long value) {
+    public void setTile(int value) {
         this.tile = value;
     }
 
@@ -53,12 +53,12 @@ public class WangSet {
     }
 
     @JsonProperty("wangtiles")
-    public List<WangTile> getWangTiles() {
+    public List<TilesWangTile> getWangTiles() {
         return wangTiles;
     }
 
     @JsonProperty("wangtiles")
-    public void setWangTiles(List<WangTile> value) {
+    public void setWangTiles(List<TilesWangTile> value) {
         this.wangTiles = value;
     }
 }

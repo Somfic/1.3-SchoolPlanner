@@ -1,49 +1,47 @@
 
 package Data.Tiles;
 
-import Data.Schedule;
 import Logging.Logger;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Tiles {
-    private long compressionLevel;
-    private long height;
+    private int compressionLevel;
+    private int height;
     private boolean infinite;
-    private List<Layer> layers = new ArrayList<>();
-    private long nextLayerId;
-    private long nextObjectId;
+    private List<TilesLayer> layers = new ArrayList<>();
+    private int nextLayerId;
+    private int nextObjectId;
     private String orientation;
     private String renderOrder;
     private String tiledVersion;
-    private long tileHeight;
-    private List<Tileset> tileSets = new ArrayList<>();
-    private long tileWidth;
+    private int tileHeight;
+    private List<TilesTileSet> tileSets = new ArrayList<>();
+    private int tileWidth;
     private String type;
     private String version;
-    private long width;
+    private int width;
 
     @JsonProperty("compressionlevel")
-    public long getCompressionLevel() {
+    public int getCompressionLevel() {
         return compressionLevel;
     }
 
     @JsonProperty("compressionlevel")
-    public void getCompressionLevel(long value) {
+    public void getCompressionLevel(int value) {
         this.compressionLevel = value;
     }
 
     @JsonProperty("height")
-    public long getHeight() {
+    public int getHeight() {
         return height;
     }
 
     @JsonProperty("height")
-    public void setHeight(long value) {
+    public void setHeight(int value) {
         this.height = value;
     }
 
@@ -58,32 +56,32 @@ public class Tiles {
     }
 
     @JsonProperty("layers")
-    public List<Layer> getLayers() {
+    public List<TilesLayer> getLayers() {
         return layers;
     }
 
     @JsonProperty("layers")
-    public void setLayers(List<Layer> value) {
+    public void setLayers(List<TilesLayer> value) {
         this.layers = value;
     }
 
     @JsonProperty("nextlayerid")
-    public long getNextLayerId() {
+    public int getNextLayerId() {
         return nextLayerId;
     }
 
     @JsonProperty("nextlayerid")
-    public void setNextLayerId(long value) {
+    public void setNextLayerId(int value) {
         this.nextLayerId = value;
     }
 
     @JsonProperty("nextobjectid")
-    public long getNextObjectId() {
+    public int getNextObjectId() {
         return nextObjectId;
     }
 
     @JsonProperty("nextobjectid")
-    public void setNextObjectId(long value) {
+    public void setNextObjectId(int value) {
         this.nextObjectId = value;
     }
 
@@ -118,32 +116,32 @@ public class Tiles {
     }
 
     @JsonProperty("tileheight")
-    public long getTileHeight() {
+    public int getTileHeight() {
         return tileHeight;
     }
 
     @JsonProperty("tileheight")
-    public void setTileHeight(long value) {
+    public void setTileHeight(int value) {
         this.tileHeight = value;
     }
 
     @JsonProperty("tilesets")
-    public List<Tileset> getTileSets() {
+    public List<TilesTileSet> getTileSets() {
         return tileSets;
     }
 
     @JsonProperty("tilesets")
-    public void setTileSets(List<Tileset> value) {
+    public void setTileSets(List<TilesTileSet> value) {
         this.tileSets = value;
     }
 
     @JsonProperty("tilewidth")
-    public long getTileWidth() {
+    public int getTileWidth() {
         return tileWidth;
     }
 
     @JsonProperty("tilewidth")
-    public void setTileWidth(long value) {
+    public void setTileWidth(int value) {
         this.tileWidth = value;
     }
 
@@ -168,12 +166,12 @@ public class Tiles {
     }
 
     @JsonProperty("width")
-    public long getWidth() {
+    public int getWidth() {
         return width;
     }
 
     @JsonProperty("width")
-    public void setWidth(long value) {
+    public void setWidth(int value) {
         this.width = value;
     }
 

@@ -2,11 +2,11 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Color {
+public class TilesColor {
     private String color;
     private String name;
-    private long probability;
-    private long tile;
+    private int probability;
+    private int tile;
 
     @JsonProperty("color")
     public String getColor() {
@@ -29,22 +29,22 @@ public class Color {
     }
 
     @JsonProperty("probability")
-    public long getProbability() {
+    public int getProbability() {
         return probability;
     }
 
     @JsonProperty("probability")
-    public void setProbability(long value) {
+    public void setProbability(int value) {
         this.probability = value;
     }
 
     @JsonProperty("tile")
-    public long getTile() {
+    public int getTile() {
         return tile;
     }
 
     @JsonProperty("tile")
-    public void setTile(long value) {
+    public void setTile(int value) {
         this.tile = value;
     }
 }

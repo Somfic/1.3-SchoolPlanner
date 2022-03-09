@@ -2,19 +2,21 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Layer {
+public class TilesLayer {
     private String compression;
     private String data;
     private String encoding;
-    private long height;
-    private long id;
+    private int height;
+    private int id;
     private String name;
-    private long opacity;
+    private int opacity;
     private String type;
     private boolean visible;
-    private long width;
-    private long x;
-    private long y;
+    private int width;
+    private int x;
+    private int y;
+
+    private int[][] indices;
 
     @JsonProperty("compression")
     public String getCompression() {
@@ -47,22 +49,22 @@ public class Layer {
     }
 
     @JsonProperty("height")
-    public long getHeight() {
+    public int getHeight() {
         return height;
     }
 
     @JsonProperty("height")
-    public void setHeight(long value) {
+    public void setHeight(int value) {
         this.height = value;
     }
 
     @JsonProperty("id")
-    public long getId() {
+    public int getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(long value) {
+    public void setId(int value) {
         this.id = value;
     }
 
@@ -77,12 +79,12 @@ public class Layer {
     }
 
     @JsonProperty("opacity")
-    public long getOpacity() {
+    public int getOpacity() {
         return opacity;
     }
 
     @JsonProperty("opacity")
-    public void setOpacity(long value) {
+    public void setOpacity(int value) {
         this.opacity = value;
     }
 
@@ -107,32 +109,36 @@ public class Layer {
     }
 
     @JsonProperty("width")
-    public long getWidth() {
+    public int getWidth() {
         return width;
     }
 
     @JsonProperty("width")
-    public void setWidth(long value) {
+    public void setWidth(int value) {
         this.width = value;
     }
 
     @JsonProperty("x")
-    public long getX() {
+    public int getX() {
         return x;
     }
 
     @JsonProperty("x")
-    public void setX(long value) {
+    public void setX(int value) {
         this.x = value;
     }
 
     @JsonProperty("y")
-    public long getY() {
+    public int getY() {
         return y;
     }
 
     @JsonProperty("y")
-    public void setY(long value) {
+    public void setY(int value) {
         this.y = value;
+    }
+
+    public int[][] getIndices() {
+        return indices;
     }
 }

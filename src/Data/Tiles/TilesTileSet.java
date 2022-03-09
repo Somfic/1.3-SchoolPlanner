@@ -5,49 +5,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tileset {
-    private long columns;
-    private long firstGid;
-    private Grid grid;
+public class TilesTileSet {
+    private int columns;
+    private int firstGid;
+    private TilesGrid grid;
     private String image;
-    private long imageHeight;
-    private long imageWidth;
-    private long margin;
+    private int imageHeight;
+    private int imageWidth;
+    private int margin;
     private String name;
-    private long spacing;
-    private long tileCount;
-    private long tileHeight;
-    private TileOffset tileoffset;
-    private long tileWidth;
-    private List<WangSet> wangSets = new ArrayList<>();
+    private int spacing;
+    private int tileCount;
+    private int tileHeight;
+    private TilesTileOffset tileoffset;
+    private int tileWidth;
+    private List<TilesWangSet> wangSets = new ArrayList<>();
 
     @JsonProperty("columns")
-    public long getColumns() {
+    public int getColumns() {
         return columns;
     }
 
     @JsonProperty("columns")
-    public void setColumns(long value) {
+    public void setColumns(int value) {
         this.columns = value;
     }
 
     @JsonProperty("firstgid")
-    public long getFirstGid() {
+    public int getFirstGid() {
         return firstGid;
     }
 
     @JsonProperty("firstgid")
-    public void setFirstGid(long value) {
+    public void setFirstGid(int value) {
         this.firstGid = value;
     }
 
     @JsonProperty("grid")
-    public Grid getGrid() {
+    public TilesGrid getGrid() {
         return grid;
     }
 
     @JsonProperty("grid")
-    public void setGrid(Grid value) {
+    public void setGrid(TilesGrid value) {
         this.grid = value;
     }
 
@@ -62,32 +62,32 @@ public class Tileset {
     }
 
     @JsonProperty("imageheight")
-    public long getImageHeight() {
+    public int getImageHeight() {
         return imageHeight;
     }
 
     @JsonProperty("imageheight")
-    public void setImageHeight(long value) {
+    public void setImageHeight(int value) {
         this.imageHeight = value;
     }
 
     @JsonProperty("imagewidth")
-    public long getImageWidth() {
+    public int getImageWidth() {
         return imageWidth;
     }
 
     @JsonProperty("imagewidth")
-    public void setImageWidth(long value) {
+    public void setImageWidth(int value) {
         this.imageWidth = value;
     }
 
     @JsonProperty("margin")
-    public long getMargin() {
+    public int getMargin() {
         return margin;
     }
 
     @JsonProperty("margin")
-    public void setMargin(long value) {
+    public void setMargin(int value) {
         this.margin = value;
     }
 
@@ -102,62 +102,62 @@ public class Tileset {
     }
 
     @JsonProperty("spacing")
-    public long getSpacing() {
+    public int getSpacing() {
         return spacing;
     }
 
     @JsonProperty("spacing")
-    public void setSpacing(long value) {
+    public void setSpacing(int value) {
         this.spacing = value;
     }
 
     @JsonProperty("tilecount")
-    public long getTileCount() {
+    public int getTileCount() {
         return tileCount;
     }
 
     @JsonProperty("tilecount")
-    public void setTileCount(long value) {
+    public void setTileCount(int value) {
         this.tileCount = value;
     }
 
     @JsonProperty("tileheight")
-    public long getTileHeight() {
+    public int getTileHeight() {
         return tileHeight;
     }
 
     @JsonProperty("tileheight")
-    public void setTileHeight(long value) {
+    public void setTileHeight(int value) {
         this.tileHeight = value;
     }
 
     @JsonProperty("tileoffset")
-    public TileOffset getTileoffset() {
+    public TilesTileOffset getTileoffset() {
         return tileoffset;
     }
 
     @JsonProperty("tileoffset")
-    public void setTileoffset(TileOffset value) {
+    public void setTileoffset(TilesTileOffset value) {
         this.tileoffset = value;
     }
 
     @JsonProperty("tilewidth")
-    public long getTileWidth() {
+    public int getTileWidth() {
         return tileWidth;
     }
 
     @JsonProperty("tilewidth")
-    public void setTileWidth(long value) {
+    public void setTileWidth(int value) {
         this.tileWidth = value;
     }
 
     @JsonProperty("wangsets")
-    public List<WangSet> getWangSets() {
+    public List<TilesWangSet> getWangSets() {
         return wangSets;
     }
 
     @JsonProperty("wangsets")
-    public void setWangSets(List<WangSet> value) {
+    public void setWangSets(List<TilesWangSet> value) {
         this.wangSets = value;
     }
 }

@@ -5,27 +5,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WangTile {
-    private long tileId;
-    private List<Long> wangId = new ArrayList<>();
+public class TilesWangTile {
+    private int tileId;
+    private List<Integer> wangId = new ArrayList<>();
 
     @JsonProperty("tileid")
-    public long getTileId() {
+    public int getTileId() {
         return tileId;
     }
 
     @JsonProperty("tileid")
-    public void setTileId(long value) {
+    public void setTileId(int value) {
         this.tileId = value;
     }
 
     @JsonProperty("wangid")
-    public List<Long> getWangId() {
+    public List<Integer> getWangId() {
         return wangId;
     }
 
     @JsonProperty("wangid")
-    public void setWangId(List<Long> value) {
+    public void setWangId(List<Integer> value) {
         this.wangId = value;
     }
 }
