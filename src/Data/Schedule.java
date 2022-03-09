@@ -1,5 +1,6 @@
 package Data;
 
+import Logging.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -55,8 +56,8 @@ public class Schedule {
 
         try {
             return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.warn(e, "Failed to serialize schedule");
             return null;
         }
     }
@@ -66,8 +67,8 @@ public class Schedule {
 
         try {
             return mapper.readValue(json, Schedule.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.warn(e, "Failed to deserialize schedule");
             return null;
         }
     }
