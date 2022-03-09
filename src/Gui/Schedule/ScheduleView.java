@@ -17,10 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ScheduleView extends Pane {
-    private Gui parent;
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
-    private int width;
     private int classBlockLength;
     private int lunchBreakTime;
     private int lunchBreakLength;
@@ -32,23 +30,14 @@ public class ScheduleView extends Pane {
 
     public SelectButtons selectButtons = new SelectButtons(this);
 
-    public ScheduleView (Gui parent) {
-        this.parent = parent;
+    public ScheduleView () {
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
-//        this.TESTMETHOD();
         this.startTime = LocalTime.of(8, 00);
         this.buildScheduleTable(startTime);
+        this.scheduleGridPane.autosize();
     }
 
-    private void TESTMETHOD() {
-        //hardcoding a schedule
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Pieter"), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
-    }
     public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
         clear();
         this.schedule.add(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
@@ -66,9 +55,8 @@ public class ScheduleView extends Pane {
         this.addSchedule();
     }
 
-    public void build(int width) {
+    public void build() {
         //Move into place
-        this.width = width;
         this.addSchedule();
     }
 
