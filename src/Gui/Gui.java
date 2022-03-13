@@ -6,6 +6,7 @@ import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
 import Gui.Simulation.SimulationView;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -84,6 +85,20 @@ public class Gui extends Application implements SettingCallback {
         this.schedulePane.setCenter(this.scheduleView);
         this.schedulePane.setBottom(this.scheduleView.selectButtons);
 
+        //AnimationTimer used for the FPS count
+        new AnimationTimer() {
+            long last = -1;
+
+            @Override
+            public void handle(long now) {
+                if (last == -1) {
+                    last = now;
+                }
+                update((now - last) / 1000000000.0);
+                last = now;
+            }
+        }.start();
+
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
         stage.setResizable(true);
@@ -92,6 +107,9 @@ public class Gui extends Application implements SettingCallback {
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
+    public void update(double deltaTime) {
+
+    }
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
