@@ -1,5 +1,6 @@
 package Gui;
 
+import Data.FramesPerSecond;
 import Gui.Components.WindowBar;
 import Gui.Schedule.PopUpAddItems;
 import Gui.Schedule.ScheduleView;
@@ -25,6 +26,7 @@ public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
     private FXGraphics2D graphics;
+    FramesPerSecond fps = new FramesPerSecond();
 
     //Views
     private ScheduleView scheduleView = new ScheduleView(this);
@@ -108,7 +110,8 @@ public class Gui extends Application implements SettingCallback {
     }
 
     public void update(double deltaTime) {
-
+        fps.update(deltaTime);
+        System.out.println(fps.getPfs());
     }
 
     @Override
