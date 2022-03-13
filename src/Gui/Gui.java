@@ -111,7 +111,7 @@ public class Gui extends Application implements SettingCallback {
 
     public void update(double deltaTime) {
         fps.update(deltaTime);
-        System.out.println(fps.getPfs());
+//        System.out.println(fps.getPfs());
     }
 
     @Override
