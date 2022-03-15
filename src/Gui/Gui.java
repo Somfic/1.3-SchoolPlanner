@@ -7,6 +7,7 @@ import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
 import Gui.Simulation.SimulationView;
+import Logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -21,6 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
+
+import java.time.LocalDateTime;
 
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
@@ -109,9 +112,14 @@ public class Gui extends Application implements SettingCallback {
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
+    LocalDateTime lastFps = LocalDateTime.now();
     public void update(double deltaTime) {
         fps.update(deltaTime);
-//        System.out.println(fps.getPfs());
+
+        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+            lastFps = LocalDateTime.now();
+            Logger.debug("FPS: " + fps.getPfs());
+        }
     }
 
     @Override
