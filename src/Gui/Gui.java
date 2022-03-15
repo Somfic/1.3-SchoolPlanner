@@ -7,6 +7,7 @@ import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
 import Gui.Simulation.SimulationView;
+import IO.InputManager;
 import Logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -106,15 +107,19 @@ public class Gui extends Application implements SettingCallback {
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
+        InputManager.setup(this.scene);
         stage.setResizable(true);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
+
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
     LocalDateTime lastFps = LocalDateTime.now();
+
     public void update(double deltaTime) {
         fps.update(deltaTime);
+        InputManager.update();
 
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             lastFps = LocalDateTime.now();
