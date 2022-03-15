@@ -1,11 +1,14 @@
 package Gui;
 
+import Data.FramesPerSecond;
 import Gui.Components.WindowBar;
 import Gui.Schedule.PopUpAddItems;
 import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
 import Gui.Simulation.SimulationView;
+import Logging.Logger;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,10 +23,13 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
 
+import java.time.LocalDateTime;
+
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
     private FXGraphics2D graphics;
+    FramesPerSecond fps = new FramesPerSecond();
 
     //Views
     private ScheduleView scheduleView = new ScheduleView(this);
@@ -84,6 +90,20 @@ public class Gui extends Application implements SettingCallback {
         this.schedulePane.setCenter(this.scheduleView);
         this.schedulePane.setBottom(this.scheduleView.selectButtons);
 
+        //AnimationTimer used for the FPS count
+        new AnimationTimer() {
+            long last = -1;
+
+            @Override
+            public void handle(long now) {
+                if (last == -1) {
+                    last = now;
+                }
+                update((now - last) / 1000000000.0);
+                last = now;
+            }
+        }.start();
+
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
         stage.setResizable(true);
@@ -92,6 +112,15 @@ public class Gui extends Application implements SettingCallback {
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
+    LocalDateTime lastFps = LocalDateTime.now();
+    public void update(double deltaTime) {
+        fps.update(deltaTime);
+
+        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+            lastFps = LocalDateTime.now();
+            Logger.debug("FPS: " + fps.getPfs());
+        }
+    }
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
