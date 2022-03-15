@@ -7,79 +7,87 @@ import java.util.Hashtable;
 
 public class InputManager {
 
-    public final Mouse mouse;
-    public final Keyboard keys;
+    private static Mouse mouse;
+    private static Keyboard keys;
 
-    private final Scene scene;
+    private static Scene scene;
 
-    private MouseEvent mouseClickedEvent;
-    private MouseEvent mouseDraggedEvent;
+    private static MouseEvent mouseClickedEvent;
+    private static MouseEvent mouseDraggedEvent;
 
-    private ScrollEvent scrollEvent;
+    private static ScrollEvent scrollEvent;
 
-    private KeyEvent keyPressEvent;
-    private KeyEvent keyReleaseEvent;
+    private static KeyEvent keyPressEvent;
+    private static KeyEvent keyReleaseEvent;
 
-    public InputManager(Scene scene) {
-        this.scene = scene;
+    public static Mouse getMouse() {
+        return mouse;
+    }
 
-        this.mouse = new Mouse();
-        this.keys = new Keyboard();
+    public static Keyboard getKeys() {
+        return keys;
+    }
 
-        this.scene.setOnMouseClicked(event -> {
-            this.mouseClickedEvent = event;
+    public static void setup(Scene scene) {
+        InputManager.scene = scene;
+
+        mouse = new Mouse();
+        keys = new Keyboard();
+
+        InputManager.scene.setOnMouseClicked(event -> {
+            mouseClickedEvent = event;
         });
 
-        this.scene.setOnMouseDragged(event -> {
-            this.mouseDraggedEvent = event;
+        InputManager.scene.setOnMouseDragged(event -> {
+            mouseDraggedEvent = event;
         });
 
-        this.scene.setOnScroll(event -> {
-            this.scrollEvent = event;
+        InputManager.scene.setOnScroll(event -> {
+            scrollEvent = event;
         });
 
-        this.scene.setOnKeyPressed(event -> {
-            this.keyPressEvent = event;
+        InputManager.scene.setOnKeyPressed(event -> {
+            keyPressEvent = event;
         });
 
-        this.scene.setOnKeyReleased(event -> {
-            this.keyReleaseEvent = event;
+        InputManager.scene.setOnKeyReleased(event -> {
+            keyReleaseEvent = event;
         });
     }
 
-    public void update() {
-        if(this.mouseClickedEvent != null) {
-            this.mouse.setLeftButton(this.mouseClickedEvent.getButton() == MouseButton.PRIMARY);
-            this.mouse.setMiddleButton(this.mouseClickedEvent.getButton() == MouseButton.MIDDLE);
-            this.mouse.setRightButton(this.mouseClickedEvent.getButton() == MouseButton.SECONDARY);
+    public static void update() {
+        if (mouseClickedEvent != null) {
+            mouse.setLeftButton(mouseClickedEvent.getButton() == MouseButton.PRIMARY);
+            mouse.setMiddleButton(mouseClickedEvent.getButton() == MouseButton.MIDDLE);
+            mouse.setRightButton(mouseClickedEvent.getButton() == MouseButton.SECONDARY);
 
-            this.mouseClickedEvent = null;
+            mouseClickedEvent = null;
         }
 
-        if(this.mouseDraggedEvent != null) {
-            this.mouse.setX(this.mouseDraggedEvent.getX());
-            this.mouse.setY(this.mouseDraggedEvent.getY());
+        if (mouseDraggedEvent != null) {
+            mouse.setX(mouseDraggedEvent.getX());
+            mouse.setY(mouseDraggedEvent.getY());
 
-            this.mouseDraggedEvent = null;
+            mouseDraggedEvent = null;
         }
 
-        if(this.scrollEvent != null) {
-            this.mouse.setDeltaScrollX(this.scrollEvent.getDeltaX());
-            this.mouse.setDeltaScrollY(this.scrollEvent.getDeltaY());
+        if (scrollEvent != null) {
+            mouse.setDeltaScrollX(scrollEvent.getDeltaX());
+            mouse.setDeltaScrollY(scrollEvent.getDeltaY());
 
-            this.scrollEvent = null;
+            scrollEvent = null;
         }
 
-        if(this.keyPressEvent != null) {
-            this.keys.setKey(this.keyPressEvent.getCode(), true);
-            
-            this.keyPressEvent = null;
+        if (keyPressEvent != null) {
+            keys.setKey(keyPressEvent.getCode(), true);
+
+            keyPressEvent = null;
         }
 
-        if(this.keyReleaseEvent != null) {
-            this.keys.setKey(this.keyReleaseEvent.getCode(), false);
+        if (keyReleaseEvent != null) {
+            keys.setKey(keyReleaseEvent.getCode(), false);
 
-            this.keyReleaseEvent = null;
+            keyReleaseEvent = null;
         }
     }
 
