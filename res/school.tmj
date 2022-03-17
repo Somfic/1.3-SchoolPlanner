@@ -159,11 +159,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/objects.tsx"
+         "source":"objects.tsx"
         }, 
         {
          "firstgid":1025,
-         "source":"..\/..\/..\/walls.tsx"
+         "source":"walls.tsx"
         }],
  "tilewidth":64,
  "type":"map",
