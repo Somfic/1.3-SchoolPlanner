@@ -33,7 +33,9 @@ public class ColorSelector {
 
     public void confirm() {
         this.colorMemory = this.colorCurrent;
-        callback.onColorChange(colorCurrent);
+        callback.onThemeColorChange(colorCurrent);
+        System.out.println(colorCurrent.getBrightness());
+        callback.onTextBrightnessChange(colorCurrent.getBrightness() > 0.4);
     }
 
     public void cancel() {

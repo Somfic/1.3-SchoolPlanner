@@ -3,5 +3,6 @@ package Gui.Settings;
 import javafx.scene.paint.Color;
 
 public interface ColorCallback {
-    void onColorChange(Color color);
+    void onThemeColorChange(Color color);
+    void onTextBrightnessChange(boolean darkness);
 }

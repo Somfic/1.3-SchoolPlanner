@@ -224,6 +224,9 @@ public class ScheduleView extends Pane {
         this.buildScheduleTable(startTime);
     }
 
+    /*
+     * TODO: implement darkness into system. Text goes into StringBuilder. True if darkness is above 0.4 ( text color should be gray ), false if darkness is below 0.4 ( color should be black )
+     */
     public void updateColor(Color color) {
         this.color = color;
         this.addSchedule();
