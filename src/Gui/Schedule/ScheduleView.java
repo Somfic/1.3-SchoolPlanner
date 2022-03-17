@@ -2,6 +2,7 @@ package Gui.Schedule;
 
 import Data.*;
 import Gui.Gui;
+import Logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -77,7 +78,6 @@ public class ScheduleView extends Pane {
             Pane pane = new Pane();
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
-
             pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());     //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
             pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());                     //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
 

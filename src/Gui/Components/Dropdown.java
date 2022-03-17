@@ -1,6 +1,6 @@
 package Gui.Components;
 
-import javafx.beans.value.ChangeListener;
+import Data.Lesson;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
@@ -68,9 +68,10 @@ public class Dropdown<T> extends ComboBox<T> {
     private String query = "";
     private List<T> allItems = new ArrayList<>();
 
-    public void setDropdownItems(T... items) {
-        allItems = Arrays.asList(items);
-        this.getItems().setAll(allItems);
+    public void setDropdownItems(ArrayList<T> items) {
+        for (T item: items) {
+            this.getItems().add(item);
+        }
     }
 
     public void setOnDropdownAction(EventHandler<Event> eventHandler) {

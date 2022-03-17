@@ -12,7 +12,7 @@ import javafx.stage.*;
 
 public class PopUpAddItems {
 
-    public static void PupUp(String title) {
+    public static void PupUp(String title, SelectButtons selectButtons) {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -62,6 +62,7 @@ public class PopUpAddItems {
                 String teacherName = teacherTextField.getText();
                 Teacher teacher = new Teacher(teacherGender, teacherName);
                 teacherTextField.setText("");
+                selectButtons.addTeacher(teacher);
                 //TODO save teacher somewhere...
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -94,6 +95,7 @@ public class PopUpAddItems {
                 Lesson subject = new Lesson(subjectTextField.getText());
 
                 subjectTextField.setText("");
+                selectButtons.addSubject(subject);
                 //TODO save subject somewhere...
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);

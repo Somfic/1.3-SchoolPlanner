@@ -58,12 +58,12 @@ public class Gui extends Application implements SettingCallback {
         this.tabPane.getSelectionModel().select(2); // select settings pane
 
         //SchedulePane
-        Button button = new Button("Testing pop-up function");
-        button.setOnAction(event -> {
-            PopUpAddItems.PupUp("Testing");
-        });
-        //this.schedulePane.setCenter(button);
-        //this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+//        Button button = new Button("Testing pop-up function");
+//        button.setOnAction(event -> {
+//            PopUpAddItems.PupUp("Testing");
+//        });
+//        this.schedulePane.setCenter(button);
+//        this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
         //SimulationPane
         //this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
