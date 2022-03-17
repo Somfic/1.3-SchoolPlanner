@@ -20,7 +20,7 @@ public class SimulationView extends VBox {
     private final Canvas canvas;
 
     public SimulationView() {
-        map = Map.fromFile("./res/isometric_grass_and_water.tmj");
+        map = Map.fromFile("./res/school.tmj");
         canvas = new Canvas(800, 600);
 
         if (map == null) {
