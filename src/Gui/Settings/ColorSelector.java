@@ -34,8 +34,11 @@ public class ColorSelector {
     public void confirm() {
         this.colorMemory = this.colorCurrent;
         callback.onThemeColorChange(colorCurrent);
-        System.out.println(colorCurrent.getBrightness());
-        callback.onTextBrightnessChange(colorCurrent.getBrightness() > 0.4);
+        /*
+         * The higher the number returned on the .getBrightness() method, the brighter the color
+         * Return true if the theme color is "bright", return false if the theme color is "dark"
+         */
+        callback.onTextBrightnessChange(colorCurrent.getBrightness() < 0.4);
     }
 
     public void cancel() {

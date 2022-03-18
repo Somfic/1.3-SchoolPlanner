@@ -130,6 +130,6 @@ public class Gui extends Application implements SettingCallback {
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
         scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey(), newSettings.getStartingTime());
-        scheduleView.updateColor(newSettings.getThemeColor());
+        scheduleView.updateColor(newSettings.getThemeColor(), newSettings.getTextBrightness());
     }
 }
