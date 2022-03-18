@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
+
 import java.time.LocalTime;
 
 public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback, StartTimeCallback {
@@ -28,6 +29,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private Button cancel = new Button("Cancel");
     private int speedSave;
     private Color themeColorSave;
+    private boolean textDarkness;
     private int classBlockLengthSave;
     private Pair<Integer, Integer> fastBreakSave;
     private Pair<Integer, Integer> lunchBreakSave;
@@ -61,7 +63,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             fastBreak.confirm();
             lunchBreak.confirm();
             startTime.confirm();
-            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave, startingTime));
+            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakSave, lunchBreakSave, startingTime));
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();
@@ -85,9 +87,18 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     }
 
     @Override
-    public void onColorChange(Color color) {
+    public void onThemeColorChange(Color color) {
         this.themeColorSave = color;
         this.startTime.setColor(color);
+    }
+
+    /**
+     * Chooses if the text within the chedule is gray or black.
+     * @param darkness of the theme color, true if darkness is above 0.4, false if darkness is under 0.4
+     */
+    @Override
+    public void onTextBrightnessChange(boolean darkness) {
+        this.textDarkness = darkness;
     }
 
     @Override

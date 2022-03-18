@@ -20,6 +20,8 @@ public class ScheduleView extends Pane {
     private Gui parent;
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
+    private Label lessonLabel, teacherLabel, studentGroupsLabel, divider1, divider2;
+    private ArrayList<Label> labels = new ArrayList<>(5);
     private int width;
     private int classBlockLength;
     private int lunchBreakTime;
@@ -29,10 +31,11 @@ public class ScheduleView extends Pane {
     private LocalTime startTime;
 
     private Color color = Color.RED;
+    private boolean textBrightness = true;
 
     public SelectButtons selectButtons = new SelectButtons(this);
 
-    public ScheduleView (Gui parent) {
+    public ScheduleView(Gui parent) {
         this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
@@ -49,18 +52,21 @@ public class ScheduleView extends Pane {
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
         this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
     }
-    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+
+    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.add(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.schedule.add(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
 
     }
-    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
+
+    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.remove(new ScheduleItem(teacher,students,classroom,startPeriod,endPeriod,lesson));
+        this.schedule.remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
     }
-    public void resetSchedule(){
+
+    public void resetSchedule() {
         clear();
         this.schedule.reset();
         this.addSchedule();
@@ -75,11 +81,17 @@ public class ScheduleView extends Pane {
     private void addSchedule() {
         for (ScheduleItem scheduleItem : schedule.getItems()) {
             Pane pane = new Pane();
+            /*
+             * TODO: change the translate so it updates along with the schedule size!
+             */
             pane.setMinWidth(215);
-            pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
+            //Height = 50 * (end - start + 1)
+            pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));
 
-            pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());     //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
-            pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());                     //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
+            //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
+            pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());
+            //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
+            pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());
 
             //Content
             pane.getChildren().add(this.createScheduleItemContent(scheduleItem));
@@ -109,19 +121,34 @@ public class ScheduleView extends Pane {
         studentGroups.reverse().delete(0, 2).reverse();
 
         //Make labels
-        Label lessonLabel = new Label(scheduleItem.getLesson().getName());
-        Label teacherLabel = new Label(scheduleItem.getTeacher().getName());
-        Label studentGroupsLabel = new Label(studentGroups.toString());
-        Label divider1 = new Label("|");
-        Label divider2 = new Label("|");
+        this.lessonLabel = new Label(scheduleItem.getLesson().getName());
+        this.teacherLabel = new Label(scheduleItem.getTeacher().getName());
+        this.studentGroupsLabel = new Label(studentGroups.toString());
+        this.divider1 = new Label("|");
+        this.divider2 = new Label("|");
+
+        if (!labels.isEmpty()) {
+            labels.clear();
+        }
+        this.labels.add(this.lessonLabel);
+        this.labels.add(this.teacherLabel);
+        this.labels.add(this.studentGroupsLabel);
+        this.labels.add(this.divider1);
+        this.labels.add(this.divider2);
+
+        // Setting font color
+        if (!this.textBrightness)
+            for (Label label : labels)
+                label.setTextFill(Color.BLACK);
+        else
+            for (Label label : labels)
+                label.setTextFill(Color.LIGHTGRAY);
 
         //Setting style
         Font font = Font.font("Veranda", FontWeight.BOLD, 18);
-        lessonLabel.setFont(font);
-        teacherLabel.setFont(font);
-        studentGroupsLabel.setFont(font);
-        divider1.setFont(font);
-        divider2.setFont(font);
+        for (Label label : labels)
+            label.setFont(font);
+
 
         divider1.setMaxWidth(3);
         divider2.setMaxWidth(3);
@@ -157,13 +184,12 @@ public class ScheduleView extends Pane {
 
         return vBox;
     }
+
     public void clear() {
         Object[] children = this.getChildren().toArray();
-        for (Object child : children) {
-            if (child.getClass().getName().equals("javafx.scene.layout.Pane")) {
+        for (Object child : children)
+            if (child.getClass().getName().equals("javafx.scene.layout.Pane"))
                 this.getChildren().remove(child);
-            }
-        }
     }
 
     private void buildScheduleTable(LocalTime startTime) {
@@ -224,8 +250,14 @@ public class ScheduleView extends Pane {
         this.buildScheduleTable(startTime);
     }
 
-    public void updateColor(Color color) {
+    /**
+     * Change color of the schedule items visable and yet to be made.
+     * @param color = theme color of schedule item.
+     * @param brightness = black text is true, light gray text if false.
+     */
+    public void updateColor(Color color, boolean brightness) {
         this.color = color;
+        this.textBrightness = brightness;
         this.addSchedule();
     }
 
