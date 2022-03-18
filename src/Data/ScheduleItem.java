@@ -20,8 +20,8 @@ public class ScheduleItem {
 
     }
 
-    public ScheduleItem(Teacher teacher, ArrayList<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
-        this.teacher = teacher;
+    public ScheduleItem(ArrayList<Teacher> teachers, ArrayList<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+        this.teachers = teachers;
         this.classroom = classroom;
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;

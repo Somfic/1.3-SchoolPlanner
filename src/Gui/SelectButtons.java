@@ -23,11 +23,13 @@ public class SelectButtons extends Pane {
     private TextField endTime = new TextField();
 
     private ComboBox<Classroom> classRoomSelect = new ComboBox<>();                                     //ComboBoxes
-    private ComboBox<Teacher> teacherSelect = new ComboBox<>();
+    private MenuButton teacherSelect = new MenuButton("Teacher  ");
     private ComboBox<Lesson> courseSelect = new ComboBox<>();
     private MenuButton studentGroupSelect = new MenuButton("Class       ");
     private ScheduleView scheduleView;
     private ArrayList<StudentGroup> students = new ArrayList<>();
+    private ArrayList<Teacher> allTeachers = new ArrayList<>();
+    private ArrayList<Teacher> selectedTeachers = new ArrayList<>();
 
     public SelectButtons(ScheduleView scheduleView) {
         this.scheduleView = scheduleView;
@@ -40,15 +42,18 @@ public class SelectButtons extends Pane {
         this.endTime.setPromptText("End time");
 
         this.classRoomSelect.setPromptText("Classroom");
-        this.teacherSelect.setPromptText("Teacher  ");
+//        this.teacherSelect.setPromptText("Teacher  ");
         this.courseSelect.setPromptText("Course     ");
-
+        //testcode
+        allTeachers.add((new Teacher(Gender.MALE, "Johan")));
+        allTeachers.add((new Teacher(Gender.MALE, "Pieter")));
         this.courseSelect.getItems().addAll(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
-        this.teacherSelect.getItems().addAll(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE,"Jessica"));
+//        this.teacherSelect.getItems().addAll(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE,"Jessica"));
         this.classRoomSelect.getItems().addAll(new Classroom(30, "Classroom 1", 0), new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2), new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4), new Classroom(30, "Classroom 6", 5));
 
 
         this.buildStudentGroups(new ArrayList<>());
+        this.buildTeachers(allTeachers);
 
         HBox topRowButtons = new HBox(this.startTime, this.classRoomSelect, this.teacherSelect);                   //Layout
         HBox bottomRowButtons = new HBox(this.endTime, this.courseSelect, this.studentGroupSelect);
@@ -74,26 +79,34 @@ public class SelectButtons extends Pane {
         apply.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 students.clear();
+                selectedTeachers.clear();
                 for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
                     CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
                     if (temp.isSelected()) {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
-                    }
-                    ;
+                    };
                 }
-                scheduleView.applyScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+                for (int i = 0; i < teacherSelect.getItems().size() ; i++) {
+                    CheckMenuItem temp = (CheckMenuItem) teacherSelect.getItems().get(i);
+                    if(temp.isSelected()){
+                        selectedTeachers.add(allTeachers.get(i));
+                    }
+                }
+                scheduleView.applyScheduleItem(selectedTeachers, students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
             }
         });
         reset.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 students.clear();
                 scheduleView.resetSchedule();
+                selectedTeachers.clear();
             }
 
         });
         remove.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 students.clear();
+                selectedTeachers.clear();
                 for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
                     CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
                     if (temp.isSelected()) {
@@ -101,7 +114,7 @@ public class SelectButtons extends Pane {
                     }
                     ;
                 }
-                scheduleView.removeScheduleItem(teacherSelect.getValue(), students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
+                scheduleView.removeScheduleItem(selectedTeachers, students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
             }
         });
 
@@ -163,7 +176,7 @@ public class SelectButtons extends Pane {
         this.endTime.setText(scheduleItem.getEndPeriod() + "");
 
         this.classRoomSelect.setValue(scheduleItem.getClassroom());
-        this.teacherSelect.setValue(scheduleItem.getTeacher());
+        this.buildTeachers(scheduleItem.getTeachers());
         this.courseSelect.setValue(scheduleItem.getLesson());
         this.buildStudentGroups((ArrayList<StudentGroup>) scheduleItem.getStudentGroups());
     }
@@ -193,5 +206,12 @@ public class SelectButtons extends Pane {
         fileChooser.setInitialDirectory(new java.io.File("."));
 
         return fileChooser;
+    }
+    private void buildTeachers(ArrayList<Teacher> teachers){
+        teacherSelect.getItems().clear();
+        for(Teacher teacher : teachers){
+            CheckMenuItem tempItem = new CheckMenuItem(teacher.getName());
+            this.teacherSelect.getItems().add(tempItem);
+        }
     }
 }
