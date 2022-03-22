@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Components;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Dropdown extends ComboBox<String> {
+public class Dropdown<T> extends ComboBox<T> {
     private EventHandler<Event> eventHandler;
+    private T selectedValue = null;
 
     public Dropdown() {
         super();
@@ -35,8 +36,8 @@ public class Dropdown extends ComboBox<String> {
             // If the query is not empty, filter the list
             if (this.query.length() > 0) {
                 // Filter the list based on the query
-                FilteredList<String> filteredList = new FilteredList<>(FXCollections.observableArrayList(this.allItems));
-                filteredList.setPredicate(item -> item.toLowerCase().contains(this.query.toLowerCase()));
+                FilteredList<T> filteredList = new FilteredList<T>(FXCollections.observableArrayList(this.allItems));
+                filteredList.setPredicate(item -> item.toString().toLowerCase().contains(this.query.toLowerCase()));
 
                 // If the filtered list is not empty, show the results
                 if (filteredList.size() > 0) {
@@ -58,20 +59,25 @@ public class Dropdown extends ComboBox<String> {
 
             // If the selected item is valid, redirect the event to the setOnDropdownAction() method
             if (allItems.contains(this.getValue())) {
+                this.selectedValue = this.getValue();
                 eventHandler.handle(event);
             }
         });
     }
 
     private String query = "";
-    private List<String> allItems = new ArrayList<>();
+    private List<T> allItems = new ArrayList<>();
 
-    public void setDropdownItems(String[] items) {
+    public void setDropdownItems(T... items) {
         allItems = Arrays.asList(items);
         this.getItems().setAll(allItems);
     }
 
     public void setOnDropdownAction(EventHandler<Event> eventHandler) {
         this.eventHandler = eventHandler;
+    }
+
+    public T getDropdownValue() {
+        return this.selectedValue;
     }
 }

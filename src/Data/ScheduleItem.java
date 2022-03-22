@@ -1,5 +1,7 @@
 package Data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class ScheduleItem {
         this.studentGroups = studentGroups;
     }
 
+    @JsonIgnore
     public boolean isValid() {
 		return false;
 	}

@@ -1,10 +1,16 @@
 package Gui;
 
-import Gui.SettingsScreen.SettingCallback;
-import Gui.SettingsScreen.SettingView;
+import Data.FramesPerSecond;
+import Gui.Components.WindowBar;
+import Gui.Schedule.PopUpAddItems;
+import Gui.Schedule.ScheduleView;
+import Gui.Settings.SettingCallback;
+import Gui.Settings.SettingView;
+import Gui.Simulation.SimulationView;
+import IO.InputManager;
+import Logging.Logger;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -12,38 +18,34 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Pair;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
 
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
     private FXGraphics2D graphics;
+    FramesPerSecond fps = new FramesPerSecond();
 
     //Views
-    private ScheduleView scheduleView = new ScheduleView();
+    private ScheduleView scheduleView = new ScheduleView(this);
 
     //TabPane
     private VBox mainPane;
     private WindowBar windowBar;
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
-    private BorderPane simulationPane = new BorderPane();
+    private Pane simulationPane = new SimulationView();
     private SettingView settingsPane = new SettingView(this);
 
     @Override
     public void start(Stage stage) {
         // Custom title bar
-        //stage.initStyle(StageStyle.UNDECORATED);
         this.canvas = new Canvas(1920, 900);
 
         //Making tabs
@@ -60,6 +62,7 @@ public class Gui extends Application implements SettingCallback {
         settingsTab.setClosable(false);
 
         this.tabPane = new TabPane(scheduleTab, simulationTab, settingsTab);
+        this.tabPane.getSelectionModel().select(2); // select settings pane
 
         //SchedulePane
         Button button = new Button("Testing pop-up function");
@@ -86,76 +89,47 @@ public class Gui extends Application implements SettingCallback {
 
 //        this.schedulePane.setTop(new WindowBar(stage).getContent());
         this.schedulePane.setCenter(this.scheduleView);
+        this.schedulePane.setBottom(this.scheduleView.selectButtons);
+
+        //AnimationTimer used for the FPS count
+        new AnimationTimer() {
+            long last = -1;
+
+            @Override
+            public void handle(long now) {
+                if (last == -1) {
+                    last = now;
+                }
+                update((now - last) / 1000000000.0);
+                last = now;
+            }
+        }.start();
 
         stage.initStyle(StageStyle.UNDECORATED);
-        // Bottom buttons
-        HBox buttons = new HBox();
-
-        // Buttons
-        TextField startTime = new TextField("Start time");
-        TextField endTime = new TextField("End time");
-        ComboBox classRoomSelect = new ComboBox();
-        ComboBox teacherSelect = new ComboBox();
-        ComboBox courseSelect = new ComboBox();
-        ComboBox classSelect = new ComboBox();
-        classRoomSelect.setValue("Classroom");
-        teacherSelect.setValue("Teacher  ");
-        courseSelect.setValue("Course     ");
-        classSelect.setValue("Class       ");
-        HBox hbox = new HBox();
-        VBox vbox = new VBox();
-        hbox.getChildren().add(startTime);
-        hbox.getChildren().add(classRoomSelect);
-        hbox.getChildren().add(teacherSelect);
-        hbox.setSpacing(10);
-        vbox.getChildren().add(hbox);
-        HBox hbox2 = new HBox();
-        hbox2.getChildren().add(endTime);
-        hbox2.getChildren().add(courseSelect);
-        hbox2.getChildren().add(classSelect);
-        hbox2.setSpacing(10);
-        vbox.getChildren().add(hbox2);
-        vbox.setSpacing(10);
-        buttons.getChildren().add(vbox);
-
-        // Apply, Remove, and Reset
-        Button apply = new Button("Apply");
-        Button reset = new Button("Reset");
-        Button remove = new Button("Remove");
-        HBox applyRemoveButtons = new HBox(apply, remove);
-        applyRemoveButtons.setSpacing(10);
-
-        VBox applyRemoveResetButtons = new VBox(applyRemoveButtons, reset);
-        applyRemoveResetButtons.setAlignment(Pos.CENTER);
-        applyRemoveResetButtons.setSpacing(10);
-
-        buttons.getChildren().add(applyRemoveResetButtons);
-
-        // Save and Load
-        Button save = new Button("Save");
-        Button load = new Button("Load");
-
-        VBox saveLoadButtons = new VBox(save, load);
-        saveLoadButtons.setSpacing(10);
-
-        buttons.getChildren().add(saveLoadButtons);
-
-        buttons.setSpacing(10);
-        buttons.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-
-        this.schedulePane.setBottom(buttons);
-
-
         stage.setScene(this.scene);
+        InputManager.setup(this.scene);
         stage.setResizable(true);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
+
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
+    LocalDateTime lastFps = LocalDateTime.now();
+
+    public void update(double deltaTime) {
+        fps.update(deltaTime);
+        InputManager.update();
+
+        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+            lastFps = LocalDateTime.now();
+            Logger.debug("FPS: " + fps.getPfs());
+        }
+    }
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
-        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey());
+        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey(), newSettings.getStartingTime());
+        scheduleView.updateColor(newSettings.getThemeColor(), newSettings.getTextBrightness());
     }
 }

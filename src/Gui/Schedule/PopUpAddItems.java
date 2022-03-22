@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Schedule;
 
 import Data.Gender;
 import Data.Lesson;
@@ -61,8 +61,6 @@ public class PopUpAddItems {
             if (!teacherTextField.getText().equals("New teacher name") && teacherTextField.getText().length() <= 25 && teacherTextField.getText().length() >= 2) {
                 String teacherName = teacherTextField.getText();
                 Teacher teacher = new Teacher(teacherGender, teacherName);
-                System.out.println("TeacherName: " + teacher.getName() + "\nGender: " + teacher.getGender());
-
                 teacherTextField.setText("");
                 //TODO save teacher somewhere...
             } else {
@@ -94,7 +92,6 @@ public class PopUpAddItems {
             if (!subjectTextField.getText().equals("New subject name") && subjectTextField.getText().length() <= 25 && subjectTextField.getText().length() >= 2) {
                 String subjectName = subjectTextField.getText();
                 Lesson subject = new Lesson(subjectTextField.getText());
-                System.out.println("SubjectName: " + subject.getName());
 
                 subjectTextField.setText("");
                 //TODO save subject somewhere...

@@ -1,5 +1,6 @@
 package Data;
 
+import Logging.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,12 +15,35 @@ public class Schedule {
     }
 
     public void add(ScheduleItem item) {
-        items.add(item);
+        for (int i = 0; i <items.size(); i++) {
+            if(item.getClassroom().getName().equals(items.get(i).getClassroom().getName()) ){
+                if(item.getStartPeriod()>=items.get(i).getStartPeriod() && item.getStartPeriod()<=items.get(i).getEndPeriod() || item.getEndPeriod()>=items.get(i).getStartPeriod()&&item.getEndPeriod()<=items.get(i).getEndPeriod()){
+                    items.remove(i);
+                }
+            }
+        }
+        if(item.getEndPeriod()- item.getStartPeriod()>=0&& item.getEndPeriod()>=1 && item.getEndPeriod()<=10 &&  item.getStartPeriod()>=1 && item.getStartPeriod()<=10){
+            items.add(item);
+        }
     }
 
     public void add(List<ScheduleItem> items) {
         for (ScheduleItem item : items) {
             add(item);
+        }
+    }
+    public void reset(){
+        items.clear();
+    }
+    public void remove(ScheduleItem scheduleItem) {
+        if (items.size() <= 1) {
+            items.clear();
+        }
+        for (int i = 0; i < items.size() - 1; i++) {
+            if (items.get(i).getClassroom().getName().equals(scheduleItem.getClassroom().getName()) && items.get(i).getStartPeriod() == scheduleItem.getStartPeriod()) {
+                items.remove(i);
+                break;
+            }
         }
     }
 
@@ -32,8 +56,8 @@ public class Schedule {
 
         try {
             return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.warn(e, "Failed to serialize schedule");
             return null;
         }
     }
@@ -43,8 +67,8 @@ public class Schedule {
 
         try {
             return mapper.readValue(json, Schedule.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.warn(e, "Failed to deserialize schedule");
             return null;
         }
     }

@@ -1,4 +1,4 @@
-package Gui.SettingsScreen;
+package Gui.Settings;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,7 +8,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback {
+import java.time.LocalTime;
+
+public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback, StartTimeCallback {
     private BorderPane borderPane;
     private Label titleLabel;
     private Label speedLabel;
@@ -21,14 +23,17 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private ClassBlock classBlock;
     private FastBreak fastBreak;
     private LunchBreak lunchBreak;
+    private StartTime startTime;
     private VBox centralPane;
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
     private int speedSave;
     private Color themeColorSave;
+    private boolean textDarkness;
     private int classBlockLengthSave;
     private Pair<Integer, Integer> fastBreakSave;
     private Pair<Integer, Integer> lunchBreakSave;
+    private LocalTime startingTime;
     private SettingCallback callback;
 
     public SettingView(SettingCallback callback) {
@@ -45,9 +50,11 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         this.classBlock = new ClassBlock(this);
         this.fastBreak = new FastBreak(this);
         this.lunchBreak = new LunchBreak(this);
-        this.centralPane = new VBox(speedLabel, speedSelector.getContent(), colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), new HBox(confirm, cancel));
+        this.startTime = new StartTime(this);
+        this.centralPane = new VBox(speedLabel, speedSelector.getContent(), colorSelectorLabel, colorSelector.getContent(), classBlockLabel, classBlock.getContent(), breakfastLabel, fastBreak.getContent(), breakLunchLabel, lunchBreak.getContent(), startTime.getContent(), new HBox(confirm, cancel));
         this.centralPane.setFillWidth(true);
         this.centralPane.setSpacing(15);
+
 
         confirm.setOnAction(event -> {
             speedSelector.confirm();
@@ -55,8 +62,8 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.confirm();
             fastBreak.confirm();
             lunchBreak.confirm();
-//            callback.onSettingChange(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave);
-            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, classBlockLengthSave, fastBreakSave, lunchBreakSave));
+            startTime.confirm();
+            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakSave, lunchBreakSave, startingTime));
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();
@@ -64,6 +71,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.cancel();
             fastBreak.cancel();
             lunchBreak.cancel();
+            startTime.cancel();
         });
         borderPane.setTop(titleLabel);
         borderPane.setCenter(centralPane);
@@ -75,31 +83,41 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void onSpeedChange(int speed) {
-//        System.out.println("running speed " + speed);
         this.speedSave = speed;
     }
 
     @Override
-    public void onColorChange(Color color) {
-//        System.out.println("Color: " + color);
+    public void onThemeColorChange(Color color) {
         this.themeColorSave = color;
+        this.startTime.setColor(color);
+    }
+
+    /**
+     * Chooses if the text within the chedule is gray or black.
+     * @param darkness of the theme color, true if darkness is above 0.4, false if darkness is under 0.4
+     */
+    @Override
+    public void onTextBrightnessChange(boolean darkness) {
+        this.textDarkness = darkness;
     }
 
     @Override
     public void ClassBlockLengthChanged(int length) {
-//        System.out.println("ClassBlockLength: " + length);
         this.classBlockLengthSave = length;
     }
 
     @Override
     public void onFastBreakTimeChange(Pair<Integer, Integer> time) {
-//        System.out.println("Fast break: " + time);
         this.fastBreakSave = time;
     }
 
     @Override
     public void onLunchBreakTimeChange(Pair<Integer, Integer> time) {
-//        System.out.println("Lunch break: " + time);
         this.lunchBreakSave = time;
+    }
+
+    @Override
+    public void newStartTime(LocalTime time) {
+        this.startingTime = time;
     }
 }
