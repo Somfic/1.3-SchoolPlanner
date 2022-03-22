@@ -1,14 +1,11 @@
 package Data.Tiles;
 
+import Logging.Logger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TilesTileSet {
     private int columns;
-    private int firstGid;
-    private TilesGrid grid;
     private String image;
     private int imageHeight;
     private int imageWidth;
@@ -16,10 +13,11 @@ public class TilesTileSet {
     private String name;
     private int spacing;
     private int tileCount;
+    private String tiledVersion;
     private int tileHeight;
-    private TilesTileOffset tileoffset;
     private int tileWidth;
-    private List<TilesWangSet> wangSets = new ArrayList<>();
+    private String type;
+    private String version;
 
     @JsonProperty("columns")
     public int getColumns() {
@@ -29,26 +27,6 @@ public class TilesTileSet {
     @JsonProperty("columns")
     public void setColumns(int value) {
         this.columns = value;
-    }
-
-    @JsonProperty("firstgid")
-    public int getFirstGid() {
-        return firstGid;
-    }
-
-    @JsonProperty("firstgid")
-    public void setFirstGid(int value) {
-        this.firstGid = value;
-    }
-
-    @JsonProperty("grid")
-    public TilesGrid getGrid() {
-        return grid;
-    }
-
-    @JsonProperty("grid")
-    public void setGrid(TilesGrid value) {
-        this.grid = value;
     }
 
     @JsonProperty("image")
@@ -121,6 +99,16 @@ public class TilesTileSet {
         this.tileCount = value;
     }
 
+    @JsonProperty("tiledversion")
+    public String getTiledVersion() {
+        return tiledVersion;
+    }
+
+    @JsonProperty("tiledversion")
+    public void setTiledVersion(String value) {
+        this.tiledVersion = value;
+    }
+
     @JsonProperty("tileheight")
     public int getTileHeight() {
         return tileHeight;
@@ -129,16 +117,6 @@ public class TilesTileSet {
     @JsonProperty("tileheight")
     public void setTileHeight(int value) {
         this.tileHeight = value;
-    }
-
-    @JsonProperty("tileoffset")
-    public TilesTileOffset getTileoffset() {
-        return tileoffset;
-    }
-
-    @JsonProperty("tileoffset")
-    public void setTileoffset(TilesTileOffset value) {
-        this.tileoffset = value;
     }
 
     @JsonProperty("tilewidth")
@@ -151,13 +129,34 @@ public class TilesTileSet {
         this.tileWidth = value;
     }
 
-    @JsonProperty("wangsets")
-    public List<TilesWangSet> getWangSets() {
-        return wangSets;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("wangsets")
-    public void setWangSets(List<TilesWangSet> value) {
-        this.wangSets = value;
+    @JsonProperty("type")
+    public void setType(String value) {
+        this.type = value;
+    }
+
+    @JsonProperty("version")
+    public String getVersion() {
+        return version;
+    }
+
+    @JsonProperty("version")
+    public void setVersion(String value) {
+        this.version = value;
+    }
+
+    public static TilesTileSet fromJson(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.readValue(json, TilesTileSet.class);
+        } catch (Exception e) {
+            Logger.warn(e, "Failed to deserialize tileset");
+            return null;
+        }
     }
 }

@@ -2,21 +2,33 @@ package Data.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class TilesLayer {
+    private List<TilesChunk> chunks;
     private String compression;
-    private String data;
     private String encoding;
     private int height;
     private int id;
     private String name;
     private int opacity;
+    private int startX;
+    private int startY;
     private String type;
     private boolean visible;
     private int width;
     private int x;
     private int y;
 
-    private int[][] indices;
+    @JsonProperty("chunks")
+    public List<TilesChunk> getChunks() {
+        return chunks;
+    }
+
+    @JsonProperty("chunks")
+    public void setChunks(List<TilesChunk> value) {
+        this.chunks = value;
+    }
 
     @JsonProperty("compression")
     public String getCompression() {
@@ -26,16 +38,6 @@ public class TilesLayer {
     @JsonProperty("compression")
     public void setCompression(String value) {
         this.compression = value;
-    }
-
-    @JsonProperty("data")
-    public String getData() {
-        return data;
-    }
-
-    @JsonProperty("data")
-    public void setData(String value) {
-        this.data = value;
     }
 
     @JsonProperty("encoding")
@@ -59,12 +61,12 @@ public class TilesLayer {
     }
 
     @JsonProperty("id")
-    public int getId() {
+    public int getID() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(int value) {
+    public void setID(int value) {
         this.id = value;
     }
 
@@ -86,6 +88,26 @@ public class TilesLayer {
     @JsonProperty("opacity")
     public void setOpacity(int value) {
         this.opacity = value;
+    }
+
+    @JsonProperty("startx")
+    public int getStartX() {
+        return startX;
+    }
+
+    @JsonProperty("startx")
+    public void setStartX(int value) {
+        this.startX = value;
+    }
+
+    @JsonProperty("starty")
+    public int getStartY() {
+        return startY;
+    }
+
+    @JsonProperty("starty")
+    public void setStartY(int value) {
+        this.startY = value;
     }
 
     @JsonProperty("type")
@@ -136,9 +158,5 @@ public class TilesLayer {
     @JsonProperty("y")
     public void setY(int value) {
         this.y = value;
-    }
-
-    public int[][] getIndices() {
-        return indices;
     }
 }
