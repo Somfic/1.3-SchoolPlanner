@@ -1,132 +1,280 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"school.tmj"
+        }
+    },
  "height":100,
  "infinite":true,
  "layers":[
         {
          "chunks":[
                 {
-                 "data":"eJxjYBgFo2DkgDBWBMYHDrJg4oHWD8LI+mFmUmI\/ABV2FkQ=",
+                 "data":"eJxjYBgFo2DogLMsqJgc\/Y1IeKTrBwCphg8l",
+                 "height":16,
+                 "width":16,
+                 "x":-32,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2DgwFkWynAjGiYFoOuF6T\/IQhzGZgYp+sNYB14\/ABzUN9M=",
+                 "height":16,
+                 "width":16,
+                 "x":-16,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2DgwFkWynAjFOMDjSy4MTEAn\/4wVgimVL85DkyK\/eToBwB0oCUA",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2DgwFkW7Pg0C3H6G1mw41H9xOkHAAuaGVc=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYCANnGVhYGhEwqSCUf0Dr58SANMfxgrBQ1U\/zAxy9DdBw34SBfG3lAL9LVSwH6YfALwZIR8=",
+                 "height":16,
+                 "width":16,
+                 "x":-32,
+                 "y":-16
+                }, 
+                {
+                 "data":"eJxrZGFgaETCIHCQhTgcxoqqF6afWIBLPyX2NxKpd7DqJ9X\/lACQ\/uGAkf1Cip9BYBILKsYXB8ToX0KhfkJpAFn\/QRZM\/UtJtB8AUAx1Pw==",
                  "height":16,
                  "width":16,
                  "x":-16,
                  "y":-16
                 }, 
                 {
-                 "data":"eJxjYBgFo2DkgoMsmHgk6QcAJ5cPZQ==",
+                 "data":"eJwLY2VgCANiEGhkgWB0ABPHhsOg+vGpGQn6CYUTPfSTA2D6hyqmxL8gcJAFE+MTH0j9B1lQ9eNSQ4r9ALH+a68=",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":-16
                 }, 
                 {
-                 "data":"eJxjYMAODrJgYhAIY0VgfGCk68cFKNU\/CkYBNQEAQaUZpA==",
+                 "data":"eJxrZGFgaMSCTwMxMQCb3lH99NOPyzxi9YexIvBQ1I8LEKv\/IAsmHg76zxKpHwCRhTmE",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":-16
+                }, 
+                {
+                 "data":"eJxjYCANnGVhYGiB4gksJGoe1U8V\/TBMjv5RMAqQAQCj3xHG",
+                 "height":16,
+                 "width":16,
+                 "x":-32,
+                 "y":0
+                }, 
+                {
+                 "data":"eJybwMLAMAEJtwAxCBxkwcQgEMaKwCAwYYjpRwek6l\/KgsD49OMChPSfJRGPglFACQAAvFc3kw==",
                  "height":16,
                  "width":16,
                  "x":-16,
                  "y":0
                 }, 
                 {
-                 "data":"eJw7yMLAcBANkwLQ9Y40\/aNgFAxlAADDEhM+",
+                 "data":"eJw7yMLAcBANgwC6GEw8jBWB8akbrPrRAan6l7KgYlIBuv6zFOJRMAooAQBB+zwG",
                  "height":16,
                  "width":16,
                  "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":"eJw7yMLAcBANg8BZKE0IoOsdDPrPstBPPzZAiv6zLLjxKBgFtAYABKwgTg==",
+                 "height":16,
+                 "width":16,
+                 "x":16,
                  "y":0
                 }],
          "compression":"zlib",
          "encoding":"base64",
-         "height":32,
+         "height":48,
          "id":2,
          "name":"Floors",
          "opacity":1,
-         "startx":-16,
-         "starty":-16,
+         "startx":-32,
+         "starty":-32,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":64,
          "x":0,
          "y":0
         }, 
         {
          "chunks":[
                 {
-                 "data":"eJxjYBgFo2B4AW5WBgYuLJiHFVMdNsBJhLgFI3Hq8ImTqp9YQIr9AP9xAUI=",
+                 "data":"eJxjYBgFo2D4AG5WBgYuIjAPK3b9nDjE0YEv1Bxy9eNSR6x+Us3FpQ4AMOgBXg==",
+                 "height":16,
+                 "width":16,
+                 "x":-16,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2DoA25WBgYuIOZFo3lY8evjgqrzA2JRIObEQhMDsOkjRT8+cylRR0g\/AMlVAgw=",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFIw1wszIwcEExOYCTTH2DRb82UL8XhWYMFwAAJgsA2A==",
+                 "height":16,
+                 "width":16,
+                 "x":-32,
+                 "y":-16
+                }, 
+                {
+                 "data":"eJxjYEAFnKwMRAFc6nyB4lxEYD8c+im1n176STWX2vbD1KGHqy6R4a9DoT8HE+BC8osWkM2Lw888aH7mJjEOkMUtGEmPQ3RxeqdBbPYDAM9RBG4=",
                  "height":16,
                  "width":16,
                  "x":-16,
                  "y":-16
                 }, 
                 {
-                 "data":"eJxjYBgFo2DoAi5WTMzDSpmZnGTqX8zEwLCEiXz95Ni\/nhmCkdmk6AcAE7QEqA==",
+                 "data":"eJxjYIAAX1YGBi4sWIeVgSjASaS6Uf200a+NI\/4I4aEOsPmJF4dfedD8y43D\/7jiAlncgpE4dfjESdVPLCDFfgCQIgOk",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":-16
                 }, 
                 {
-                 "data":"eJxjYMAEnKxYBLGIE6sOm7gF4\/DVrw0U58KCddD0a+PQPwpGAb0AAF00Asw=",
+                 "data":"eJxjYBgFQxlwsSIwDytlZnEOQf3I\/tcdweFArn4AjVIBIA==",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":-16
+                }, 
+                {
+                 "data":"eJxjYMAEnKxYBLGIE6sOm7gFI\/31+wLFuZCwHwX241OnjWYPDOuwYqobBaNgIAEArBAC1w==",
                  "height":16,
                  "width":16,
                  "x":-16,
                  "y":0
                 }, 
                 {
-                 "data":"eJw7z8zAcB6IQeA8lM3JykA0WM8MwchsUvSfH+L2c7FiYh0S9I+CUTCQAAC14hAr",
+                 "data":"eJxjYMAEnKxYBLGIE6sOm7gFI\/31+wLFuZCwHwX2w\/hcWLAuDnEdNP3aOOwZBaOAXgAAfUYDJA==",
                  "height":16,
                  "width":16,
                  "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYMAEnKxYBEkAI0k\/Fysm1qHQ\/lEwCugFAEJDAMM=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
                  "y":0
                 }],
          "compression":"zlib",
          "encoding":"base64",
-         "height":32,
+         "height":48,
          "id":1,
          "name":"Walls",
          "opacity":1,
-         "startx":-16,
-         "starty":-16,
+         "startx":-32,
+         "starty":-32,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":64,
          "x":0,
          "y":0
         }, 
         {
          "chunks":[
+                {
+                 "data":"eJxjYBgFo2AUDDXARCVzAASQAAM=",
+                 "height":16,
+                 "width":16,
+                 "x":-16,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2AUUAOw4KCJAUxUdguxAAANAAAP",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2BkApaBdsAgAAAIEAAF",
+                 "height":16,
+                 "width":16,
+                 "x":-32,
+                 "y":-16
+                }, 
+                {
+                 "data":"eJxjYBgF5ACmgXbAKAADDijNgsQergCY5g6g8SkGAGAAANs=",
+                 "height":16,
+                 "width":16,
+                 "x":-16,
+                 "y":-16
+                }, 
                 {
                  "data":"eJxjYBgFo2AUDAXAxMBwAI1PMQAAQfAAxQ==",
                  "height":16,
                  "width":16,
-                 "x":-16,
+                 "x":0,
                  "y":-16
                 }],
          "compression":"zlib",
          "encoding":"base64",
-         "height":16,
+         "height":32,
          "id":4,
          "name":"Doors",
          "opacity":1,
-         "startx":-16,
-         "starty":-16,
+         "startx":-32,
+         "starty":-32,
          "type":"tilelayer",
          "visible":true,
-         "width":16,
+         "width":48,
          "x":0,
          "y":0
         }, 
         {
          "chunks":[
                 {
-                 "data":"eJxjYBgFo2D4gzYm0vW0MyPYy0jUvxiofgkZdlILrGeGYHQ2OgAA0Q8Fzg==",
+                 "data":"eJxjYBgFo2AUIINkRoaGViYI+wIzA8NFZkyaEFhKoX5qAUL2AwA2RBDy",
+                 "height":16,
+                 "width":16,
+                 "x":-16,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYBgFo2AUgMBCHPRQAVocDAew0fgAADdSBLo=",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":-32
+                }, 
+                {
+                 "data":"eJxjYMAEyRwI9gVmBoaLzJg0LUEyI0NDKxNl9i+lUD+1ADn2D3T4g0AGIwNDJhBnAXE2I26xoQLamEjXkwj1YzMwPpaRqH8xUP0SMuykFljPDMHobHQAABfSJTY=",
                  "height":16,
                  "width":16,
                  "x":-16,
                  "y":-16
                 }, 
                 {
-                 "data":"eJxjYBgFo2AUwEA780C7gL4AAIVdAIs=",
+                 "data":"eJxjYKAcWDCO6h8uwIyROAwC7cwD61ZSQBsTdvEmDlR+IiMmuxmoZhkO\/chgMVDNEiZMNi3BemYIJpaNDgAdkg79",
                  "height":16,
                  "width":16,
                  "x":0,
+                 "y":-16
+                }, 
+                {
+                 "data":"eJxjYBgFIxm0Mw+0CyAgdYDsbeJA5Scykm\/WYiYGhiVMlLmHVLCeGYLR2cQCABQ8Be8=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
                  "y":-16
                 }, 
                 {
@@ -135,18 +283,32 @@
                  "width":16,
                  "x":-16,
                  "y":0
+                }, 
+                {
+                 "data":"eJw7z8zAcB6IQeA8EWx0sJ4ZgollowNi7BzM9o+CUTCUAQB5bx7R",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":"eJw7z8zAcB6IQeA8EptYsJ4ZgtHZxILzQ9z+UTAKhjIAAHefD2k=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":0
                 }],
          "compression":"zlib",
          "encoding":"base64",
-         "height":32,
+         "height":48,
          "id":3,
          "name":"Objects",
          "opacity":1,
          "startx":-16,
-         "starty":-16,
+         "starty":-32,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":48,
          "x":0,
          "y":0
         }],
@@ -159,11 +321,15 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/objects.tsx"
+         "source":"objects.tsj"
         }, 
         {
          "firstgid":1025,
-         "source":"..\/..\/..\/walls.tsx"
+         "source":"walls.tsj"
+        }, 
+        {
+         "firstgid":2049,
+         "source":"objects_2.tsj"
         }],
  "tilewidth":64,
  "type":"map",
