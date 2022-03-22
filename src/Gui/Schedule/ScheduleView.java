@@ -1,6 +1,7 @@
-package Gui.Schedule;
+package gui.schedule;
 
-import Data.*;
+import data.*;
+import gui.Gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

@@ -1,15 +1,14 @@
-package Gui;
+package gui;
 
-import Data.FramesPerSecond;
-import Gui.Components.ResizeHelper;
-import Gui.Components.WindowBar;
-import Gui.Schedule.PopUpAddItems;
-import Gui.Schedule.ScheduleView;
-import Gui.Settings.SettingCallback;
-import Gui.Settings.SettingView;
-import Gui.Simulation.SimulationView;
-import IO.InputManager;
-import Logging.Logger;
+import data.FramesPerSecond;
+import gui.components.WindowBar;
+import gui.schedule.PopUpAddItems;
+import gui.schedule.ScheduleView;
+import gui.settings.SettingCallback;
+import gui.settings.SettingView;
+import gui.simulation.SimulationView;
+import io.InputManager;
+import logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
