@@ -28,19 +28,16 @@ public class SpeedSelector {
         this.speedSlider.setShowTickLabels(true);
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.speedSpinner = new Spinner(valueFactory);
+        this.speedSlider.valueProperty().addListener((obs, oldval, newVal) -> speedSlider.setValue(Math.round(newVal.doubleValue())));
         this.speedSlider.valueProperty().bindBidirectional(speedSpinner.getValueFactory().valueProperty());
         this.speedCurrent = (int) Math.round(speedSlider.getValue());
         this.speedMemory = this.speedCurrent;
 
-        speedSlider.setOnMousePressed(event -> {
-            speedSlider.valueProperty().addListener((obs, oldval, newVal) -> {
-                speedSlider.setValue(Math.round(newVal.doubleValue()));
-            });
-        });
+        speedSlider.setOnMouseClicked(event ->
+                this.speedCurrent = (int) Math.round(speedSlider.getValue()));
 
-        speedSlider.setOnMouseReleased(event -> {
-            this.speedCurrent = (int) Math.round(speedSlider.getValue());
-        });
+        speedSpinner.setOnMouseClicked(event ->
+                this.speedCurrent = (int) Math.round((Double) speedSpinner.getValue()));
 
         this.componentHBox = new HBox(speedLabel, speedSlider, speedSpinner);
         componentHBox.setSpacing(15);
@@ -48,16 +45,13 @@ public class SpeedSelector {
 
     public void confirm() {
         this.speedMemory = this.speedCurrent;
+        System.out.println(speedCurrent);
         callback.onSpeedChange(speedCurrent);
     }
 
     public void cancel() {
         this.speedCurrent = this.speedMemory;
         speedSlider.setValue(this.speedMemory);
-    }
-
-    public int getSpeed() {
-        return this.speedCurrent;
     }
 
     public HBox getContent() {
