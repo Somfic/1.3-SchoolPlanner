@@ -14,6 +14,6 @@ public class LocalTimeDeserializer extends JsonDeserializer<LocalTime> {
     public LocalTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
-        return LocalTime.of(node.get("hour").asInt(), node.get("minute").asInt());
+        return LocalTime.of(node.get("hour").intValue(), node.get("minute").intValue());
     }
 }
