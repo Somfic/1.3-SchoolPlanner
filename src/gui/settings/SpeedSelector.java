@@ -45,7 +45,6 @@ public class SpeedSelector {
 
     public void confirm() {
         this.speedMemory = this.speedCurrent;
-        System.out.println(speedCurrent);
         callback.onSpeedChange(speedCurrent);
     }
 
