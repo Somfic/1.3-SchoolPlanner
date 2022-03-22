@@ -1,4 +1,4 @@
-package Gui.Settings.Saving;
+package Saving;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

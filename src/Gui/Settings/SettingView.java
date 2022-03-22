@@ -1,8 +1,8 @@
 package Gui.Settings;
 
-import Gui.Settings.Saving.ColorDeserializer;
-import Gui.Settings.Saving.LocalTimeDeserializer;
-import Gui.Settings.Saving.LocalTimeSerializer;
+import Saving.ColorDeserializer;
+import Saving.LocalTimeDeserializer;
+import Saving.LocalTimeSerializer;
 import Logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -106,7 +106,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         mapper.registerModule(module);
 
         ObjectWriter json = mapper.writer().withDefaultPrettyPrinter();
-        try (FileWriter fileWriter = new FileWriter("src/Gui/Settings/Saving/settingsSave.txt")) {
+        try (FileWriter fileWriter = new FileWriter("src/Saving/settingsSave.txt")) {
             fileWriter.write(json.writeValueAsString(save));
         } catch (IOException e) {
             Logger.error(e, e.getMessage());
@@ -116,7 +116,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     public void load() {
         Logger.debug("Loading settings");
 
-        try (Scanner scanner = new Scanner(new File("src/Gui/Settings/Saving/settingsSave.txt"))) {
+        try (Scanner scanner = new Scanner(new File("src/Saving/settingsSave.txt"))) {
             ObjectMapper json = new ObjectMapper();
 
             //Adding custom deserializers
