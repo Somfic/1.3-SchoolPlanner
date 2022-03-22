@@ -1,4 +1,4 @@
-package Gui.Components;
+package gui.components;
 
 import javafx.event.EventHandler;
 import javafx.event.EventType;

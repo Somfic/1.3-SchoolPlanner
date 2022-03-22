@@ -1,6 +1,7 @@
 package gui;
 
 import data.FramesPerSecond;
+import gui.components.ResizeHelper;
 import gui.components.WindowBar;
 import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
@@ -88,7 +89,7 @@ public class Gui extends Application implements SettingCallback {
         this.mainPane = new VBox(windowBar.getContent(), this.tabPane);
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
-        this.scheduleView = new ScheduleView();
+        this.scheduleView = new ScheduleView(this);
         this.scene = new Scene(mainPane, 1500, 700);
         this.scheduleView.updateSize(this.scene.getWidth(), this.scene.getHeight());
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());

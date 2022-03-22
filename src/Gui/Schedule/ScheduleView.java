@@ -1,7 +1,6 @@
 package gui.schedule;
 
 import data.*;
-import gui.Gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,6 +12,7 @@ import javafx.scene.text.FontWeight;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ScheduleView extends Pane {
     private GridPane scheduleGridPane = new GridPane();
@@ -31,8 +31,7 @@ public class ScheduleView extends Pane {
 
     public SelectButtons selectButtons = new SelectButtons(this);
 
-    public ScheduleView(Gui parent) {
-        this.parent = parent;
+    public ScheduleView() {
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
         this.startTime = LocalTime.of(8, 00);
