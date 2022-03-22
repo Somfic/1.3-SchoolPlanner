@@ -12,8 +12,8 @@ public class StartTime {
     private Label label;
     private StartTimeCallback callback;
     private JFXTimePicker timePicker = new JFXTimePicker();
-    private LocalTime startTimeCurrent;
-    private LocalTime startTimeMemory;
+    private LocalTime startTimeCurrent = LocalTime.of(8, 0);
+    private LocalTime startTimeMemory = startTimeCurrent;
 
     public StartTime(StartTimeCallback callback) {
         this.label = new Label("Select start time of the first class block:");
@@ -21,6 +21,7 @@ public class StartTime {
         timePicker.setOnAction(e -> {
             startTimeCurrent = timePicker.getValue();
         });
+        timePicker.setValue(startTimeCurrent);
 
         setColor(Color.DIMGRAY);
         this.timePicker.setOverLay(false);
@@ -43,6 +44,11 @@ public class StartTime {
     public void cancel() {
         this.startTimeCurrent = this.startTimeMemory;
         this.timePicker.setValue(startTimeMemory);
+    }
+
+    public void set(LocalTime time) {
+        startTimeCurrent = time;
+        timePicker.setValue(startTimeCurrent);
     }
 
     public VBox getContent() {

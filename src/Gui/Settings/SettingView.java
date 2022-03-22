@@ -1,8 +1,11 @@
 package Gui.Settings;
 
 import Gui.Settings.Saving.ColorDeserializer;
+import Gui.Settings.Saving.LocalTimeDeserializer;
+import Gui.Settings.Saving.LocalTimeSerializer;
 import Logging.Logger;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -96,7 +99,13 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         cancel.fire();
         SettingCallback.ScheduleSettings save = new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakTimeSave, fastBreakLengthSave, lunchBreakTimeSave, lunchBreakLengthSave, startingTime);
 
-        ObjectWriter json = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        //Adding custom serializer
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(LocalTime.class, new LocalTimeSerializer());
+        mapper.registerModule(module);
+
+        ObjectWriter json = mapper.writer().withDefaultPrettyPrinter();
         try (FileWriter fileWriter = new FileWriter("src/Gui/Settings/Saving/settingsSave.txt")) {
             fileWriter.write(json.writeValueAsString(save));
         } catch (IOException e) {
@@ -110,9 +119,10 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         try (Scanner scanner = new Scanner(new File("src/Gui/Settings/Saving/settingsSave.txt"))) {
             ObjectMapper json = new ObjectMapper();
 
-            //Adding custom Color deserializer
+            //Adding custom deserializers
             SimpleModule colorModule = new SimpleModule();
             colorModule.addDeserializer(Color.class, new ColorDeserializer());
+            colorModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer());
             json.registerModule(colorModule);
 
             //Read saved settings
@@ -129,6 +139,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.set(save.getClassBlockLength());
             fastBreak.set(save.getFastBreakTime(), save.getFastBreakLength());
             lunchBreak.set(save.getLunchBreakTime(), save.getLunchBreakLength());
+            startTime.set(save.getTime());
 
             confirm.fire();
         } catch (IOException e) {
