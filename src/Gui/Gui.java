@@ -1,11 +1,16 @@
 package Gui;
 
+import Data.FramesPerSecond;
 import Gui.Components.ResizeHelper;
 import Gui.Components.WindowBar;
 import Gui.Schedule.PopUpAddItems;
 import Gui.Schedule.ScheduleView;
 import Gui.Settings.SettingCallback;
 import Gui.Settings.SettingView;
+import Gui.Simulation.SimulationView;
+import IO.InputManager;
+import Logging.Logger;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
@@ -15,15 +20,19 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
 
+import java.time.LocalDateTime;
+
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
     private FXGraphics2D graphics;
+    FramesPerSecond fps = new FramesPerSecond();
 
     //Views
     private ScheduleView scheduleView;
@@ -34,7 +43,7 @@ public class Gui extends Application implements SettingCallback {
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private VBox scheduleBox = new VBox(3);
-    private BorderPane simulationPane = new BorderPane();
+    private Pane simulationPane = new SimulationView();
     private SettingView settingsPane = new SettingView(this);
 
     @Override
@@ -90,14 +99,30 @@ public class Gui extends Application implements SettingCallback {
         this.scheduleBox.getChildren().add(this.scheduleView);
         this.scheduleBox.getChildren().add(this.scheduleView.selectButtons);
 
+        //AnimationTimer used for the FPS count
+        new AnimationTimer() {
+            long last = -1;
+
+            @Override
+            public void handle(long now) {
+                if (last == -1) {
+                    last = now;
+                }
+                update((now - last) / 1000000000.0);
+                last = now;
+            }
+        }.start();
+
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
         ResizeHelper.addResizeListener(stage);
         stage.setMinHeight(350);
         stage.setMinWidth(250);
+        InputManager.setup(this.scene);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
-        this.scheduleView.build();
+
+        this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
 
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
                 this.scheduleView.updateSize(stage.getWidth(), stage.getHeight());
@@ -106,10 +131,21 @@ public class Gui extends Application implements SettingCallback {
         stage.heightProperty().addListener(stageSizeListener);
     }
 
+    LocalDateTime lastFps = LocalDateTime.now();
+
+    public void update(double deltaTime) {
+        fps.update(deltaTime);
+        InputManager.update();
+
+        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+            lastFps = LocalDateTime.now();
+            Logger.debug("FPS: " + fps.getPfs());
+        }
+    }
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
         scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey(), newSettings.getStartingTime());
-        scheduleView.updateColor(newSettings.getColor());
+        scheduleView.updateColor(newSettings.getThemeColor(), newSettings.getTextBrightness());
     }
 }
