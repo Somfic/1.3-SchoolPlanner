@@ -118,7 +118,7 @@ public class Map {
                             // If the block is not 0, add it to the layout
                             if (block != 0) {
                                 amountOfImportedTiles++;
-                                layout[x + chunk.getX() - layer.getStartY()][y + chunk.getY() - layer.getStartY()] = block;
+                                layout[x + chunk.getX()][y + chunk.getY()] = block;
                             }
 
                             // Move to the next block of 4 bytes
@@ -132,6 +132,8 @@ public class Map {
             } catch (Exception ex) {
                 Logger.warn(ex, "Failed to import layer '" + layer.getName() + "'");
             }
+
+            break;
         }
 
         return layout;
