@@ -1,8 +1,6 @@
 package Data.Map;
 
-import Data.Tiles.TilesLayer;
-import Data.Tiles.TilesTileSet;
-import Data.Tiles.Tiles;
+import Data.Tiles.*;
 import IO.FileManager;
 import Logging.Logger;
 
@@ -91,44 +89,41 @@ public class Map {
 
         for (TilesLayer layer : layers) {
             try {
-                // If the layer does not match the expected size, throw an error
-                if (layer.getWidth() != width || layer.getHeight() != height) {
-                    throw new Exception("Layer size does not match world size, expected: " + width + "x" + height + ", got: " + layer.getWidth() + "x" + layer.getHeight());
-                }
-
                 // Only works with zlib and base64 encoded data (for now?)
                 if (!layer.getCompression().equals("zlib") || !layer.getEncoding().equals("base64")) {
                     throw new Exception("Unsupported layer encoding: " + layer.getEncoding() + " / " + layer.getCompression());
                 }
 
-                // Decode with base 64
-                byte[] bytes = Base64.getDecoder().decode(layer.getData());
-
-                // Decompress with zlib
-                Inflater inflater = new Inflater();
-                inflater.setInput(bytes, 0, bytes.length);
-                bytes = new byte[4 * layer.getWidth() * layer.getHeight()];
-                inflater.inflate(bytes);
-                inflater.end();
-
-                // For each byte the array, grab the next 4 bytes and convert it to an int
-                int i = 0;
                 int amountOfImportedTiles = 0;
-                for (int x = 0; x < layer.getHeight(); x++) {
-                    for (int y = 0; y < layer.getWidth(); y++) {
-                        int block = Byte.toUnsignedInt(bytes[i])
-                                + (Byte.toUnsignedInt(bytes[i + 1]) << 8)
-                                + (Byte.toUnsignedInt(bytes[i + 2]) << 16)
-                                + (Byte.toUnsignedInt(bytes[i + 3]) << 24);
+                for(TilesChunk chunk : layer.getChunks()) {
+                    // Decode with base 64
+                    byte[] bytes = Base64.getDecoder().decode(chunk.getData());
 
-                        // If the block is not 0, add it to the layout
-                        if (block != 0) {
-                            amountOfImportedTiles++;
-                            layout[y][x] = block;
+                    // Decompress with zlib
+                    Inflater inflater = new Inflater();
+                    inflater.setInput(bytes, 0, bytes.length);
+                    bytes = new byte[4 * chunk.getWidth() * chunk.getHeight()];
+                    inflater.inflate(bytes);
+                    inflater.end();
+
+                    // For each byte the array, grab the next 4 bytes and convert it to an int
+                    int i = 0;
+                    for (int x = 0; x < chunk.getWidth(); x++) {
+                        for (int y = 0; y < chunk.getHeight(); y++) {
+                            int block = Byte.toUnsignedInt(bytes[i])
+                                    + (Byte.toUnsignedInt(bytes[i + 1]) << 8)
+                                    + (Byte.toUnsignedInt(bytes[i + 2]) << 16)
+                                    + (Byte.toUnsignedInt(bytes[i + 3]) << 24);
+
+                            // If the block is not 0, add it to the layout
+                            if (block != 0) {
+                                amountOfImportedTiles++;
+                                layout[x + chunk.getX() - layer.getStartY()][y + chunk.getY() - layer.getStartY()] = block;
+                            }
+
+                            // Move to the next block of 4 bytes
+                            i += 4;
                         }
-
-                        // Move to the next block of 4 bytes
-                        i += 4;
                     }
                 }
 
@@ -142,12 +137,18 @@ public class Map {
         return layout;
     }
 
-    private static HashMap<Integer, BufferedImage> importSprites(List<TilesTileSet> tileSets) {
+    private static HashMap<Integer, BufferedImage> importSprites(List<TilesTileSetSource> tileSets) {
         HashMap<Integer, BufferedImage> sprites = new HashMap<>();
 
-        for (TilesTileSet tileSet : tileSets) {
+        for (TilesTileSetSource tileSetSource : tileSets) {
             try {
-                // Load the tileset image
+                String tileSetJson = FileManager.read("./res/" + tileSetSource.getSource());
+                TilesTileSet tileSet = TilesTileSet.fromJson(tileSetJson);
+
+                if(tileSet == null) {
+                    throw new Exception("Failed to import tile set '" + tileSetSource.getSource() + "'");
+                }
+
                 InputStream imageStream = FileManager.getResource(tileSet.getImage());
 
                 // If the image could not be found, throw an error
@@ -179,7 +180,7 @@ public class Map {
                         BufferedImage sprite = image.getSubimage(x, y, tileSet.getTileWidth(), tileSet.getTileHeight());
 
                         // Calculate the ID of the tile
-                        int blockId = r * columns + c + tileSet.getFirstGid();
+                        int blockId = r * columns + c + tileSetSource.getFirstgid();
 
                         // Add the sprite to the sprites map
                         sprites.put(blockId, sprite);
@@ -189,7 +190,7 @@ public class Map {
                 Logger.debug("Imported tileset '" + tileSet.getName() + "' with " + columns * rows + " sprites");
 
             } catch (Exception ex) {
-                Logger.warn(ex, "Failed to import tileset '" + tileSet.getName() + "'");
+                Logger.warn(ex, "Failed to import tileset '" + tileSetSource.getSource() + "'");
             }
         }
 
