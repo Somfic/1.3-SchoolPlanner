@@ -68,6 +68,11 @@ public class LunchBreak {
         this.breakLengthSpinner.getValueFactory().setValue(this.breakLengthCurrent);
     }
 
+    public void set(int time, int length) {
+        breakTimeDropdown.setValue(time + "");
+        breakLengthSpinner.getValueFactory().setValue(length);
+    }
+
     public HBox getContent() {
         return this.hBox;
     }

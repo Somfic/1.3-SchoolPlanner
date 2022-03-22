@@ -1,29 +1,39 @@
 package Gui.Settings;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 public interface SettingCallback {
     void onSettingChange(ScheduleSettings newSettings);
 
-    class ScheduleSettings {
-        int speed;
-        Color color;
-        boolean textBrightness;
-        int classBlockLength;
-        LocalTime time;
-        Pair<Integer, Integer> fastBreak;
-        Pair<Integer, Integer> lunchBreak;
+    @JsonDeserialize(as = SettingCallback.ScheduleSettings.class)
+    class ScheduleSettings implements Serializable {
+        private int speed;
+        private Color color;
+        private boolean textBrightness;
+        private int classBlockLength;
+        private LocalTime time;
+        //todo fix saving time
+        private int fastBreakTime;
+        private int fastBreakLength;
+        private int lunchBreakTime;
+        private int lunchBreakLength;
 
-        public ScheduleSettings(int speed, Color color, boolean textBrightness, int classBlockLength, Pair<Integer, Integer> fastBreak, Pair<Integer, Integer> lunchBreak, LocalTime time) {
+        public ScheduleSettings() {
+        }
+
+        public ScheduleSettings(int speed, Color color, boolean textBrightness, int classBlockLength, int fastBreakTime, int fastBreakLength, int lunchBreakTime, int lunchBreakLength, LocalTime time) {
             this.speed = speed;
             this.color = color;
             this.textBrightness = textBrightness;
             this.classBlockLength = classBlockLength;
-            this.fastBreak = fastBreak;
-            this.lunchBreak = lunchBreak;
+            this.fastBreakTime = fastBreakTime;
+            this.fastBreakLength = fastBreakLength;
+            this.lunchBreakTime = lunchBreakTime;
+            this.lunchBreakLength = lunchBreakLength;
             this.time = time;
         }
 
@@ -31,11 +41,11 @@ public interface SettingCallback {
             return speed;
         }
 
-        public Color getThemeColor() {
+        public Color getColor() {
             return color;
         }
 
-        public boolean getTextBrightness() {
+        public boolean isTextBrightness() {
             return textBrightness;
         }
 
@@ -43,16 +53,60 @@ public interface SettingCallback {
             return classBlockLength;
         }
 
-        public Pair<Integer, Integer> getFastBreak() {
-            return fastBreak;
-        }
-
-        public Pair<Integer, Integer> getLunchBreak() {
-            return lunchBreak;
-        }
-
-        public LocalTime getStartingTime() {
+        public LocalTime getTime() {
             return time;
+        }
+
+        public int getFastBreakTime() {
+            return fastBreakTime;
+        }
+
+        public int getFastBreakLength() {
+            return fastBreakLength;
+        }
+
+        public int getLunchBreakTime() {
+            return lunchBreakTime;
+        }
+
+        public int getLunchBreakLength() {
+            return lunchBreakLength;
+        }
+
+        public void setSpeed(int speed) {
+            this.speed = speed;
+        }
+
+        public void setColor(Color color) {
+            this.color = color;
+        }
+
+        public void setTextBrightness(boolean textBrightness) {
+            this.textBrightness = textBrightness;
+        }
+
+        public void setClassBlockLength(int classBlockLength) {
+            this.classBlockLength = classBlockLength;
+        }
+
+        public void setTime(LocalTime time) {
+            this.time = time;
+        }
+
+        public void setFastBreakTime(int fastBreakTime) {
+            this.fastBreakTime = fastBreakTime;
+        }
+
+        public void setFastBreakLength(int fastBreakLength) {
+            this.fastBreakLength = fastBreakLength;
+        }
+
+        public void setLunchBreakTime(int lunchBreakTime) {
+            this.lunchBreakTime = lunchBreakTime;
+        }
+
+        public void setLunchBreakLength(int lunchBreakLength) {
+            this.lunchBreakLength = lunchBreakLength;
         }
     }
 }

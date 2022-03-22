@@ -68,6 +68,11 @@ public class FastBreak {
         this.breakLengthSpinner.getValueFactory().setValue(this.breakLengthCurrent);
     }
 
+    public void set(int time, int length) {
+        BTDropdown.setValue(time + "");
+        breakLengthSpinner.getValueFactory().setValue(length);
+    }
+
     public HBox getContent() {
         return this.hBox;
     }
