@@ -1,4 +1,4 @@
-package Data.Tiles;
+package data.tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,8 +1,6 @@
 package data.map;
 
-import data.tiles.TilesLayer;
-import data.tiles.TilesTileSet;
-import data.tiles.Tiles;
+import data.tiles.*;
 import io.FileManager;
 import logging.Logger;
 
@@ -84,7 +82,7 @@ public class Map {
 
                     BufferedImage sprite = sprites.get(blockId);
 
-                    world.addTile(new Tile(x, y, z, sprite));
+                    world.addTile(new data.map.Tile(x, y, z, sprite));
                 }
             }
         }

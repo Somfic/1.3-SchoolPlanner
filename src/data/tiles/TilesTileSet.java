@@ -1,6 +1,6 @@
 package data.tiles;
 
-import Logging.Logger;
+import logging.Logger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
