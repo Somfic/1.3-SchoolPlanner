@@ -35,10 +35,7 @@ public class SimulationView extends VBox {
 
         for (Tile tile : map.getTiles()) {
             Vector2 coords = new Vector2(tile.getX() * tileSize, tile.getY() * tileSize);
-            if (tile.getImage() == null) {
-                context.setFill(new Color(0, 0, 0, 1));
-                context.fillRect(coords.x, coords.y, tileSize, tileSize);
-            } else {
+            if (tile.getImage() != null) {
                 context.drawImage(SwingFXUtils.toFXImage(tile.getImage(), null), coords.x, coords.y, tileSize, tileSize);
             }
         }
