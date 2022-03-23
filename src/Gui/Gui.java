@@ -89,7 +89,7 @@ public class Gui extends Application implements SettingCallback {
         this.mainPane = new VBox(windowBar.getContent(), this.tabPane);
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
-        this.scheduleView = new ScheduleView(this);
+        this.scheduleView = new ScheduleView();
         this.scene = new Scene(mainPane, 1500, 700);
         this.scheduleView.updateSize(this.scene.getWidth(), this.scene.getHeight());
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
@@ -122,7 +122,8 @@ public class Gui extends Application implements SettingCallback {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
 
-        this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
+        this.scheduleView.build();
+//        this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
 
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
                 this.scheduleView.updateSize(stage.getWidth(), stage.getHeight());

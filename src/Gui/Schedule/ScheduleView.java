@@ -12,14 +12,12 @@ import javafx.scene.text.FontWeight;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ScheduleView extends Pane {
     private GridPane scheduleGridPane = new GridPane();
     private Schedule schedule = new Schedule();
     private Label lessonLabel, teacherLabel, studentGroupsLabel, divider1, divider2;
     private ArrayList<Label> labels = new ArrayList<>(5);
-    private int width;
     private int classBlockLength;
     private int lunchBreakTime;
     private int lunchBreakLength;
@@ -36,15 +34,6 @@ public class ScheduleView extends Pane {
         this.scheduleGridPane.setAlignment(Pos.CENTER);
         this.startTime = LocalTime.of(8, 00);
         this.buildScheduleTable(startTime);
-    }
-
-    private void TESTMETHOD() {
-        //hardcoding a schedule
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Pieter"), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
     }
 
     public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
@@ -70,12 +59,10 @@ public class ScheduleView extends Pane {
         this.addSchedule();
     }
 
+    // TODO: change the translate so it updates along with the schedule size!
     private void addSchedule() {
         for (ScheduleItem scheduleItem : schedule.getItems()) {
             Pane pane = new Pane();
-            /*
-             * TODO: change the translate so it updates along with the schedule size!
-             */
             pane.setMinWidth(215);
             //Height = 50 * (end - start + 1)
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));
@@ -89,7 +76,7 @@ public class ScheduleView extends Pane {
             pane.getChildren().add(this.createScheduleItemContent(scheduleItem));
 
             //Design
-            pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
+            pane.setStyle("-fx-border-width: 1; -fx-border-color: #000000; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
 
             pane.setOnMouseClicked(event -> this.selectButtons.selectItem(scheduleItem));
