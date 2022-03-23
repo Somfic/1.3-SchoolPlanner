@@ -1,0 +1,14 @@
+{ "columns":64,
+ "image":"objects_d11_2.png",
+ "imageheight":4096,
+ "imagewidth":4096,
+ "margin":0,
+ "name":"objects_3",
+ "spacing":0,
+ "tilecount":4096,
+ "tiledversion":"1.8.2",
+ "tileheight":64,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":"1.8"
+}
