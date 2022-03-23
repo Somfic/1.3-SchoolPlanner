@@ -19,11 +19,22 @@ public class Tiles {
     private String renderOrder;
     private String tiledVersion;
     private int tileHeight;
-    private List<TilesTileSet> tileSets = new ArrayList<>();
+    private List<TilesTileSetSource> tileSets = new ArrayList<>();
     private int tileWidth;
     private String type;
     private String version;
     private int width;
+    private TilesEditorSettings editorSettings;
+
+    @JsonProperty("editorsettings")
+    public TilesEditorSettings getEditorSettings() {
+        return editorSettings;
+    }
+
+    @JsonProperty("editorsettings")
+    public void setEditorSettings(TilesEditorSettings editorSettings) {
+        this.editorSettings = editorSettings;
+    }
 
     @JsonProperty("compressionlevel")
     public int getCompressionLevel() {
@@ -126,12 +137,12 @@ public class Tiles {
     }
 
     @JsonProperty("tilesets")
-    public List<TilesTileSet> getTileSets() {
+    public List<TilesTileSetSource> getTileSets() {
         return tileSets;
     }
 
     @JsonProperty("tilesets")
-    public void setTileSets(List<TilesTileSet> value) {
+    public void setTileSets(List<TilesTileSetSource> value) {
         this.tileSets = value;
     }
 

@@ -1,8 +1,6 @@
 package data.map;
 
-import data.tiles.TilesLayer;
-import data.tiles.TilesTileSet;
-import data.tiles.Tiles;
+import data.tiles.*;
 import io.FileManager;
 import logging.Logger;
 
@@ -68,67 +66,73 @@ public class Map {
 
         // Import the sprites and layout
         HashMap<Integer, BufferedImage> sprites = importSprites(tiles.getTileSets());
-        int[][] layout = importLayout(tiles.getLayers(), tiles.getWidth(), tiles.getHeight());
+        int[][][] layout = importLayout(tiles.getLayers(), tiles.getWidth(), tiles.getHeight());
 
         Map world = new Map(tiles.getWidth(), tiles.getHeight());
 
         // Add the tiles to the world
-        for (int x = 0; x < tiles.getWidth(); x++) {
-            for (int y = 0; y < tiles.getHeight(); y++) {
+        for (int y = 0; y < tiles.getHeight(); y++) {
+            for (int x = 0; x < tiles.getWidth(); x++) {
+                for (int z = 0; z < tiles.getLayers().size(); z++) {
+                    int blockId = layout[x][y][z];
 
-                int blockId = layout[x][y];
-                BufferedImage sprite = sprites.get(blockId);
+                    if (blockId == 0) {
+                        continue;
+                    }
 
-                world.addTile(new Tile(x, y, sprite));
+                    BufferedImage sprite = sprites.get(blockId);
+
+                    world.addTile(new data.map.Tile(x, y, z, sprite));
+                }
             }
         }
 
         return world;
     }
 
-    private static int[][] importLayout(List<TilesLayer> layers, int width, int height) {
-        int[][] layout = new int[width][height];
+    private static int[][][] importLayout(List<TilesLayer> layers, int width, int height) {
+        Logger.debug("Importing " + width + "x" + height + " layout");
 
-        for (TilesLayer layer : layers) {
+        int[][][] layout = new int[width + 39][height + 39][layers.size()];
+
+        for (int z = 0; z < layers.size(); z++) {
+            TilesLayer layer = layers.get(z);
+
             try {
-                // If the layer does not match the expected size, throw an error
-                if (layer.getWidth() != width || layer.getHeight() != height) {
-                    throw new Exception("Layer size does not match world size, expected: " + width + "x" + height + ", got: " + layer.getWidth() + "x" + layer.getHeight());
-                }
-
                 // Only works with zlib and base64 encoded data (for now?)
                 if (!layer.getCompression().equals("zlib") || !layer.getEncoding().equals("base64")) {
                     throw new Exception("Unsupported layer encoding: " + layer.getEncoding() + " / " + layer.getCompression());
                 }
 
-                // Decode with base 64
-                byte[] bytes = Base64.getDecoder().decode(layer.getData());
-
-                // Decompress with zlib
-                Inflater inflater = new Inflater();
-                inflater.setInput(bytes, 0, bytes.length);
-                bytes = new byte[4 * layer.getWidth() * layer.getHeight()];
-                inflater.inflate(bytes);
-                inflater.end();
-
-                // For each byte the array, grab the next 4 bytes and convert it to an int
-                int i = 0;
                 int amountOfImportedTiles = 0;
-                for (int x = 0; x < layer.getHeight(); x++) {
-                    for (int y = 0; y < layer.getWidth(); y++) {
-                        int block = Byte.toUnsignedInt(bytes[i])
-                                + (Byte.toUnsignedInt(bytes[i + 1]) << 8)
-                                + (Byte.toUnsignedInt(bytes[i + 2]) << 16)
-                                + (Byte.toUnsignedInt(bytes[i + 3]) << 24);
+                for (TilesChunk chunk : layer.getChunks()) {
+                    // Decode with base 64
+                    byte[] bytes = Base64.getDecoder().decode(chunk.getData());
 
-                        // If the block is not 0, add it to the layout
-                        if (block != 0) {
-                            amountOfImportedTiles++;
-                            layout[y][x] = block;
+                    // Decompress with zlib
+                    Inflater inflater = new Inflater();
+                    inflater.setInput(bytes, 0, bytes.length);
+                    bytes = new byte[4 * chunk.getWidth() * chunk.getHeight()];
+                    inflater.inflate(bytes);
+                    inflater.end();
+
+                    int i = 0;
+                    for (int y = 0; y < chunk.getHeight(); y++) {
+                        for (int x = 0; x < chunk.getWidth(); x++) {
+                            int block = Byte.toUnsignedInt(bytes[i])
+                                    + (Byte.toUnsignedInt(bytes[i + 1]) << 8)
+                                    + (Byte.toUnsignedInt(bytes[i + 2]) << 16)
+                                    + (Byte.toUnsignedInt(bytes[i + 3]) << 24);
+
+                            // If the block is not 0, add it to the layout
+                            if (block != 0) {
+                                amountOfImportedTiles++;
+                                layout[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()][z] = block;
+                            }
+
+                            // Move to the next block of 4 bytes
+                            i += 4;
                         }
-
-                        // Move to the next block of 4 bytes
-                        i += 4;
                     }
                 }
 
@@ -142,12 +146,18 @@ public class Map {
         return layout;
     }
 
-    private static HashMap<Integer, BufferedImage> importSprites(List<TilesTileSet> tileSets) {
+    private static HashMap<Integer, BufferedImage> importSprites(List<TilesTileSetSource> tileSets) {
         HashMap<Integer, BufferedImage> sprites = new HashMap<>();
 
-        for (TilesTileSet tileSet : tileSets) {
+        for (TilesTileSetSource tileSetSource : tileSets) {
             try {
-                // Load the tileset image
+                String tileSetJson = FileManager.read("./res/" + tileSetSource.getSource());
+                TilesTileSet tileSet = TilesTileSet.fromJson(tileSetJson);
+
+                if (tileSet == null) {
+                    throw new Exception("Failed to import tile set '" + tileSetSource.getSource() + "'");
+                }
+
                 InputStream imageStream = FileManager.getResource(tileSet.getImage());
 
                 // If the image could not be found, throw an error
@@ -179,7 +189,7 @@ public class Map {
                         BufferedImage sprite = image.getSubimage(x, y, tileSet.getTileWidth(), tileSet.getTileHeight());
 
                         // Calculate the ID of the tile
-                        int blockId = r * columns + c + tileSet.getFirstGid();
+                        int blockId = r * columns + c + tileSetSource.getFirstgid();
 
                         // Add the sprite to the sprites map
                         sprites.put(blockId, sprite);
@@ -189,7 +199,7 @@ public class Map {
                 Logger.debug("Imported tileset '" + tileSet.getName() + "' with " + columns * rows + " sprites");
 
             } catch (Exception ex) {
-                Logger.warn(ex, "Failed to import tileset '" + tileSet.getName() + "'");
+                Logger.warn(ex, "Failed to import tileset '" + tileSetSource.getSource() + "'");
             }
         }
 
