@@ -20,11 +20,11 @@ public class SimulationView extends VBox {
     private final Map map;
     private final Canvas canvas;
 
-    private double tileSize = 10;
+    private double tileSize = 25;
 
     public SimulationView() {
         map = Map.fromFile("./res/school.tmj");
-        canvas = new Canvas(800, 600);
+        canvas = new Canvas(1500, 800);
 
         if (map == null) {
             //todo: error
@@ -36,7 +36,7 @@ public class SimulationView extends VBox {
         for (Tile tile : map.getTiles()) {
             Vector2 coords = new Vector2(tile.getX() * tileSize, tile.getY() * tileSize);
             if (tile.getImage() == null) {
-                context.setFill(new Color(0.5, 0.5, 0.5, 1));
+                context.setFill(new Color(0, 0, 0, 1));
                 context.fillRect(coords.x, coords.y, tileSize, tileSize);
             } else {
                 context.drawImage(SwingFXUtils.toFXImage(tile.getImage(), null), coords.x, coords.y, tileSize, tileSize);
