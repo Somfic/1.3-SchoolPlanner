@@ -1,7 +1,7 @@
 package data;
 
-import logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +14,14 @@ public class Schedule {
     }
 
     public void add(ScheduleItem item) {
-        for (int i = 0; i <items.size(); i++) {
-            if(item.getClassroom().getName().equals(items.get(i).getClassroom().getName()) ){
-                if(item.getStartPeriod()>=items.get(i).getStartPeriod() && item.getStartPeriod()<=items.get(i).getEndPeriod() || item.getEndPeriod()>=items.get(i).getStartPeriod()&&item.getEndPeriod()<=items.get(i).getEndPeriod()){
+        for (int i = 0; i < items.size(); i++) {
+            if (item.getClassroom().getName().equals(items.get(i).getClassroom().getName())) {
+                if (item.getStartPeriod() >= items.get(i).getStartPeriod() && item.getStartPeriod() <= items.get(i).getEndPeriod() || item.getEndPeriod() >= items.get(i).getStartPeriod() && item.getEndPeriod() <= items.get(i).getEndPeriod()) {
                     items.remove(i);
                 }
             }
         }
-        if(item.getEndPeriod()- item.getStartPeriod()>=0&& item.getEndPeriod()>=1 && item.getEndPeriod()<=10 &&  item.getStartPeriod()>=1 && item.getStartPeriod()<=10){
+        if (item.getEndPeriod() - item.getStartPeriod() >= 0 && item.getEndPeriod() >= 1 && item.getEndPeriod() <= 10 && item.getStartPeriod() >= 1 && item.getStartPeriod() <= 10) {
             items.add(item);
         }
     }
@@ -31,19 +31,21 @@ public class Schedule {
             add(item);
         }
     }
-    public void reset(){
+
+    public void reset() {
         items.clear();
     }
+
     public void remove(ScheduleItem scheduleItem) {
-        if (items.size() <= 1) {
+        if (items.size() == 1)
             items.clear();
-        }
-        for (int i = 0; i < items.size() - 1; i++) {
-            if (items.get(i).getClassroom().getName().equals(scheduleItem.getClassroom().getName()) && items.get(i).getStartPeriod() == scheduleItem.getStartPeriod()) {
-                items.remove(i);
-                break;
+        else
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).getClassroom().getName().equals(scheduleItem.getClassroom().getName()) && items.get(i).getStartPeriod() == scheduleItem.getStartPeriod()) {
+                    items.remove(i);
+                    break;
+                }
             }
-        }
     }
 
     public List<ScheduleItem> getItems() {
