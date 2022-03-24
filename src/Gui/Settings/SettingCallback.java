@@ -16,7 +16,6 @@ public interface SettingCallback {
         private boolean textBrightness;
         private int classBlockLength;
         private LocalTime time;
-        //todo fix saving time
         private int fastBreakTime;
         private int fastBreakLength;
         private int lunchBreakTime;

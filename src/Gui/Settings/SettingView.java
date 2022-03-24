@@ -120,10 +120,10 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             ObjectMapper json = new ObjectMapper();
 
             //Adding custom deserializers
-            SimpleModule colorModule = new SimpleModule();
-            colorModule.addDeserializer(Color.class, new ColorDeserializer());
-            colorModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer());
-            json.registerModule(colorModule);
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(Color.class, new ColorDeserializer());
+            module.addDeserializer(LocalTime.class, new LocalTimeDeserializer());
+            json.registerModule(module);
 
             //Read saved settings
             StringBuilder settings = new StringBuilder();
