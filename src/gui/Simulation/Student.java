@@ -24,9 +24,10 @@ public class Student {
 
 
     public Student(Point2D position, double angle) {
+
         this.position = position;
         this.angle = angle;
-        this.speed = 1+5 * Math.random();
+        this.speed = 3;
         this.target = position;
         this.frame = Math.random()*10;
 
@@ -105,6 +106,7 @@ public class Student {
         tx.translate(position.getX() - centerX, position.getY() - centerY);
         tx.rotate(angle + Math.PI/2, centerX, centerY);
         tx.translate(0, 20);
+        tx.scale(0.5, 0.5);
 
 
         g2d.drawImage(this.sprites.get((int)Math.floor(frame) % this.sprites.size()), tx, null);
@@ -160,13 +162,6 @@ public class Student {
             }
 
             if(!change || paths.get(sourceY).get(sourceX) !=0) {
-                for (ArrayList<Integer> layer : paths) {
-                    System.out.println();
-                    for (int path : layer) {
-                        System.out.print(path + "\t");
-                    }
-                    System.out.println();
-                }
                 break;
             }
             change = false;

@@ -77,7 +77,7 @@ public class Npc extends Application {
 
     public void init() {
         this.students = new ArrayList<>();
-        while (this.students.size() < 40) {
+        while (this.students.size() < 5) {
             Student student = new Student(new Point2D.Double(Math.random()*1000, Math.random()*1000), 0);
             if(!student.checkCollision(this.students)) {
                 this.students.add(student);
@@ -90,7 +90,7 @@ public class Npc extends Application {
 
     public void draw(FXGraphics2D g2) {
         g2.setTransform(new AffineTransform());
-        g2.setBackground(new Color(155,205,175));
+        g2.setBackground(new Color(255,255,255));
         g2.clearRect(0,0,(int)canvas.getWidth(), (int)canvas.getHeight());
 
         for(Student student : this.students) {
