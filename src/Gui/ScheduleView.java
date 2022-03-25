@@ -37,29 +37,21 @@ public class ScheduleView extends Pane {
         this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
-//        this.TESTMETHOD();
         this.buildScheduleTable();
     }
 
-//    private void TESTMETHOD() {
-//        //hardcoding a schedule
-//        ArrayList<StudentGroup> students = new ArrayList<>();
-//        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-//        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Pieter"), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-//        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-//        this.schedule.add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
-//    }
     public void applyScheduleItem(ArrayList<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
         clear();
         this.schedule.add(new ScheduleItem(teachers,students,classroom,startPeriod,endPeriod,lesson));
         this.addSchedule();
-
     }
+
     public void removeScheduleItem(ArrayList<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson){
         clear();
         this.schedule.remove(new ScheduleItem(teachers,students,classroom,startPeriod,endPeriod,lesson));
         this.addSchedule();
     }
+
     public void resetSchedule(){
         clear();
         this.schedule.reset();
@@ -157,6 +149,7 @@ public class ScheduleView extends Pane {
 
         return vBox;
     }
+
     public void clear() {
         Object[] children = this.getChildren().toArray();
         for (Object child : children) {

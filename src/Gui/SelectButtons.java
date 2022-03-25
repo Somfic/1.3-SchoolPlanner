@@ -92,6 +92,7 @@ public class SelectButtons extends Pane {
                         selectedTeachers.add(allTeachers.get(i));
                     }
                 }
+
                 scheduleView.applyScheduleItem(selectedTeachers, students, classRoomSelect.getValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getValue());
             }
         });
