@@ -80,7 +80,7 @@ public class Gui extends Application implements SettingCallback {
 
         //Other
         //  this.scene = new Scene(scheduleView.getContent());
-        this.windowBar = new WindowBar(stage);
+        this.windowBar = new WindowBar(stage, settingsPane);
         this.mainPane = new VBox(windowBar.getContent(), this.tabPane);
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
@@ -112,6 +112,8 @@ public class Gui extends Application implements SettingCallback {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
         stage.show();
 
+        settingsPane.load();
+
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
     }
 
@@ -129,7 +131,7 @@ public class Gui extends Application implements SettingCallback {
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
-        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreak().getValue(), newSettings.getLunchBreak().getKey(), newSettings.getFastBreak().getValue(), newSettings.getFastBreak().getKey(), newSettings.getStartingTime());
-        scheduleView.updateColor(newSettings.getThemeColor(), newSettings.getTextBrightness());
+        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreakTime(), newSettings.getLunchBreakLength(), newSettings.getFastBreakTime(), newSettings.getFastBreakLength(), newSettings.getTime());
+        scheduleView.updateColor(newSettings.getColor(), newSettings.isTextBrightness());
     }
 }

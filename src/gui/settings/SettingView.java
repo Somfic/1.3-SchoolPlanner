@@ -1,5 +1,12 @@
 package gui.settings;
 
+import saving.ColorDeserializer;
+import saving.LocalTimeDeserializer;
+import saving.LocalTimeSerializer;
+import logging.Logger;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -8,7 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalTime;
+import java.util.Scanner;
 
 public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback, StartTimeCallback {
     private BorderPane borderPane;
@@ -31,8 +42,10 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private Color themeColorSave;
     private boolean textDarkness;
     private int classBlockLengthSave;
-    private Pair<Integer, Integer> fastBreakSave;
-    private Pair<Integer, Integer> lunchBreakSave;
+    private int fastBreakTimeSave;
+    private int fastBreakLengthSave;
+    private int lunchBreakTimeSave;
+    private int lunchBreakLengthSave;
     private LocalTime startingTime;
     private SettingCallback callback;
 
@@ -63,7 +76,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             fastBreak.confirm();
             lunchBreak.confirm();
             startTime.confirm();
-            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakSave, lunchBreakSave, startingTime));
+            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakTimeSave, fastBreakLengthSave, lunchBreakTimeSave, lunchBreakLengthSave, startingTime));
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();
@@ -81,6 +94,61 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         return this.borderPane;
     }
 
+    public void save() {
+        Logger.debug("Saving settings");
+        cancel.fire();
+        SettingCallback.ScheduleSettings save = new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakTimeSave, fastBreakLengthSave, lunchBreakTimeSave, lunchBreakLengthSave, startingTime);
+
+        //Adding custom serializer
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(LocalTime.class, new LocalTimeSerializer());
+        mapper.registerModule(module);
+
+        ObjectWriter json = mapper.writer().withDefaultPrettyPrinter();
+        try (FileWriter fileWriter = new FileWriter("src/Saving/settingsSave.txt")) {
+            fileWriter.write(json.writeValueAsString(save));
+        } catch (IOException e) {
+            Logger.error(e, e.getMessage());
+        }
+    }
+
+    public void load() {
+        Logger.debug("Loading settings");
+
+        try (Scanner scanner = new Scanner(new File("src/Saving/settingsSave.txt"))) {
+            ObjectMapper json = new ObjectMapper();
+
+            //Adding custom deserializers
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(Color.class, new ColorDeserializer());
+            module.addDeserializer(LocalTime.class, new LocalTimeDeserializer());
+            json.registerModule(module);
+
+            //Read saved settings
+            StringBuilder settings = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                settings.append(scanner.nextLine());
+            }
+            SettingCallback.ScheduleSettings save = json.readValue(settings.toString(), SettingCallback.ScheduleSettings.class);
+
+            //Set saved settings
+            speedSelector.setSpeed(save.getSpeed());
+            colorSelector.setColor(save.getColor());
+            textDarkness = save.isTextBrightness();
+            classBlock.set(save.getClassBlockLength());
+            fastBreak.set(save.getFastBreakTime(), save.getFastBreakLength());
+            lunchBreak.set(save.getLunchBreakTime(), save.getLunchBreakLength());
+            startTime.set(save.getTime());
+
+            confirm.fire();
+        } catch (IOException e) {
+            Logger.error(e, e.getMessage());
+        }
+
+        confirm.fire();
+    }
+
     @Override
     public void onSpeedChange(int speed) {
         this.speedSave = speed;
@@ -93,7 +161,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     }
 
     /**
-     * Chooses if the text within the chedule is gray or black.
+     * Chooses if the text within the schedule is gray or black.
      * @param darkness of the theme color, true if darkness is above 0.4, false if darkness is under 0.4
      */
     @Override
@@ -108,12 +176,14 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     @Override
     public void onFastBreakTimeChange(Pair<Integer, Integer> time) {
-        this.fastBreakSave = time;
+        this.fastBreakTimeSave = time.getValue();
+        this.fastBreakLengthSave = time.getKey();
     }
 
     @Override
     public void onLunchBreakTimeChange(Pair<Integer, Integer> time) {
-        this.lunchBreakSave = time;
+        this.lunchBreakTimeSave = time.getValue();
+        this.lunchBreakLengthSave = time.getKey();
     }
 
     @Override

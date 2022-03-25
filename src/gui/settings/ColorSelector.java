@@ -47,6 +47,12 @@ public class ColorSelector {
         this.rectangle.setFill(colorCurrent);
     }
 
+    public void setColor(Color newColor) {
+        colorCurrent = newColor;
+        colorPicker.setValue(newColor);
+        rectangle.setFill(newColor);
+    }
+
     public HBox getContent() {
         return this.hBox;
     }

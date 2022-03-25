@@ -53,6 +53,15 @@ public class SpeedSelector {
         speedSlider.setValue(this.speedMemory);
     }
 
+    public int getSpeed() {
+        return this.speedCurrent;
+    }
+
+    public void setSpeed(int speedCurrent) {
+        this.speedCurrent = speedCurrent;
+        speedSlider.setValue(speedCurrent);
+    }
+
     public HBox getContent() {
         return this.componentHBox;
     }
