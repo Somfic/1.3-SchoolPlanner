@@ -66,23 +66,20 @@ public class Npc extends Application {
 
         canvas.setOnMouseMoved(event -> {
             for(Student student : this.students) {
-                //           visitor.setTarget(new Point2D.Double(event.getX(), event.getY()));
+                student.setTarget(new Point2D.Double(100, 100));
             }
         });
 
     }
-
 
     ArrayList<Student> students;
     double timer;
 
     public void init() {
         this.students = new ArrayList<>();
-        while(this.students.size() < 40)
-        {
+        while (this.students.size() < 40) {
             Student student = new Student(new Point2D.Double(Math.random()*1000, Math.random()*1000), 0);
-            if(!student.checkCollision(this.students))
-            {
+            if(!student.checkCollision(this.students)) {
                 this.students.add(student);
             }
         }
@@ -91,8 +88,7 @@ public class Npc extends Application {
     }
 
 
-    public void draw(FXGraphics2D g2)
-    {
+    public void draw(FXGraphics2D g2) {
         g2.setTransform(new AffineTransform());
         g2.setBackground(new Color(155,205,175));
         g2.clearRect(0,0,(int)canvas.getWidth(), (int)canvas.getHeight());
@@ -104,17 +100,8 @@ public class Npc extends Application {
 
     public void update(double frameTime) {
         timer+=frameTime;
-        if(timer > 10)
-        {
-            timer -= 10;
-            for(Student student : this.students)
-            {
-                student.setTarget(new Point2D.Double(Math.random()*1000, Math.random()*1000));
-            }
-        }
 
-
-        for(Student student : this.students) {
+        for (Student student : this.students) {
             student.update(this.students);
         }
     }

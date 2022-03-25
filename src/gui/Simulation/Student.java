@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Student {
     private Point2D position;
@@ -22,8 +23,7 @@ public class Student {
     private static double rotationSpeed = 0.1;
 
 
-    public Student(Point2D position, double angle)
-    {
+    public Student(Point2D position, double angle) {
         this.position = position;
         this.angle = angle;
         this.speed = 1+5 * Math.random();
@@ -31,8 +31,7 @@ public class Student {
         this.frame = Math.random()*10;
 
         this.sprites = new ArrayList<>();
-        try
-        {
+        try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/npc.png"));
             int w = image.getWidth()/2;
             int h = image.getHeight()/3;
@@ -41,32 +40,29 @@ public class Student {
                     this.sprites.add(image.getSubimage(x * w, y * h, w,h));
                 }
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 
-    public void update(ArrayList<Student> students)
-    {
-        if(target.distanceSq(position) < 32)
+    public void update(ArrayList<Student> students) {
+        if (target.distanceSq(position) < 32)
             return;
 
         double targetAngle = Math.atan2(this.target.getY() - this.position.getY(), this.target.getX() - this.position.getX());
         double rotation = targetAngle - this.angle;
-        while(rotation < -Math.PI) {
+        while (rotation < -Math.PI) {
             rotation += 2*Math.PI;
         }
-        while(rotation > Math.PI) {
+        while (rotation > Math.PI) {
             rotation -= 2*Math.PI;
         }
 
         double oldAngle = this.angle;
-        if(rotation < -rotationSpeed) {
+        if (rotation < -rotationSpeed) {
             this.angle -= rotationSpeed;
-        } else if(rotation > rotationSpeed) {
+        } else if (rotation > rotationSpeed) {
             this.angle += rotationSpeed;
         } else {
             this.angle = targetAngle;
@@ -81,7 +77,7 @@ public class Student {
         hasCollision = hasCollision || checkCollision(students);
 
 
-        if(hasCollision) {
+        if (hasCollision) {
             this.position = oldPosition;
             this.frame = 0;
             this.angle = oldAngle + rotationSpeed;
@@ -90,21 +86,19 @@ public class Student {
         }
     }
 
-    public boolean checkCollision(ArrayList<Student> students)
-    {
+    public boolean checkCollision(ArrayList<Student> students) {
         boolean hasCollision = false;
-        for(Student student : students) {
-            if(student != this) {
-                if(student.position.distanceSq(position) < 64*64) {
-                    hasCollision = true;
+        for (Student student : students) {
+            if (student != this) {
+                if (student.position.distanceSq(position) < 64*64) {
+//                    hasCollision = true;
                 }
             }
         }
         return hasCollision;
     }
 
-    public void draw(Graphics2D g2d)
-    {
+    public void draw(Graphics2D g2d) {
         int centerX = sprites.get(0).getWidth()/2;
         int centerY = sprites.get(0).getHeight()/2;
         AffineTransform tx = new AffineTransform();
@@ -116,33 +110,26 @@ public class Student {
         g2d.drawImage(this.sprites.get((int)Math.floor(frame) % this.sprites.size()), tx, null);
 
 
-        g2d.setColor(Color.white);
-        g2d.draw(new Ellipse2D.Double(position.getX()-32, position.getY()-32, 64, 64));
-        g2d.draw(new Line2D.Double(position, target));
+//        g2d.setColor(Color.white);
+//        g2d.draw(new Ellipse2D.Double(position.getX()-32, position.getY()-32, 8, 8));
+//        g2d.draw(new Line2D.Double(position, target));
     }
 
-    public void setTarget(Point2D newTarget)
-    {
+    public void setTarget(Point2D newTarget) {
         this.target = newTarget;
     }
 
-    public ArrayList<Integer> stringToArrayList(String numbers) {
-
-        ArrayList<Integer> layer = new ArrayList();
-        for (String number : numbers.split("")) {
-            layer.add(Integer.parseInt(number));
-        }
-        return layer;
-    }
-
-    public ArrayList<Pair<Integer, Integer>> route(ArrayList<ArrayList<Integer>> map, int sourceX, int sourceY, int destinationX, int destinationY) {
-        ArrayList<ArrayList<Integer>> paths = new ArrayList<>(map.size());
+    public static ArrayList<Pair<Integer, Integer>> route(ArrayList<ArrayList<Integer>> map, int sourceX, int sourceY, int destinationX, int destinationY) {
         ArrayList<Pair<Integer, Integer>> route = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> paths = (ArrayList<ArrayList<Integer>>) map.stream().map(ArrayList::new).collect(Collectors.toList());
+
         if(sourceX == destinationX && sourceY == destinationY) {
             return new ArrayList<>();
         }
-        for (int i = 0; i < map.size(); i++) {
-            paths.add(stringToArrayList("00000"));
+        for (int i = 0; i<map.size(); i++) {
+            for (int j = 0; j<map.get(i).size(); j++) {
+                paths.get(i).set(j, 0);
+            }
         }
         paths.get(destinationY).set(destinationX, 1);
         boolean change = false;
@@ -173,7 +160,6 @@ public class Student {
             }
 
             if(!change || paths.get(sourceY).get(sourceX) !=0) {
-                System.out.print("\nAll paths:");
                 for (ArrayList<Integer> layer : paths) {
                     System.out.println();
                     for (int path : layer) {
