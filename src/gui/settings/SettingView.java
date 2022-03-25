@@ -3,7 +3,7 @@ package gui.settings;
 import saving.ColorDeserializer;
 import saving.LocalTimeDeserializer;
 import saving.LocalTimeSerializer;
-import Logging.Logger;
+import logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.module.SimpleModule;

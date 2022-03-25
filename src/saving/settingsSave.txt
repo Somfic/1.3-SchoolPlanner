@@ -5,10 +5,10 @@
     "green" : 0.3607843220233917,
     "blue" : 0.3607843220233917,
     "opacity" : 1.0,
-    "brightness" : 0.8039215803146362,
+    "opaque" : true,
     "hue" : 0.0,
-    "saturation" : 0.5512195083975864,
-    "opaque" : true
+    "brightness" : 0.8039215803146362,
+    "saturation" : 0.5512195083975864
   },
   "textBrightness" : false,
   "classBlockLength" : 60,

@@ -1,6 +1,6 @@
 package gui.components;
 
-import Gui.Settings.SettingView;
+import gui.settings.SettingView;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
