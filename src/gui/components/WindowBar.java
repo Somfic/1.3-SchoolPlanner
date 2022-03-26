@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.settings.SettingView;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 public class WindowBar {
     private double mousePressedX, mousePressedY;
     private Stage stage;
+    private SettingView settings;
     private BorderPane headerPane;
     private HBox buttonBox;
     private HBox titleBox;
@@ -26,8 +28,9 @@ public class WindowBar {
     private String buttonStyle = "-fx-background-color: ";
     private double radius = 7.5;
 
-    public WindowBar(Stage stage) {
+    public WindowBar(Stage stage, SettingView settings) {
         this.stage = stage;
+        this.settings = settings;
 
         //Buttons
         this.close = new Button();
@@ -80,6 +83,7 @@ public class WindowBar {
 
         //Button functionality
         close.setOnMouseClicked((ActionEvent) -> {
+            settings.save();
             stage.close();
         });
         minimize.setOnMouseClicked((ActionEvent) -> {

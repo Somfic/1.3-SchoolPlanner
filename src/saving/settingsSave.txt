@@ -1,0 +1,23 @@
+{
+  "speed" : 5,
+  "color" : {
+    "red" : 0.8039215803146362,
+    "green" : 0.3607843220233917,
+    "blue" : 0.3607843220233917,
+    "opacity" : 1.0,
+    "opaque" : true,
+    "hue" : 0.0,
+    "brightness" : 0.8039215803146362,
+    "saturation" : 0.5512195083975864
+  },
+  "textBrightness" : false,
+  "classBlockLength" : 60,
+  "time" : {
+    "hour" : 8,
+    "minute" : 0
+  },
+  "fastBreakTime" : 1,
+  "fastBreakLength" : 15,
+  "lunchBreakTime" : 5,
+  "lunchBreakLength" : 30
+}
