@@ -2,12 +2,17 @@ package data.map;
 
 import data.tiles.*;
 import io.FileManager;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import logging.Logger;
+import org.dyn4j.geometry.Vector2;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 import java.util.zip.Inflater;
 
 public class Map {
@@ -47,6 +52,19 @@ public class Map {
 
         Logger.warn("Could not find a tile at " + x + "x" + y);
         return null;
+    }
+
+    public BufferedImage generateImage(int tileSize) {
+        BufferedImage image = new BufferedImage(width * tileSize, height * tileSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+
+        for (Tile tile : tiles) {
+            if (tile.getImage() != null) {
+                g.drawImage(tile.getImage(), tile.getX() * tileSize, tile.getY() * tileSize, tileSize, tileSize, null);
+            }
+        }
+
+        return image;
     }
 
     public static Map fromFile(String path) {

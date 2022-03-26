@@ -40,13 +40,14 @@ public class Gui extends Application implements SettingCallback {
     private WindowBar windowBar;
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
-    private Pane simulationPane = new SimulationView();
+    private SimulationView simulationPane;
     private SettingView settingsPane = new SettingView(this);
 
     @Override
     public void start(Stage stage) {
         // Custom title bar
-        this.canvas = new Canvas(1920, 900);
+        this.canvas = new Canvas(1000, 1000);
+        this.simulationPane = new SimulationView(this.canvas);
 
         //Making tabs
         this.tabPane = new TabPane();
@@ -85,11 +86,22 @@ public class Gui extends Application implements SettingCallback {
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
         this.scene = new Scene(mainPane);
+
+        this.scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            this.canvas.setWidth(newValue.doubleValue());
+        });
+
+        this.scene.heightProperty().addListener((observable, oldValue, newValue) -> {
+            this.canvas.setHeight(newValue.doubleValue());
+        });
+
         this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
 
 //        this.schedulePane.setTop(new WindowBar(stage).getContent());
         this.schedulePane.setCenter(this.scheduleView);
         this.schedulePane.setBottom(this.scheduleView.selectButtons);
+
+        simulationPane.onStart();
 
         //AnimationTimer used for the FPS count
         new AnimationTimer() {
@@ -102,6 +114,8 @@ public class Gui extends Application implements SettingCallback {
                 }
                 update((now - last) / 1000000000.0);
                 last = now;
+
+                simulationPane.onRender(canvas.getGraphicsContext2D());
             }
         }.start();
 
@@ -118,6 +132,8 @@ public class Gui extends Application implements SettingCallback {
     LocalDateTime lastFps = LocalDateTime.now();
 
     public void update(double deltaTime) {
+        simulationPane.onUpdate(deltaTime);
+
         fps.update(deltaTime);
         InputManager.update();
 
