@@ -16,10 +16,6 @@ public class ScheduleItem {
 	private List<Teacher> teachers;
 	private List<Lesson> lessons;
 
-    public ScheduleItem() {
-
-    }
-
     public ScheduleItem(List<Teacher> teachers, List<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         this.teachers = teachers;
         this.classroom = classroom;
@@ -104,5 +100,20 @@ public class ScheduleItem {
 
     public void setLessons(ArrayList<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduleItem{" +
+                "teacher=" + teacher +
+                ", startPeriod=" + startPeriod +
+                ", endPeriod=" + endPeriod +
+                ", classroom=" + classroom +
+                ", lesson=" + lesson +
+                ", studentGroups=" + studentGroups +
+                ", classrooms=" + classrooms +
+                ", teachers=" + teachers +
+                ", lessons=" + lessons +
+                '}';
     }
 }

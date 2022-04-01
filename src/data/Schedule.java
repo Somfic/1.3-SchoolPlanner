@@ -9,14 +9,12 @@ import java.util.List;
 
 public class Schedule {
     private final List<ScheduleItem> items;
-
     public Schedule() {
         this.items = new ArrayList<>();
     }
 
     public void add(ScheduleItem item) {
         validate(item);
-
         if(item.getEndPeriod() - item.getStartPeriod() >= 0 && item.getEndPeriod() >= 1 && item.getEndPeriod()<= 10 &&  item.getStartPeriod() >= 1 && item.getStartPeriod() <= 10){
             items.add(item);
         }

@@ -50,21 +50,23 @@ public class ScheduleView extends Pane {
         //hardcoding a schedule
         ArrayList<StudentGroup> students = new ArrayList<>();
         Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
+        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students,
+                new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
+        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students,
+                new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
+        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
+                new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
     }
 
-    public void applyScheduleItem(List<Teacher> teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+    public void applyScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.add(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
+        this.schedule.add(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
-
     }
 
-    public void removeScheduleItem(List<Teacher> teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+    public void removeScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
+        this.schedule.remove(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
         this.addSchedule();
     }
 
@@ -83,9 +85,6 @@ public class ScheduleView extends Pane {
     private void addSchedule() {
         for (ScheduleItem scheduleItem : schedule.getItems()) {
             Pane pane = new Pane();
-            /*
-             * TODO: change the translate so it updates along with the schedule size!
-             */
             pane.setMinWidth(215);
             //Height = 50 * (end - start + 1)
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));
@@ -119,12 +118,19 @@ public class ScheduleView extends Pane {
         for (StudentGroup studentGroup : scheduleItem.getStudentGroups()) {
             studentGroups.append(studentGroup.getName()).append(", ");
         }
+
+//        //Get string of teacherGroups
+//        StringBuilder teacherGroups = new StringBuilder();
+//        for (StudentGroup teacherGroups : scheduleItem.getStudentGroups()) {
+//            teacherGroups.append(teacherGroups.getName()).append(", ");
+//        }
         //Delete last 2 characters ", "
         studentGroups.reverse().delete(0, 2).reverse();
+//        teacherGroups.reverse().delete(0, 2).reverse();
 
         //Make labels
         this.lessonLabel = new Label(scheduleItem.getLesson().getName());
-        this.teacherLabel = new Label(scheduleItem.getTeacher().getName());
+        this.teacherLabel = new Label(scheduleItem.getTeachers().toString());
         this.studentGroupsLabel = new Label(studentGroups.toString());
         this.divider1 = new Label("|");
         this.divider2 = new Label("|");

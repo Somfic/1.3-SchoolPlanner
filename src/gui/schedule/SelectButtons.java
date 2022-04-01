@@ -3,7 +3,6 @@ package gui.schedule;
 import data.*;
 import gui.components.Dropdown;
 import io.FileManager;
-import logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import logging.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ public class SelectButtons extends Pane {
     private TextField endTime = new TextField();
 
     private Dropdown<Classroom> classRoomSelect = new Dropdown<Classroom>();                                     //ComboBoxes
-    private Dropdown<Teacher> teacherSelect = new Dropdown<Teacher>();
-    private Dropdown<Lesson> courseSelect = new Dropdown<Lesson>();
+    private Dropdown<Teacher> teacherSelect = new Dropdown<>();
+    private Dropdown<Lesson> courseSelect = new Dropdown<>();
     private MenuButton studentGroupSelect = new MenuButton("Class       ");
     private ScheduleView scheduleView;
     private ArrayList<StudentGroup> students = new ArrayList<>();
@@ -77,9 +77,9 @@ public class SelectButtons extends Pane {
                     if (temp.isSelected()) {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
-                    ;
                 }
-                scheduleView.applyScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
+                scheduleView.applyScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(),
+                        Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not apply schedule item");
             }
