@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleItem {
-	private Teacher teacher;
 	private int startPeriod;
 	private int endPeriod;
 	private Classroom classroom;
@@ -29,14 +28,6 @@ public class ScheduleItem {
     public boolean isValid() {
 		return false;
 	}
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
 
     public int getStartPeriod() {
         return startPeriod;
@@ -90,7 +81,7 @@ public class ScheduleItem {
         return teachers;
     }
 
-    public void setTeachers(ArrayList<Teacher> teachers) {
+    public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
 
@@ -105,7 +96,6 @@ public class ScheduleItem {
     @Override
     public String toString() {
         return "ScheduleItem{" +
-                "teacher=" + teacher +
                 ", startPeriod=" + startPeriod +
                 ", endPeriod=" + endPeriod +
                 ", classroom=" + classroom +

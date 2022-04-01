@@ -48,14 +48,14 @@ public class ScheduleView extends Pane {
 
     private void TESTMETHOD() {
         //hardcoding a schedule
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students,
-                new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students,
-                new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
-                new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
+//        ArrayList<StudentGroup> students = new ArrayList<>();
+//        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
+//        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students,
+//                new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
+//        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students,
+//                new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
+//        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
+//                new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
     }
 
     public void applyScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
