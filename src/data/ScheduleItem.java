@@ -11,16 +11,16 @@ public class ScheduleItem {
 	private int endPeriod;
 	private Classroom classroom;
 	private Lesson lesson;
-	private ArrayList<StudentGroup> studentGroups;
-	private ArrayList<Classroom> classrooms;
-	private ArrayList<Teacher> teachers;
-	private ArrayList<Lesson> lessons;
+	private List<StudentGroup> studentGroups;
+	private List<Classroom> classrooms;
+	private List<Teacher> teachers;
+	private List<Lesson> lessons;
 
     public ScheduleItem() {
 
     }
 
-    public ScheduleItem(ArrayList<Teacher> teachers, ArrayList<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+    public ScheduleItem(List<Teacher> teachers, List<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         this.teachers = teachers;
         this.classroom = classroom;
         this.startPeriod = startPeriod;
@@ -82,7 +82,7 @@ public class ScheduleItem {
         this.lesson = lesson;
     }
 
-    public ArrayList<Classroom> getClassrooms() {
+    public List<Classroom> getClassrooms() {
         return classrooms;
     }
 
@@ -90,7 +90,7 @@ public class ScheduleItem {
         this.classrooms = classrooms;
     }
 
-    public ArrayList<Teacher> getTeachers() {
+    public List<Teacher> getTeachers() {
         return teachers;
     }
 
@@ -98,7 +98,7 @@ public class ScheduleItem {
         this.teachers = teachers;
     }
 
-    public ArrayList<Lesson> getLessons() {
+    public List<Lesson> getLessons() {
         return lessons;
     }
 

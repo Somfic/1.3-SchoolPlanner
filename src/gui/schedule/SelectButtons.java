@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SelectButtons extends Pane {
     private HBox buttons = new HBox();
@@ -78,7 +79,7 @@ public class SelectButtons extends Pane {
                     }
                     ;
                 }
-                scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
+                scheduleView.applyScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not apply schedule item");
             }
@@ -103,7 +104,7 @@ public class SelectButtons extends Pane {
                     }
                     ;
                 }
-                scheduleView.removeScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
+                scheduleView.removeScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not remove schedule item");
             }
