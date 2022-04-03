@@ -12,7 +12,6 @@ public class ScheduleItem {
 	private Classroom classroom;
 	private Lesson lesson;
 	private ArrayList<StudentGroup> studentGroups;
-	private ArrayList<Classroom> classrooms;
 	private ArrayList<Teacher> teachers;
 	private ArrayList<Lesson> lessons;
 
@@ -80,14 +79,6 @@ public class ScheduleItem {
 
     public void setLesson(Lesson lesson) {
         this.lesson = lesson;
-    }
-
-    public ArrayList<Classroom> getClassrooms() {
-        return classrooms;
-    }
-
-    public void setClassrooms(ArrayList<Classroom> classrooms) {
-        this.classrooms = classrooms;
     }
 
     public ArrayList<Teacher> getTeachers() {

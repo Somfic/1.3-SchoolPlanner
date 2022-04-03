@@ -7,6 +7,7 @@ import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
 import gui.simulation.SimulationView;
+import io.FileManager;
 import io.InputManager;
 import logging.Logger;
 import javafx.animation.AnimationTimer;
@@ -48,6 +49,7 @@ public class Gui extends Application implements SettingCallback {
         // Custom title bar
         this.canvas = new Canvas(1000, 1000);
         this.simulationPane = new SimulationView(this.canvas);
+        scheduleView.addCallback(simulationPane);
 
         //Making tabs
         this.tabPane = new TabPane();
@@ -123,7 +125,7 @@ public class Gui extends Application implements SettingCallback {
         stage.setScene(this.scene);
         InputManager.setup(this.scene);
         stage.setResizable(true);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
+        stage.getIcons().add(new Image(FileManager.getResource("./Icon.png")));
         stage.show();
 
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
@@ -139,7 +141,7 @@ public class Gui extends Application implements SettingCallback {
 
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             lastFps = LocalDateTime.now();
-            Logger.debug("FPS: " + fps.getPfs());
+            //Logger.debug("FPS: " + fps.getPfs());
         }
     }
 
