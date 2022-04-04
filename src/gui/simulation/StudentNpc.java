@@ -11,6 +11,8 @@ public class StudentNpc extends Npc {
     private final Student student;
     private final String studentGroup;
 
+    private Vector2 seat;
+
     public StudentNpc(Student student, String studentGroup) {
         super(student);
         this.student = student;
@@ -36,12 +38,16 @@ public class StudentNpc extends Npc {
 
         // The student is not in a class
         if (currentPeriod == null) {
-            Logger.warn("Student " + student.getName() + " is not in a class");
             return new Vector2(0, 0);
         }
 
         // Get a seat
-        return mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getSeat();
+        if(seat == null) {
+            seat = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getSeat();
+        }
+
+        return seat;
+
     }
 
     public Student getStudent() {
