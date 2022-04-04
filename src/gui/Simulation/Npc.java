@@ -14,7 +14,6 @@ public abstract class Npc {
     }
 
     public void setPosition(Vector2 position) {
-        Logger.debug("Setting position of " + person.getName() + " to " + position);
         this.position = position;
     }
 

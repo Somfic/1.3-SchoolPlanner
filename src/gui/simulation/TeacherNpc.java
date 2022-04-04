@@ -21,7 +21,6 @@ public class TeacherNpc extends Npc {
         ScheduleItem currentPeriod = null;
 
         for (ScheduleItem item : schedule.getItems()) {
-            Logger.debug("Checking item: " + item.getLesson().getName() + " - " + item.getTeacher() + " - " + item.getStartPeriod() + " / " + item.getEndPeriod());
             if (item.getStartPeriod() <= period && item.getEndPeriod() >= period && item.getTeacher().equals(teacher)) {
                 currentPeriod = item;
                 break;
@@ -30,7 +29,6 @@ public class TeacherNpc extends Npc {
 
         // The student is not in a class
         if (currentPeriod == null) {
-            Logger.warn("Teacher " + teacher.getName() + " is not in a class");
             return new Vector2(0, 0);
         }
 
