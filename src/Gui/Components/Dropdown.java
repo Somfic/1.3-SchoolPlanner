@@ -1,6 +1,6 @@
-package Gui.Components;
+package gui.components;
 
-import Data.Lesson;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
