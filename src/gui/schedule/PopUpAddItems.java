@@ -56,7 +56,6 @@ public class PopUpAddItems {
                 Teacher teacher = new Teacher(teacherGender, teacherName);
                 teacherTextField.setText("");
                 selectButtons.addTeacher(teacher);
-                //TODO save teacher somewhere...
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("Teacher name not valid");
@@ -79,7 +78,6 @@ public class PopUpAddItems {
 
                 subjectTextField.setText("");
                 selectButtons.addSubject(subject);
-                //TODO save subject somewhere...
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("Subject name not valid");
