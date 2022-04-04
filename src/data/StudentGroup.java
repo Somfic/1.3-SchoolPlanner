@@ -6,6 +6,10 @@ public class StudentGroup {
 	private List<Student> students;
 	private String name;
 
+	public StudentGroup() {
+
+	}
+
 	public StudentGroup(String name) {
         this.name = name;
 		this.students = new ArrayList<>();
