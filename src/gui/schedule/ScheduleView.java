@@ -64,13 +64,13 @@ public class ScheduleView extends Pane {
 
     public void applyScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.add(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));
+        Schedule.get().add(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
     }
 
     public void removeScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.remove(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
+        Schedule.get().remove(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
         this.addSchedule();
     }
 

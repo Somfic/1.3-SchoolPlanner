@@ -21,7 +21,7 @@ public class TeacherNpc extends Npc {
         ScheduleItem currentPeriod = null;
 
         for (ScheduleItem item : schedule.getItems()) {
-            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period && item.getTeacher().equals(teacher)) {
+            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period && item.getTeachers().equals(teacher)) {
                 currentPeriod = item;
                 break;
             }

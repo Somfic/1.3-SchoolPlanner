@@ -4,9 +4,13 @@ import data.*;
 import data.map.Map;
 import gui.GameNode;
 import gui.schedule.ScheduleChangeCallback;
+import io.InputManager;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import logging.Logger;
 import org.dyn4j.geometry.Vector2;
@@ -17,7 +21,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-public class SimulationView extends VBox implements GameNode, ScheduleChangeCallback {
+public class SimulationView extends BorderPane implements GameNode, ScheduleChangeCallback {
 
     private Map map;
     private final Canvas canvas;
@@ -29,7 +33,7 @@ public class SimulationView extends VBox implements GameNode, ScheduleChangeCall
 
     public SimulationView(Canvas canvas) {
         this.canvas = canvas;
-        this.getChildren().add(canvas);
+        this.setCenter(canvas);
     }
 
     MapInfo mapInfo = new MapInfo();
@@ -54,13 +58,28 @@ public class SimulationView extends VBox implements GameNode, ScheduleChangeCall
         npcs.forEach(npc -> {
             context.fillOval(npc.getPosition().x * tileSize, npc.getPosition().y * tileSize, tileSize, tileSize);
         });
+
+        context.fillText("Period: " + period, 10, 10);
     }
+
+    private int period = 1;
 
     @Override
     public void onUpdate(double deltaTime) {
         npcs.forEach(npc -> {
             npc.setPosition(npc.getNextMove(Schedule.get(), 1, mapInfo));
         });
+
+        if(InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
+            period++;
+        }
+
+        if(InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
+            period--;
+        }
+
+        period = Math.min(period, 10);
+        period = Math.max(period, 1);
     }
 
     private void generateNpcs() {
@@ -81,7 +100,7 @@ public class SimulationView extends VBox implements GameNode, ScheduleChangeCall
         // Create a NPC for each student
         studentGroups.forEach(studentGroup -> {
             studentGroup.getStudents().forEach(student -> {
-                Logger.debug("Creating NPC for student " + student.getName() + " in group " + studentGroup.getName());
+                Logger.debug("Creating NPC for student " + student.getName() + "( " + student.getStudentNumber() + " )" + " in group " + studentGroup.getName());
                 npcs.add(new StudentNpc(student, studentGroup.getName()));
             });
         });
@@ -89,10 +108,12 @@ public class SimulationView extends VBox implements GameNode, ScheduleChangeCall
         // Create a NPC for each teacher
         List<Teacher> teachers = new ArrayList<>();
         Schedule.get().getItems().forEach(item -> {
-            if (item.getTeacher() != null) {
-                if (!teachers.contains(item.getTeacher())) {
-                    teachers.add(item.getTeacher());
-                }
+            if (item.getTeachers() != null) {
+                item.getTeachers().forEach(teacher -> {
+                    if (!teachers.contains(teacher)) {
+                        teachers.add(teacher);
+                    }
+                });
             }
         });
 

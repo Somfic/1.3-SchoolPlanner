@@ -78,7 +78,7 @@ class ClassRoomInfo {
         // Return a random available seat
         if(availableSeats.isEmpty()) {
             Logger.warn("No available seats in " + name);
-            return null;
+            return new Vector2(0, 0);
         }
 
         Vector2 seat = availableSeats.remove();

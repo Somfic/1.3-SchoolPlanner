@@ -47,7 +47,7 @@ public class Gui extends Application implements SettingCallback {
     @Override
     public void start(Stage stage) {
         // Custom title bar
-        this.canvas = new Canvas(1000, 1000);
+        this.canvas = new Canvas(600, 700);
         this.simulationPane = new SimulationView(this.canvas);
         scheduleView.addCallback(simulationPane);
 
