@@ -77,7 +77,7 @@ public class ScheduleItem {
         this.classrooms = classrooms;
     }
 
-    public Teacher getTeachers() {
+    public Teacher getTeacher() {
         return teacher;
     }
 

@@ -129,7 +129,7 @@ public class ScheduleView extends Pane {
 
         //Make labels
         this.lessonLabel = new Label(scheduleItem.getLesson().getName());
-        this.teacherLabel = new Label(scheduleItem.getTeachers().toString());
+        this.teacherLabel = new Label(scheduleItem.getTeacher().toString());
         this.studentGroupsLabel = new Label(studentGroups.toString());
         this.divider1 = new Label("|");
         this.divider2 = new Label("|");

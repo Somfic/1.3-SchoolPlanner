@@ -24,7 +24,7 @@ public class SelectButtons extends Pane {
     private TextField endTime = new TextField();
 
     private Dropdown<Classroom> classRoomSelect = new Dropdown<>();                                     //ComboBoxes
-    private MenuButton teacherGroupSelect = new MenuButton("Teacher");
+    private Dropdown<Teacher> teacherSelect = new Dropdown<>();
     private Dropdown<Lesson> courseSelect = new Dropdown<>();
     private MenuButton studentGroupSelect = new MenuButton("Class");
     private ScheduleView scheduleView;
@@ -38,7 +38,7 @@ public class SelectButtons extends Pane {
         this.startTime.setPrefWidth(150);
         this.endTime.setPrefWidth(150);
         this.classRoomSelect.setPrefWidth(150);
-        this.teacherGroupSelect.setPrefWidth(150);
+        this.teacherSelect.setPrefWidth(150);
         this.courseSelect.setPrefWidth(150);
         this.studentGroupSelect.setPrefWidth(150);
     }
@@ -60,16 +60,16 @@ public class SelectButtons extends Pane {
 
         this.courseSelect.setDropdownItems(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"),
                 new Lesson("OOSD"));
+        this.teacherSelect.setDropdownItems(
+                new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"),
+                new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Joli"), new Teacher(Gender.FEMALE, "Jessica"));
         this.classRoomSelect.setDropdownItems(new Classroom(30, "Classroom 1", 0),
                 new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2),
                 new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4),
                 new Classroom(30, "Classroom 6", 5));
         this.buildStudentGroups(new ArrayList());
-        this.buildTeacherGroups(Arrays.asList(
-                new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"),
-                new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Joli"), new Teacher(Gender.FEMALE, "Jessica")));
 
-        HBox topRowButtons = new HBox(this.startTime, this.classRoomSelect, this.teacherGroupSelect);                   //Layout
+        HBox topRowButtons = new HBox(this.startTime, this.classRoomSelect, this.teacherSelect);                        //Layout
         HBox bottomRowButtons = new HBox(this.endTime, this.courseSelect, this.studentGroupSelect);
         topRowButtons.setSpacing(10);
         bottomRowButtons.setSpacing(10);
@@ -78,20 +78,19 @@ public class SelectButtons extends Pane {
         allButtons.setSpacing(10);
 
         //Modifications Buttons
-        Button apply = new Button("Apply");                                                     //Buttons
+        Button apply = new Button("Apply");                                                                      //Buttons
         Button reset = new Button("Reset");
         Button remove = new Button("Remove");
         HBox applyRemoveHBox = new HBox(apply, remove);
         applyRemoveHBox.setSpacing(10);
 
-        VBox applyRemoveResetButtons = new VBox(applyRemoveHBox, reset);                            //Layout
+        VBox applyRemoveResetButtons = new VBox(applyRemoveHBox, reset);                                                //Layout
         applyRemoveResetButtons.setAlignment(Pos.CENTER);
         applyRemoveResetButtons.setSpacing(10);
 
         apply.setOnAction(event -> {
             try {
                 students.clear();
-                teachers.clear();
                 for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
                     if (((CheckMenuItem) studentGroupSelect.getItems().get(i)).isSelected())
                         students.add(new StudentGroup(String.valueOf(i + 1)));
@@ -197,32 +196,6 @@ public class SelectButtons extends Pane {
             for (StudentGroup selectedGroup : selectedGroups) {
                 if (selectedGroup.getName().equals(String.valueOf(i)))
                     tempItem.setSelected(true);
-            }
-            this.studentGroupSelect.getItems().add(tempItem);
-        }
-    }
-
-    private void buildTeacherGroups(List<Teacher> selectedGroups) {
-        this.teacherGroupSelect.getItems().clear();
-        for (Teacher teacher : selectedGroups) {
-            this.teacherGroupSelect.getItems().add(new MenuItem(teacher.getName()));
-        }
-//        for (Teacher teacher : selectedGroups) {
-//            CheckMenuItem tempItem = new CheckMenuItem(teacher.getName());
-//            for (Teacher selectedGroup : selectedGroups) {
-//                if (selectedGroup.getName().equals(teacher.getName())) {
-//                    tempItem.setSelected(true);
-//                    this.teacherGroupSelect.getItems().add(tempItem);
-//                }
-//            }
-//        }
-        for (int i = 0; i < 4; i++) {
-            String name = (i + 1) + "";
-            CheckMenuItem tempItem = new CheckMenuItem(name);
-                if (selectedGroup.getName().equals(name))
-            for (StudentGroup selectedGroup : selectedGroups) {
-                    tempItem.setSelected(true);
-                }
             }
             this.studentGroupSelect.getItems().add(tempItem);
         }

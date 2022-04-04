@@ -6,12 +6,9 @@
     "blue" : 0.800000011920929,
     "opacity" : 1.0,
     "opaque" : true,
-    "brightness" : 1.0,
-    "saturation" : 0.19999998807907104,
-    "hue" : 120.0
     "hue" : 120.0,
-    "brightness" : 1.0,
-    "saturation" : 0.19999998807907104
+    "saturation" : 0.19999998807907104,
+    "brightness" : 1.0
   },
   "textBrightness" : false,
   "classBlockLength" : 60,
@@ -19,8 +16,8 @@
     "hour" : 8,
     "minute" : 0
   },
-  "fastBreakTime" : 4,
+  "fastBreakTime" : 1,
   "fastBreakLength" : 15,
   "lunchBreakTime" : 5,
-  "lunchBreakLength" : 15
+  "lunchBreakLength" : 30
 }
