@@ -122,10 +122,13 @@ public class Gui extends Application implements SettingCallback {
     public void update(double deltaTime) {
         fps.update(deltaTime);
         InputManager.update();
-
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             lastFps = LocalDateTime.now();
             Logger.debug("FPS: " + fps.getPfs());
+            if(this.tabPane.getSelectionModel().isSelected(1)){
+                int timeMultiplier = 1;
+                settingsPane.
+            }
         }
     }
 
