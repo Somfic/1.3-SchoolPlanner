@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleItem {
-	private Teacher teacher;
 	private int startPeriod;
 	private int endPeriod;
 	private Classroom classroom;
 	private Lesson lesson;
-	private ArrayList<StudentGroup> studentGroups;
-	private ArrayList<Classroom> classrooms;
-	private ArrayList<Teacher> teachers;
-	private ArrayList<Lesson> lessons;
+	private List<StudentGroup> studentGroups;
+	private List<Classroom> classrooms;
+	private Teacher teacher;
+	private List<Lesson> lessons;
 
-    public ScheduleItem(Teacher teacher, ArrayList<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+    public ScheduleItem(Teacher teacher, List<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         this.teacher = teacher;
         this.classroom = classroom;
         this.startPeriod = startPeriod;
@@ -29,14 +28,6 @@ public class ScheduleItem {
     public boolean isValid() {
 		return false;
 	}
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
 
     public int getStartPeriod() {
         return startPeriod;
@@ -78,7 +69,7 @@ public class ScheduleItem {
         this.lesson = lesson;
     }
 
-    public ArrayList<Classroom> getClassrooms() {
+    public List<Classroom> getClassrooms() {
         return classrooms;
     }
 
@@ -86,19 +77,33 @@ public class ScheduleItem {
         this.classrooms = classrooms;
     }
 
-    public ArrayList<Teacher> getTeachers() {
-        return teachers;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeachers(ArrayList<Teacher> teachers) {
-        this.teachers = teachers;
+    public void setTeacher(Teacher teachers) {
+        this.teacher = teachers;
     }
 
-    public ArrayList<Lesson> getLessons() {
+    public List<Lesson> getLessons() {
         return lessons;
     }
 
     public void setLessons(ArrayList<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduleItem{" +
+                ", teacher=" + teacher +
+                ", startPeriod=" + startPeriod +
+                ", endPeriod=" + endPeriod +
+                ", classroom=" + classroom +
+                ", lesson=" + lesson +
+                ", studentGroups=" + studentGroups +
+                ", classrooms=" + classrooms +
+                ", lessons=" + lessons +
+                '}';
     }
 }
