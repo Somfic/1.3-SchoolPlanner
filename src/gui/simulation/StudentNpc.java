@@ -50,7 +50,13 @@ public class StudentNpc extends Npc {
 
     }
 
+    @Override
+    void giveUpSeat() {
+        this.seat = null;
+    }
+
     public Student getStudent() {
         return student;
     }
+
 }

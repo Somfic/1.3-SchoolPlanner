@@ -36,6 +36,11 @@ public class TeacherNpc extends Npc {
         return mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
     }
 
+    @Override
+    void giveUpSeat() {
+        // Do nothing
+    }
+
     public Teacher getTeacher() {
         return teacher;
     }

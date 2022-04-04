@@ -22,4 +22,5 @@ public abstract class Npc {
     }
 
     abstract Vector2 getNextMove(Schedule schedule, int period, MapInfo mapInfo);
+    abstract void giveUpSeat();
 }
