@@ -9,6 +9,9 @@
     "brightness" : 1.0,
     "saturation" : 0.19999998807907104,
     "hue" : 120.0
+    "hue" : 120.0,
+    "brightness" : 1.0,
+    "saturation" : 0.19999998807907104
   },
   "textBrightness" : false,
   "classBlockLength" : 60,
