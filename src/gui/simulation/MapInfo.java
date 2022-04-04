@@ -1,10 +1,9 @@
 package gui.simulation;
 
+import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MapInfo {
     private final List<ClassRoomInfo> classRooms = new ArrayList<>();
@@ -65,8 +64,8 @@ public class MapInfo {
 }
 
 class ClassRoomInfo {
-    private List<Vector2> availableSeats;
-    private List<Vector2> occupiedSeats;
+    private Queue<Vector2> availableSeats = new LinkedList<>();
+    private List<Vector2> occupiedSeats = new ArrayList<>();
 
     private Vector2 teacherSeat;
     private final String name;
@@ -77,9 +76,12 @@ class ClassRoomInfo {
 
     public Vector2 getSeat() {
         // Return a random available seat
-        Vector2 seat = availableSeats.get((int) (Math.random() * availableSeats.size()));
+        if(availableSeats.isEmpty()) {
+            Logger.warn("No available seats in " + name);
+            return null;
+        }
 
-        availableSeats.remove(seat);
+        Vector2 seat = availableSeats.remove();
         occupiedSeats.add(seat);
 
         return seat;
@@ -103,12 +105,12 @@ class ClassRoomInfo {
     }
 
     public ClassRoomInfo setSeats(List<Vector2> availableSeats) {
-        this.availableSeats = availableSeats;
+        this.availableSeats = new LinkedList<>(availableSeats);
         return this;
     }
 
     public ClassRoomInfo setSeats(Vector2... availableSeats) {
-        this.availableSeats = Arrays.asList(availableSeats);
+        this.availableSeats = new LinkedList<>(Arrays.asList(availableSeats));
         return this;
     }
 
