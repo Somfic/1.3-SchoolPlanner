@@ -40,8 +40,15 @@ public class SelectButtons extends Pane {
         this.endTime.setPromptText("End time");
 
         this.classRoomSelect.setPromptText("Classroom");
-        this.teacherSelect.setPromptText("Teacher  ");
-        this.courseSelect.setPromptText("Course     ");
+        this.teacherSelect.setPromptText("Teacher");
+        this.courseSelect.setPromptText("Course");
+
+        this.startTime.setPrefWidth(150);
+        this.endTime.setPrefWidth(150);
+        this.classRoomSelect.setPrefWidth(150);
+        this.teacherSelect.setPrefWidth(150);
+        this.courseSelect.setPrefWidth(150);
+        this.studentGroupSelect.setPrefWidth(150);
 
         this.courseSelect.setDropdownItems(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
         this.teacherSelect.setDropdownItems(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Jessica"));
@@ -78,7 +85,7 @@ public class SelectButtons extends Pane {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
                 }
-                scheduleView.applyScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(),
+                scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(),
                         Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not apply schedule item");
@@ -102,9 +109,8 @@ public class SelectButtons extends Pane {
                     if (temp.isSelected()) {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
-                    ;
                 }
-                scheduleView.removeScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
+//                scheduleView.removeScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not remove schedule item");
             }
@@ -168,7 +174,7 @@ public class SelectButtons extends Pane {
         this.endTime.setText(scheduleItem.getEndPeriod() + "");
 
         this.classRoomSelect.setValue(scheduleItem.getClassroom());
-        this.teacherSelect.setValue(scheduleItem.getTeacher());
+//        this.teacherSelect.setValue(scheduleItem.getTeacher());
         this.courseSelect.setValue(scheduleItem.getLesson());
         this.buildStudentGroups((ArrayList<StudentGroup>) scheduleItem.getStudentGroups());
     }
@@ -179,14 +185,10 @@ public class SelectButtons extends Pane {
         for (int i = 0; i < 4; i++) {
             String name = (i + 1) + "";
             CheckMenuItem tempItem = new CheckMenuItem(name);
-
             for (StudentGroup selectedGroup : selectedGroups) {
                 if (selectedGroup.getName().equals(name))
                     tempItem.setSelected(true);
             }
-
-            tempItem.setOnAction(event -> {
-            });
             this.studentGroupSelect.getItems().add(tempItem);
         }
     }
@@ -197,7 +199,6 @@ public class SelectButtons extends Pane {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schedule", "*.schedule"));
         fileChooser.setInitialFileName("schedule.schedule");
         fileChooser.setInitialDirectory(new java.io.File("."));
-
         return fileChooser;
     }
 }

@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleItem {
-	private Teacher teacher;
 	private int startPeriod;
 	private int endPeriod;
 	private Classroom classroom;
 	private Lesson lesson;
 	private List<StudentGroup> studentGroups;
 	private List<Classroom> classrooms;
-	private List<Teacher> teachers;
+	private Teacher teacher;
 	private List<Lesson> lessons;
 
-    public ScheduleItem(List<Teacher> teachers, List<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
-        this.teachers = teachers;
+    public ScheduleItem(Teacher teacher, List<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+        this.teacher = teacher;
         this.classroom = classroom;
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
@@ -29,14 +28,6 @@ public class ScheduleItem {
     public boolean isValid() {
 		return false;
 	}
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
 
     public int getStartPeriod() {
         return startPeriod;
@@ -86,12 +77,12 @@ public class ScheduleItem {
         this.classrooms = classrooms;
     }
 
-    public List<Teacher> getTeachers() {
-        return teachers;
+    public Teacher getTeachers() {
+        return teacher;
     }
 
-    public void setTeachers(ArrayList<Teacher> teachers) {
-        this.teachers = teachers;
+    public void setTeacher(Teacher teachers) {
+        this.teacher = teachers;
     }
 
     public List<Lesson> getLessons() {
@@ -105,14 +96,13 @@ public class ScheduleItem {
     @Override
     public String toString() {
         return "ScheduleItem{" +
-                "teacher=" + teacher +
+                ", teacher=" + teacher +
                 ", startPeriod=" + startPeriod +
                 ", endPeriod=" + endPeriod +
                 ", classroom=" + classroom +
                 ", lesson=" + lesson +
                 ", studentGroups=" + studentGroups +
                 ", classrooms=" + classrooms +
-                ", teachers=" + teachers +
                 ", lessons=" + lessons +
                 '}';
     }

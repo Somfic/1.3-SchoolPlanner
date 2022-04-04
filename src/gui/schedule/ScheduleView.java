@@ -46,7 +46,7 @@ public class ScheduleView extends Pane {
         this.buildScheduleTable(startTime);
     }
 
-    private void TESTMETHOD() {
+    /*private void TESTMETHOD() {
         //hardcoding a schedule
         ArrayList<StudentGroup> students = new ArrayList<>();
         Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
@@ -56,17 +56,17 @@ public class ScheduleView extends Pane {
                 new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
         this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
                 new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
-    }
+    }*/
 
-    public void applyScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.add(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));
+        this.schedule.add(new ScheduleItem(teacher, new ArrayList<>(students), classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
     }
 
-    public void removeScheduleItem(List<Teacher> teachers, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+    public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.remove(new ScheduleItem(teachers, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
+        this.schedule.remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
         this.addSchedule();
     }
 
@@ -100,7 +100,6 @@ public class ScheduleView extends Pane {
             //Design
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
-
             pane.setOnMouseClicked(event -> this.selectButtons.selectItem(scheduleItem));
 
             //Add to view
