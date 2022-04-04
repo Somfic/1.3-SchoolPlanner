@@ -49,6 +49,11 @@ public class ClassBlock {
         this.CBLSpinner.getValueFactory().setValue(this.CBLCurrent);
     }
 
+    public void set(int value) {
+        CBLCurrent = value;
+        CBLSpinner.getValueFactory().setValue(value);
+    }
+
     public HBox getContent() {
         return this.hBox;
     }
