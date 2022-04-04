@@ -4,6 +4,7 @@ import data.Schedule;
 import data.ScheduleItem;
 import data.Student;
 import data.StudentGroup;
+import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 
 public class StudentNpc extends Npc {
@@ -11,6 +12,7 @@ public class StudentNpc extends Npc {
     private final String studentGroup;
 
     public StudentNpc(Student student, String studentGroup) {
+        super(student);
         this.student = student;
         this.studentGroup = studentGroup;
     }
@@ -21,7 +23,7 @@ public class StudentNpc extends Npc {
         ScheduleItem currentPeriod = null;
 
         for (ScheduleItem item : schedule.getItems()) {
-            if (item.getStartPeriod() >= period && item.getEndPeriod() <= period) {
+            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period) {
                 for (StudentGroup studentGroup : item.getStudentGroups()) {
                     if (studentGroup.getName().equals(this.studentGroup)) {
                         currentPeriod = item;
@@ -34,6 +36,7 @@ public class StudentNpc extends Npc {
 
         // The student is not in a class
         if (currentPeriod == null) {
+            Logger.warn("Student " + student.getName() + " is not in a class");
             return new Vector2(0, 0);
         }
 
