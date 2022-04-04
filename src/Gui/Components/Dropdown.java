@@ -15,6 +15,8 @@ import java.util.List;
 public class Dropdown<T> extends ComboBox<T> {
     private EventHandler<Event> eventHandler;
     private T selectedValue = null;
+    private String query = "";
+    private List<T> allItems = new ArrayList<>();
 
     public Dropdown() {
         super();
@@ -26,7 +28,6 @@ public class Dropdown<T> extends ComboBox<T> {
         eventHandler = new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                //todo idk
             }
         };
         this.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
@@ -65,13 +66,17 @@ public class Dropdown<T> extends ComboBox<T> {
         });
     }
 
-    private String query = "";
-    private List<T> allItems = new ArrayList<>();
 
     public void setDropdownItems(ArrayList<T> items) {
-        for (T item: items) {
-            this.getItems().add(item);
-        }
+        this.allItems.clear();
+        this.getItems().clear();
+        this.allItems.addAll(items);
+        this.getItems().setAll(this.allItems);
+    }
+    public void addAllDropdownItems(ArrayList<T> items) {
+        this.getItems().clear();
+        this.allItems.addAll(items);
+        this.getItems().setAll(this.allItems);
     }
 
     public void setOnDropdownAction(EventHandler<Event> eventHandler) {

@@ -28,7 +28,7 @@ public class SelectButtons extends Pane {
     private Dropdown<Classroom> classRoomSelect = new Dropdown<Classroom>();                                     //ComboBoxes
     private Dropdown<Teacher> teacherSelect = new Dropdown<Teacher>();
     private Dropdown<Lesson> courseSelect = new Dropdown<Lesson>();
-    private MenuButton studentGroupSelect = new MenuButton("Class       ");
+    private MenuButton studentGroupSelect = new MenuButton("Class");
     private ScheduleView scheduleView;
     private ArrayList<StudentGroup> students = new ArrayList<>();
     private ArrayList<Teacher> teachers = new ArrayList<>();
@@ -39,7 +39,6 @@ public class SelectButtons extends Pane {
         this.scheduleView = scheduleView;
         this.getChildren().add(this.buttons);
         this.buildSelectButtons();
-
     }
 
     public void addTeacher(Teacher teacher) {
@@ -73,7 +72,6 @@ public class SelectButtons extends Pane {
         classrooms.add(classroom5);
         classrooms.add(classroom6);
 
-
 //        this.courseSelect.setDropdownItems(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"), new Lesson("OOSD"));
 //        this.teacherSelect.setDropdownItems(new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"), new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Jessica"));
         this.classRoomSelect.setDropdownItems(classrooms);
@@ -106,7 +104,6 @@ public class SelectButtons extends Pane {
                     if (temp.isSelected()) {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
-                    ;
                 }
                 scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, new Classroom(30, "Classroom 1", 0), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
@@ -186,10 +183,10 @@ public class SelectButtons extends Pane {
         VBox saveLoadButtons = new VBox(save, load);
         saveLoadButtons.setSpacing(10);
 
-
+        // add teacher or subject
         Button addItems = new Button("Add new item");
         addItems.setOnAction(e -> {
-            PopUpAddItems.PupUp("add", this);
+            PopUpAddItems.PupUp("Add teacher or Subject", this);
         });
         VBox addButtons = new VBox(addItems);
 
@@ -211,18 +208,13 @@ public class SelectButtons extends Pane {
 
     private void buildStudentGroups(ArrayList<StudentGroup> selectedGroups) {
         this.studentGroupSelect.getItems().clear();
-
         for (int i = 0; i < 4; i++) {
             String name = (i + 1) + "";
             CheckMenuItem tempItem = new CheckMenuItem(name);
-
             for (StudentGroup selectedGroup : selectedGroups) {
                 if (selectedGroup.getName().equals(name))
                     tempItem.setSelected(true);
             }
-
-            tempItem.setOnAction(event -> {
-            });
             this.studentGroupSelect.getItems().add(tempItem);
         }
     }

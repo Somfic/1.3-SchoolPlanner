@@ -16,10 +16,6 @@ public class ScheduleItem {
 	private ArrayList<Teacher> teachers;
 	private ArrayList<Lesson> lessons;
 
-    public ScheduleItem() {
-
-    }
-
     public ScheduleItem(Teacher teacher, ArrayList<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         this.teacher = teacher;
         this.classroom = classroom;
