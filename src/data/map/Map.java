@@ -100,6 +100,7 @@ public class Map {
         int[][] obstacles = layoutAndObstacles.getValue();
 
         Map world = new Map(tiles.getWidth(), tiles.getHeight());
+        world.setObstacles(obstacles);
 
         // Add the tiles to the world
         for (int y = 0; y < tiles.getHeight(); y++) {
@@ -240,5 +241,13 @@ public class Map {
         }
 
         return sprites;
+    }
+
+    public int[][] getObstacles() {
+        return obstacles;
+    }
+
+    public void setObstacles(int[][] obstacles) {
+        this.obstacles = obstacles;
     }
 }

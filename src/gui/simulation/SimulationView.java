@@ -8,17 +8,14 @@ import io.InputManager;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import logging.Logger;
-import org.dyn4j.geometry.Vector2;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 public class SimulationView extends BorderPane implements GameNode, ScheduleChangeCallback {
@@ -56,6 +53,12 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
     public void onRender(GraphicsContext context) {
         context.drawImage(SwingFXUtils.toFXImage(mapImage, null), 0, 0, map.getWidth() * tileSize, map.getHeight() * tileSize);
         npcs.forEach(npc -> {
+            if(npc instanceof StudentNpc) {
+                context.setFill(new Color(0, 0, 1, 0.75));
+            } else {
+                context.setFill(new Color(1, 0, 0, 0.75));
+            }
+
             context.fillOval(npc.getPosition().x * tileSize, npc.getPosition().y * tileSize, tileSize, tileSize);
         });
 
@@ -66,8 +69,14 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
 
     @Override
     public void onUpdate(double deltaTime) {
+        // Set the target
         npcs.forEach(npc -> {
-            npc.setPosition(npc.getNextMove(Schedule.get(), period, mapInfo));
+           npc.calculateTarget(Schedule.get(), period, mapInfo);
+        });
+
+        // Calculate the path
+        npcs.forEach(npc -> {
+            npc.getNextPathPoint(map);
         });
 
         if(InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
@@ -85,8 +94,9 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
     }
 
     private void calculateNewTargets() {
-        npcs.forEach(Npc::giveUpSeat);
-        mapInfo.getClassRooms().forEach(ClassRoomInfo::resetSeats);
+        npcs.forEach(Npc::resetTarget);
+        mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
+        mapInfo.getBreakArea().resetSeats();
     }
 
     private void generateNpcs() {
@@ -110,7 +120,7 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
         studentGroups.forEach(studentGroup -> {
             studentGroup.getStudents().forEach(student -> {
                 if (!students.contains(student.getStudentNumber())) {
-                    Logger.debug("Creating NPC for student " + student.getName() + "( " + student.getStudentNumber() + " )");
+                    Logger.debug("Creating NPC for student " + student.getName() + " (" + student.getStudentNumber() + ")");
                     students.add(student.getStudentNumber());
                     npcs.add(new StudentNpc(student, studentGroup.getName()));
                 }
@@ -126,6 +136,12 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
                         teachers.add(teacher);
                     }
                 });
+            }
+
+            if(item.getTeacher() != null) {
+                if (!teachers.contains(item.getTeacher())) {
+                    teachers.add(item.getTeacher());
+                }
             }
         });
 

@@ -121,11 +121,11 @@ public class Student {
         this.target = newTarget;
     }
 
-    public static ArrayList<Pair<Integer, Integer>> route(ArrayList<ArrayList<Integer>> map, int sourceX, int sourceY, int destinationX, int destinationY) {
+    public static ArrayList<Pair<Integer, Integer>> route(ArrayList<ArrayList<Integer>> map, int positionX, int positionY, int targetX, int targetY) {
         ArrayList<Pair<Integer, Integer>> route = new ArrayList<>();
         ArrayList<ArrayList<Integer>> paths = (ArrayList<ArrayList<Integer>>) map.stream().map(ArrayList::new).collect(Collectors.toList());
 
-        if(sourceX == destinationX && sourceY == destinationY) {
+        if(positionX == targetX && positionY == targetY) {
             return new ArrayList<>();
         }
         for (int i = 0; i<map.size(); i++) {
@@ -133,7 +133,7 @@ public class Student {
                 paths.get(i).set(j, 0);
             }
         }
-        paths.get(destinationY).set(destinationX, 1);
+        paths.get(targetY).set(targetX, 1);
         boolean change = false;
         int i = 1;
         while (true) {
@@ -161,17 +161,17 @@ public class Student {
                 }
             }
 
-            if(!change || paths.get(sourceY).get(sourceX) !=0) {
+            if(!change || paths.get(positionY).get(positionX) !=0) {
                 break;
             }
             change = false;
             i++;
         }
-        if(map.get(sourceY).get(sourceX) == 0) {
+        if(map.get(positionY).get(positionX) == 0) {
             return new ArrayList<>();
         }
-        int x = sourceX;
-        int y = sourceY;
+        int x = positionX;
+        int y = positionY;
         for (int j = i+1; j>=1; j--) {
             if(y >= 1 && paths.get(y-1).get(x) == j) {
                 y--;
