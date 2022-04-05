@@ -128,6 +128,12 @@ public class Map {
         int[][][] layout = new int[width + 39][height + 39][layers.size()];
         int[][] obstacles = new int[width][height];
 
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                obstacles[width - x - 1][y] = 1;
+            }
+        }
+
         for (int z = 0; z < layers.size(); z++) {
             TilesLayer layer = layers.get(z);
 
@@ -163,7 +169,7 @@ public class Map {
                                 layout[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()][z] = block;
 
                                 if (layer.getName().equals("Walls")) {
-                                    obstacles[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()] = 1;
+                                    obstacles[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()] = 0;
                                 }
                             }
 

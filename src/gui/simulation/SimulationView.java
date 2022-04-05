@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 import logging.Logger;
 
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,6 @@ import java.util.List;
 public class SimulationView extends BorderPane implements GameNode, ScheduleChangeCallback {
 
     private Map map;
-    private final Canvas canvas;
     private BufferedImage mapImage;
 
     private final List<Npc> npcs = new ArrayList<>();
@@ -29,7 +30,6 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
     private final int tileSize = 25;
 
     public SimulationView(Canvas canvas) {
-        this.canvas = canvas;
         this.setCenter(canvas);
     }
 
@@ -53,38 +53,48 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
     public void onRender(GraphicsContext context) {
         context.drawImage(SwingFXUtils.toFXImage(mapImage, null), 0, 0, map.getWidth() * tileSize, map.getHeight() * tileSize);
         npcs.forEach(npc -> {
-            if(npc instanceof StudentNpc) {
-                context.setFill(new Color(0, 0, 1, 0.75));
+            if (npc instanceof StudentNpc) {
+                context.setFill(new Color(0, 0, 1, 0.5));
             } else {
-                context.setFill(new Color(1, 0, 0, 0.75));
+                context.setFill(new Color(1, 0, 0, 0.5));
             }
 
             context.fillOval(npc.getPosition().x * tileSize, npc.getPosition().y * tileSize, tileSize, tileSize);
         });
 
+        context.setFill(new Color(1, 1, 1, 1));
+
         context.fillText("Period: " + period, 10, 10);
     }
 
     private int period = 1;
+    LocalDateTime periodChange = LocalDateTime.now();
 
     @Override
     public void onUpdate(double deltaTime) {
-        // Set the target
+        // Move the npcs
         npcs.forEach(npc -> {
-           npc.calculateTarget(Schedule.get(), period, mapInfo);
+            try {
+
+                // Seconds since the last period change
+                long milis = ChronoUnit.MILLIS.between(periodChange, LocalDateTime.now());
+                int iteration = (int)Math.floor(milis / 500f);
+                double factor = Math.round(milis % 500f) / 500f;
+
+
+                npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
+
+            } catch (Exception e) {
+                Logger.warn(e, "Could not move npc for " + npc.getPerson().getName());
+            }
         });
 
-        // Calculate the path
-        npcs.forEach(npc -> {
-            npc.getNextPathPoint(map);
-        });
-
-        if(InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
+        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
             period++;
             calculateNewTargets();
         }
 
-        if(InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
+        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
             period--;
             calculateNewTargets();
         }
@@ -97,6 +107,18 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
         npcs.forEach(Npc::resetTarget);
         mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
         mapInfo.getBreakArea().resetSeats();
+
+        periodChange = LocalDateTime.now();
+
+        npcs.forEach(npc -> {
+            try {
+                npc.calculateTarget(Schedule.get(), period, mapInfo);
+                npc.calculateRoute(map);
+            }
+            catch (Exception e) {
+                Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
+            }
+        });
     }
 
     private void generateNpcs() {
@@ -138,7 +160,7 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
                 });
             }
 
-            if(item.getTeacher() != null) {
+            if (item.getTeacher() != null) {
                 if (!teachers.contains(item.getTeacher())) {
                     teachers.add(item.getTeacher());
                 }

@@ -16,9 +16,9 @@ public class TeacherNpc extends Npc {
     }
 
     @Override
-    Vector2 calculateTarget(Schedule schedule, int period, MapInfo mapInfo) {
+    void calculateTarget(Schedule schedule, int period, MapInfo mapInfo) {
         if(this.target != null) {
-            return this.target;
+            return;
         }
 
         // Get the current period
@@ -31,15 +31,13 @@ public class TeacherNpc extends Npc {
             }
         }
 
-        // Not in a lesson, get a break area seat
         if (currentPeriod == null) {
+            // Not in a lesson, get a break area seat
             this.target = mapInfo.getBreakArea().getSeat();
-            return this.target;
+        } else {
+            // Get a seat in the classroom
+            this.target = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
         }
-
-        // Get a seat
-        this.target = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
-        return this.target;
     }
 
     public Teacher getTeacher() {
