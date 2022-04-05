@@ -6,6 +6,7 @@ import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
+import gui.simulation.Camera;
 import gui.simulation.SimulationView;
 import io.InputManager;
 import logging.Logger;
@@ -30,7 +31,8 @@ public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
     private FXGraphics2D graphics;
-    FramesPerSecond fps = new FramesPerSecond();
+    private FramesPerSecond fps;
+    private Camera camera;
 
     //Views
     private ScheduleView scheduleView = new ScheduleView(this);
@@ -40,11 +42,12 @@ public class Gui extends Application implements SettingCallback {
     private WindowBar windowBar;
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
-    private Pane simulationPane = new SimulationView();
+    private SimulationView simulationPane = new SimulationView();
     private SettingView settingsPane = new SettingView(this);
 
     @Override
     public void start(Stage stage) {
+        fps = new FramesPerSecond();
         // Custom title bar
         this.canvas = new Canvas(1920, 900);
 
@@ -57,6 +60,7 @@ public class Gui extends Application implements SettingCallback {
 
         Tab simulationTab = new Tab("Simulation", simulationPane);
         simulationTab.setClosable(false);
+        camera = new Camera(simulationPane);
 
         Tab settingsTab = new Tab("Settings", settingsPane.getContent());
         settingsTab.setClosable(false);
