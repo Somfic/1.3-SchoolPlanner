@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import org.dyn4j.geometry.Vector2;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
+import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -23,35 +24,28 @@ public class SimulationView extends VBox implements Resizable {
     private double tileSize = 25;
     private FramesPerSecond fps;
     private LocalDateTime lastFps = LocalDateTime.now();
-
     private Canvas backgroundCanvas;
     private Camera camera;
     private FXGraphics2D graphics2D;
     private FXGraphics2D backgroundGraphics;
     private Pane pane;
     private boolean toUpdateBackground;
+    private MapInfo mapInfo = new MapInfo();
 
     public SimulationView() {
         fps = new FramesPerSecond();
         setToUpdateBackground(true);
 
         map = Map.fromFile("./res/school.tmj");
-        canvas = new Canvas(1500, 800);
-        backgroundCanvas = new Canvas(1500, 800);
+        canvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight()-50);
+        backgroundCanvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight()-50);
         this.pane = new Pane();
         pane.getChildren().addAll(backgroundCanvas, canvas);
         canvas.toFront();
         camera = new Camera(this);
-
-    private final int tileSize = 25;
-
-    public SimulationView(Canvas canvas) {
-        this.setCenter(canvas);
+        onStart();
     }
 
-    MapInfo mapInfo = new MapInfo();
-
-    @Override
     public void onStart() {
         this.map = Map.fromFile("./res/school.tmj");
 
@@ -102,11 +96,16 @@ public class SimulationView extends VBox implements Resizable {
         this.toUpdateBackground = false;
 
         for (Tile tile : map.getTiles()) {
+            if(tile.getImage() == null)
+                continue;
             Vector2 coords = new Vector2(tile.getX() * tileSize, tile.getY() * tileSize);
             AffineTransform transform = graphics.getTransform();
             transform.translate(coords.x, coords.y);
-//            backgroundCanvas.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(tile.getImage(), null), coords.x, coords.y, tileSize, tileSize);
-            graphics.drawImage(tile.getImage(), transform, null);
+            if(tile.getWritableImage() == null) {
+                tile.setWritableImage(SwingFXUtils.toFXImage(tile.getImage(), null));
+            }
+            backgroundCanvas.getGraphicsContext2D().drawImage(tile.getWritableImage(), coords.x, coords.y, tileSize, tileSize);
+            //graphics.drawImage(tile.getImage(), transform, null);
         }
 
     }
@@ -216,4 +215,3 @@ public class SimulationView extends VBox implements Resizable {
         this.pane = pane;
     }
 }
-

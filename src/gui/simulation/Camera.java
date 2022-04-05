@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import logging.Logger;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
 
@@ -14,9 +15,10 @@ import java.awt.geom.Point2D;
 
 /**
  * Created by johan on 15-2-2017.
+ * Rewriten by owen on 5-4-2022.
  */
 public class Camera {
-	private Point2D centerPoint = new Point2D.Double(0,0);
+	private Point2D centerPoint;
 	private double zoom = 1;
 	private double rotation = 0;
 	private Point2D lastMousePos;
@@ -26,6 +28,7 @@ public class Camera {
 	public Camera(SimulationView simulationView) {
 		this.canvas = simulationView.getPane();
 		this.simView = simulationView;
+        this.centerPoint  = new Point2D.Double(-simView.getCanvas().getWidth() / 2, -simView.getCanvas().getHeight() / 2);
 
 		canvas.setOnMousePressed(e -> {lastMousePos = new Point2D.Double(e.getX(), e.getY());});
 		canvas.setOnMouseDragged(e -> mouseDragged(e));
@@ -35,6 +38,7 @@ public class Camera {
 
 	public AffineTransform getTransform()  {
 		AffineTransform tx = new AffineTransform();
+        tx.translate(simView.getCanvas().getWidth() / 2, simView.getCanvas().getHeight() / 2);
 		tx.scale(zoom, zoom);
 		tx.translate(centerPoint.getX(), centerPoint.getY());
 		tx.rotate(rotation);
@@ -48,14 +52,15 @@ public class Camera {
 					centerPoint.getY() - (lastMousePos.getY() - e.getY()) / zoom
 			);
 			lastMousePos = new Point2D.Double(e.getX(), e.getY());
-//			resizable.draw(g2d);
             simView.setToUpdateBackground(true);
         }
 	}
 
 	public void mouseScroll(ScrollEvent e) {
-		zoom *= (1 + e.getDeltaY()/500.0f);
-//		resizable.draw(g2d);
-        simView.setToUpdateBackground(true);
+        double newZoom = zoom * (1 + e.getDeltaY()/500.0f);
+        if(newZoom > 0.7909116947642189 && newZoom < 2.783600819634628) {
+            zoom = newZoom;
+            simView.setToUpdateBackground(true);
+        }
 	}
 }
