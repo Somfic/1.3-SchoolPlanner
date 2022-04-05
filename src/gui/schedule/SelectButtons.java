@@ -117,7 +117,7 @@ public class SelectButtons extends Pane {
                 File file = chooser.showSaveDialog(null);
 
                 if (file != null) {
-                    String json = this.scheduleView.getSchedule().toJson();
+                    String json = Schedule.get().toJson();
                     FileManager.write(file.getAbsolutePath(), json);
                 }
             } catch (Exception ex) {
