@@ -56,7 +56,8 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
     public void onRender(GraphicsContext context) {
         context.drawImage(SwingFXUtils.toFXImage(mapImage, null), 0, 0, map.getWidth() * tileSize, map.getHeight() * tileSize);
         npcs.forEach(npc -> {
-            context.fillOval(npc.getPosition().x * tileSize, npc.getPosition().y * tileSize, tileSize, tileSize);
+//            context.fillOval(npc.getPosition().x * tileSize, npc.getPosition().y * tileSize, tileSize, tileSize);
+            context.drawImage(SwingFXUtils.toFXImage(npc.getSprite(),null), npc.getPosition().x * tileSize, npc.getPosition().y * tileSize);
         });
 
         context.fillText("Period: " + period, 10, 10);
