@@ -104,11 +104,16 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
             }
         });
 
+        List<Integer> students = new ArrayList<>();
+
         // Create a NPC for each student
         studentGroups.forEach(studentGroup -> {
             studentGroup.getStudents().forEach(student -> {
-                Logger.debug("Creating NPC for student " + student.getName() + "( " + student.getStudentNumber() + " )" + " in group " + studentGroup.getName());
-                npcs.add(new StudentNpc(student, studentGroup.getName()));
+                if (!students.contains(student.getStudentNumber())) {
+                    Logger.debug("Creating NPC for student " + student.getName() + "( " + student.getStudentNumber() + " )");
+                    students.add(student.getStudentNumber());
+                    npcs.add(new StudentNpc(student, studentGroup.getName()));
+                }
             });
         });
 
