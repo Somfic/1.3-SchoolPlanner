@@ -1,16 +1,12 @@
 package gui;
 
-import data.FramesPerSecond;
 import gui.components.WindowBar;
 import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
-import gui.simulation.Camera;
 import gui.simulation.SimulationView;
 import io.InputManager;
-import logging.Logger;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,20 +15,14 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
 
-import java.time.LocalDateTime;
-
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
     private Canvas canvas;
-    private FXGraphics2D graphics;
-    private FramesPerSecond fps;
-    private Camera camera;
 
     //Views
     private ScheduleView scheduleView = new ScheduleView(this);
@@ -47,7 +37,6 @@ public class Gui extends Application implements SettingCallback {
 
     @Override
     public void start(Stage stage) {
-        fps = new FramesPerSecond();
         // Custom title bar
         this.canvas = new Canvas(1920, 900);
 
@@ -60,7 +49,6 @@ public class Gui extends Application implements SettingCallback {
 
         Tab simulationTab = new Tab("Simulation", simulationPane);
         simulationTab.setClosable(false);
-        camera = new Camera(simulationPane);
 
         Tab settingsTab = new Tab("Settings", settingsPane.getContent());
         settingsTab.setClosable(false);
@@ -73,41 +61,15 @@ public class Gui extends Application implements SettingCallback {
         button.setOnAction(event -> {
             PopUpAddItems.PupUp("Testing");
         });
-        //this.schedulePane.setCenter(button);
-        //this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
-
-        //SimulationPane
-        //this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
-
-        //SettingsPane
-        //this.settingsPane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
         //Other
-        //  this.scene = new Scene(scheduleView.getContent());
         this.windowBar = new WindowBar(stage, settingsPane);
         this.mainPane = new VBox(windowBar.getContent(), this.tabPane);
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
         this.scene = new Scene(mainPane);
-        this.graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
-
-//        this.schedulePane.setTop(new WindowBar(stage).getContent());
         this.schedulePane.setCenter(this.scheduleView);
         this.schedulePane.setBottom(this.scheduleView.selectButtons);
-
-        //AnimationTimer used for the FPS count
-        new AnimationTimer() {
-            long last = -1;
-
-            @Override
-            public void handle(long now) {
-                if (last == -1) {
-                    last = now;
-                }
-                update((now - last) / 1000000000.0);
-                last = now;
-            }
-        }.start();
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
@@ -119,18 +81,6 @@ public class Gui extends Application implements SettingCallback {
         settingsPane.load();
 
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
-    }
-
-    LocalDateTime lastFps = LocalDateTime.now();
-
-    public void update(double deltaTime) {
-        fps.update(deltaTime);
-        InputManager.update();
-
-        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
-            lastFps = LocalDateTime.now();
-            Logger.debug("FPS: " + fps.getPfs());
-        }
     }
 
     @Override
