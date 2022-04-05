@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
-    private final List<ScheduleItem> items;
+    private final List<ScheduleItem> items = new ArrayList<>();
+
     public Schedule() {
-        this.items = new ArrayList<>();
+
     }
 
     public void add(ScheduleItem item) {

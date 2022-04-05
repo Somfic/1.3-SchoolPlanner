@@ -5,6 +5,9 @@ public class Classroom {
 	private String name;
     private int index;
 
+    public Classroom() {
+    }
+
     public Classroom(int capacity, String name, int index) {
         this.capacity = capacity;
         this.name = name;
