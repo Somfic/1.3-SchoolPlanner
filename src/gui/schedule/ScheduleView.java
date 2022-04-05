@@ -29,6 +29,9 @@ public class ScheduleView extends Pane {
     private int fastBreakTime;
     private int fastBreakLength;
     private LocalTime startTime;
+    private ArrayList<LocalTime> startTimes = new ArrayList<>();
+    private ArrayList<LocalTime> endTimes = new ArrayList<>();
+    private int buildScheduleCounter = 0;
 
     private Color color = Color.RED;
     private boolean textBrightness = true;
@@ -193,6 +196,7 @@ public class ScheduleView extends Pane {
     }
 
     private void buildScheduleTable(LocalTime startTime) {
+        buildScheduleCounter++;
         //Top row
         this.scheduleGridPane.addRow(0,
                 new ScheduleCell("Class block / Time", 2, true),
@@ -219,6 +223,10 @@ public class ScheduleView extends Pane {
             } else {
                 this.startTime = endTime;
             }
+            if(buildScheduleCounter == 2) {
+                startTimes.add(startTime);
+                endTimes.add(endTime);
+            }
         }
 
         //Generate rows: time + 6 blank cells
@@ -236,6 +244,7 @@ public class ScheduleView extends Pane {
             }
         }
     }
+
 
     public void updateScheduleTime(int classBlockLength, int lunchBreakTime, int lunchBreakLength, int fastBreakTime,
                                    int fastBreakLength, LocalTime startTime) {
@@ -272,5 +281,30 @@ public class ScheduleView extends Pane {
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
         this.addSchedule();
+    }
+    public LocalTime getStartTime(){
+        return this.startTime;
+    }
+    public int getClassBlockLength() {
+        return classBlockLength;
+    }
+
+    public int getLunchBreakLength() {
+        return lunchBreakLength;
+    }
+    public int getLunchBreakTime() {
+        return lunchBreakTime;
+    }
+    public int getFastBreakTime() {
+        return fastBreakTime;
+    }
+    public int getFastBreakLength() {
+        return fastBreakLength;
+    }
+    public ArrayList<LocalTime> getStartTimes(){
+        return startTimes;
+    }
+    public ArrayList<LocalTime> getEndTimes(){
+        return endTimes;
     }
 }

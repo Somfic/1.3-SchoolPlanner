@@ -76,6 +76,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             fastBreak.confirm();
             lunchBreak.confirm();
             startTime.confirm();
+
             callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakTimeSave, fastBreakLengthSave, lunchBreakTimeSave, lunchBreakLengthSave, startingTime));
         });
         cancel.setOnAction(event -> {
@@ -189,5 +190,8 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     @Override
     public void newStartTime(LocalTime time) {
         this.startingTime = time;
+    }
+    public LocalTime getStartingTime(){
+        return this.startingTime;
     }
 }

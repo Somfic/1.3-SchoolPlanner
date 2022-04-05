@@ -25,8 +25,6 @@ public class SimulationView extends VBox {
 
     private final Map map;
     private final Canvas canvas;
-    private int i = 0;
-private Label timeLabel = new Label("uhi");
     private double tileSize = 25;
 
     public SimulationView() {
@@ -46,7 +44,7 @@ private Label timeLabel = new Label("uhi");
                 context.drawImage(SwingFXUtils.toFXImage(tile.getImage(), null), coords.x, coords.y, tileSize, tileSize);
             }
         }
-        this.getChildren().addAll(timeLabel,canvas);
+        this.getChildren().addAll(canvas);
     }
 
 }

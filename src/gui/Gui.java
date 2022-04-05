@@ -4,10 +4,12 @@ import data.FramesPerSecond;
 import gui.components.WindowBar;
 import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
+import gui.settings.LunchBreak;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
 import gui.simulation.SimulationView;
 import io.InputManager;
+import javafx.scene.control.Label;
 import logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -25,6 +27,9 @@ import javafx.stage.StageStyle;
 import org.jfree.fx.FXGraphics2D;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
@@ -42,6 +47,17 @@ public class Gui extends Application implements SettingCallback {
     private BorderPane schedulePane = new BorderPane();
     private Pane simulationPane = new SimulationView();
     private SettingView settingsPane = new SettingView(this);
+    private int timeMultiplier = 1;
+    private int classBlockLength = 0;
+    private int lunchBreakLength = 0;
+    private int lunchBreakTime = 0;
+    private int fastBreakLength = 0;
+    private int fastBreakTime = 0;
+    private ArrayList<LocalTime> startTimes = new ArrayList<>();
+    private ArrayList<LocalTime> endTimes = new ArrayList<>();
+    private LocalTime startTime = null;
+    private LocalTime classBlockTime = null;
+    private Label timeLabel = new Label("-");
 
     @Override
     public void start(Stage stage) {
@@ -90,6 +106,9 @@ public class Gui extends Application implements SettingCallback {
 //        this.schedulePane.setTop(new WindowBar(stage).getContent());
         this.schedulePane.setCenter(this.scheduleView);
         this.schedulePane.setBottom(this.scheduleView.selectButtons);
+        this.simulationPane.getChildren().add(timeLabel);
+
+
 
         //AnimationTimer used for the FPS count
         new AnimationTimer() {
@@ -125,16 +144,54 @@ public class Gui extends Application implements SettingCallback {
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             lastFps = LocalDateTime.now();
             Logger.debug("FPS: " + fps.getPfs());
-            if(this.tabPane.getSelectionModel().isSelected(1)){
-                int timeMultiplier = 1;
-                settingsPane.
+            if (this.tabPane.getSelectionModel().isSelected(1) && startTime != null) {
+                startTime = ChronoUnit.MINUTES.addTo(startTime,timeMultiplier);
+                for (int i = 0; i <10 ; i++) {
+                    if(startTime.isAfter(startTimes.get(i).minusHours(1))&&startTime.isBefore(startTimes.get(i))){
+                        timeLabel.setText(startTime.toString() + " Classblock " + (i+1));
+                        break;
+                    }
+                    else{
+                        timeLabel.setText(startTime.toString() + " Break");
+                    }
+
+                }
             }
-        }
+            else{
+                startTime = settingsPane.getStartingTime();
+                classBlockTime = settingsPane.getStartingTime();
+                 classBlockLength = scheduleView.getClassBlockLength();
+                 lunchBreakLength = scheduleView.getLunchBreakLength();
+                 lunchBreakTime = scheduleView.getLunchBreakTime();
+                 fastBreakLength = scheduleView.getFastBreakLength();
+                 fastBreakTime = scheduleView.getFastBreakTime();
+                 setArraylists();
+            }
+      }
+
     }
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
         scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreakTime(), newSettings.getLunchBreakLength(), newSettings.getFastBreakTime(), newSettings.getFastBreakLength(), newSettings.getTime());
         scheduleView.updateColor(newSettings.getColor(), newSettings.isTextBrightness());
+        timeMultiplier = newSettings.getSpeed();
     }
+    public void setArraylists(){
+        LocalTime endTime;
+        startTimes.clear();
+        endTimes.clear();
+        for (int i = 1; i <= 10; i++) {
+            endTime = ChronoUnit.MINUTES.addTo(this.classBlockTime, classBlockLength);
+            if (i == fastBreakTime) {
+                this.classBlockTime = ChronoUnit.MINUTES.addTo(endTime, fastBreakLength);
+            } else if (i == lunchBreakTime) {
+                this.classBlockTime = ChronoUnit.MINUTES.addTo(endTime, lunchBreakLength);
+            } else {
+                this.classBlockTime = endTime;
+            }
+          startTimes.add(classBlockTime);
+        }
+    }
+
 }
