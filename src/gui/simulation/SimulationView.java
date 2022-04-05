@@ -67,19 +67,26 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
     @Override
     public void onUpdate(double deltaTime) {
         npcs.forEach(npc -> {
-            npc.setPosition(npc.getNextMove(Schedule.get(), 1, mapInfo));
+            npc.setPosition(npc.getNextMove(Schedule.get(), period, mapInfo));
         });
 
         if(InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
             period++;
+            calculateNewTargets();
         }
 
         if(InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
             period--;
+            calculateNewTargets();
         }
 
         period = Math.min(period, 10);
         period = Math.max(period, 1);
+    }
+
+    private void calculateNewTargets() {
+        npcs.forEach(Npc::giveUpSeat);
+        mapInfo.getClassRooms().forEach(ClassRoomInfo::resetSeats);
     }
 
     private void generateNpcs() {
