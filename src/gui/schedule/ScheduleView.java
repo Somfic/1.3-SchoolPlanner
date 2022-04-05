@@ -61,6 +61,21 @@ public class ScheduleView extends Pane {
     public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
         Schedule.get().add(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
+    /*private void TESTMETHOD() {
+        //hardcoding a schedule
+        ArrayList<StudentGroup> students = new ArrayList<>();
+        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
+        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students,
+                new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
+        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students,
+                new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
+        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
+                new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
+    }*/
+
+    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
+        clear();
+        this.schedule.add(new ScheduleItem(teacher, new ArrayList<>(students), classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
 
     }
@@ -104,7 +119,6 @@ public class ScheduleView extends Pane {
             //Design
             pane.setStyle("-fx-border-width: 1; -fx-border-style: solid");
             pane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
-
             pane.setOnMouseClicked(event -> this.selectButtons.selectItem(scheduleItem));
 
             //Add to view
