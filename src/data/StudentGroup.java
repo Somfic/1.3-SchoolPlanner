@@ -13,6 +13,11 @@ public class StudentGroup {
 	public StudentGroup(String name) {
         this.name = name;
 		this.students = new ArrayList<>();
+
+		for (int i = 0; i < 6; i++) {
+			this.students.add(new Student(Gender.MALE, "Hello", (int) (Math.random() * 99999)));
+		}
+
         this.name = name;
 	}
 

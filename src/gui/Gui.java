@@ -6,6 +6,7 @@ import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
 import gui.simulation.SimulationView;
+import io.FileManager;
 import io.InputManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -38,7 +39,9 @@ public class Gui extends Application implements SettingCallback {
     @Override
     public void start(Stage stage) {
         // Custom title bar
-        this.canvas = new Canvas(1920, 900);
+        this.canvas = new Canvas(600, 700);
+        this.simulationPane = new SimulationView(this.canvas);
+        scheduleView.addCallback(simulationPane);
 
         //Making tabs
         this.tabPane = new TabPane();
@@ -68,6 +71,15 @@ public class Gui extends Application implements SettingCallback {
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
         this.scene = new Scene(mainPane);
+
+        this.scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            this.canvas.setWidth(newValue.doubleValue());
+        });
+
+        this.scene.heightProperty().addListener((observable, oldValue, newValue) -> {
+            this.canvas.setHeight(newValue.doubleValue());
+        });
+
         this.schedulePane.setCenter(this.scheduleView);
         this.schedulePane.setBottom(this.scheduleView.selectButtons);
 
@@ -75,7 +87,7 @@ public class Gui extends Application implements SettingCallback {
         stage.setScene(this.scene);
         InputManager.setup(this.scene);
         stage.setResizable(true);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon.png")));
+        stage.getIcons().add(new Image(FileManager.getResource("./Icon.png")));
         stage.show();
 
         settingsPane.load();

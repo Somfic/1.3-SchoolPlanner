@@ -43,6 +43,18 @@ public class SimulationView extends VBox implements Resizable {
         canvas.toFront();
         camera = new Camera(this);
 
+    private final int tileSize = 25;
+
+    public SimulationView(Canvas canvas) {
+        this.setCenter(canvas);
+    }
+
+    MapInfo mapInfo = new MapInfo();
+
+    @Override
+    public void onStart() {
+        this.map = Map.fromFile("./res/school.tmj");
+
         if (map == null) {
             //todo: error
             return;
@@ -204,3 +216,4 @@ public class SimulationView extends VBox implements Resizable {
         this.pane = pane;
     }
 }
+

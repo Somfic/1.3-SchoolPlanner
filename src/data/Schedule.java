@@ -7,6 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
+    private static Schedule instance = new Schedule();
+    private static List<Student> students = new ArrayList<>();
+
+    public static Schedule get() {
+        return Schedule.instance;
+    }
+
+    public static void set(Schedule schedule) {
+        Schedule.instance = schedule;
+    }
+
     private final List<ScheduleItem> items;
 
     public Schedule() {
