@@ -2,15 +2,15 @@ package data;
 
 import logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.media.jfxmediaimpl.HostUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
-    private final List<ScheduleItem> items;
+    private final List<ScheduleItem> items = new ArrayList<>();
+
     public Schedule() {
-        this.items = new ArrayList<>();
+
     }
 
     public void add(ScheduleItem item) {
