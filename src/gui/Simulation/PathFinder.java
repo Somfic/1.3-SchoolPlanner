@@ -66,6 +66,7 @@ public class PathFinder {
         }
         int x = position.x;
         int y = position.y;
+        route.add(position);
         for (int j = i + 1; j >= 1; j--) {
             if (y >= 1 && paths.get(y - 1).get(x) == j) {
                 y--;
