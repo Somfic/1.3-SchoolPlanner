@@ -39,39 +39,9 @@ public class ScheduleView extends Pane {
         this.parent = parent;
         this.getChildren().add(this.scheduleGridPane);
         this.scheduleGridPane.setAlignment(Pos.CENTER);
-//        this.TESTMETHOD();
         this.startTime = LocalTime.of(8, 00);
         this.buildScheduleTable(startTime);
     }
-
-    private List<ScheduleChangeCallback> callbacks = new ArrayList<>();
-    public void addCallback(ScheduleChangeCallback callback) {
-        callbacks.add(callback);
-    }
-
-    private void TESTMETHOD() {
-        //hardcoding a schedule
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        Schedule.get().add(new ScheduleItem(new Teacher(Gender.MALE, "Pieter"), students, new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        Schedule.get().add(new ScheduleItem(new Teacher(Gender.MALE, "Edwin"), students, new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        Schedule.get().add(new ScheduleItem(new Teacher(Gender.MALE, "Johan"), students, new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
-    }
-
-    public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
-        clear();
-        Schedule.get().add(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
-    /*private void TESTMETHOD() {
-        //hardcoding a schedule
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students,
-                new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students,
-                new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
-                new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
-    }*/
 
     public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
@@ -105,13 +75,10 @@ public class ScheduleView extends Pane {
              * TODO: change the translate so it updates along with the schedule size!
              */
             pane.setMinWidth(215);
-            //Height = 50 * (end - start + 1)
-            pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));
+            pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
 
-            //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
-            pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());
-            //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
-            pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());
+            pane.setTranslateX(this.scheduleGridPane.getTranslateX() + 200 + 215 * scheduleItem.getClassroom().getIndex());     //TranslateX = translateX of the grid + 300 (left column) + 215 (normal column) * classroomIndex
+            pane.setTranslateY(this.scheduleGridPane.getTranslateY() + 50 * scheduleItem.getStartPeriod());                     //TranslateY = translateY of the grid + 50 (cell height) * startPeriod
 
             //Content
             pane.getChildren().add(this.createScheduleItemContent(scheduleItem));

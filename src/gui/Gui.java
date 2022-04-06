@@ -1,7 +1,6 @@
 package gui;
 
 import gui.components.WindowBar;
-import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
@@ -11,7 +10,6 @@ import io.InputManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -19,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logging.Logger;
 import org.jfree.fx.FXGraphics2D;
 
 public class Gui extends Application implements SettingCallback {
