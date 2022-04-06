@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassBlockCallback, BreakTimeCallback, StartTimeCallback {
@@ -47,10 +49,10 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private int lunchBreakTimeSave;
     private int lunchBreakLengthSave;
     private LocalTime startingTime;
-    private SettingCallback callback;
 
-    public SettingView(SettingCallback callback) {
-        this.callback = callback;
+    private final List<SettingCallback> callbacks = new ArrayList<>();
+
+    public SettingView() {
         this.borderPane = new BorderPane();
         this.titleLabel = new Label("Settings");
         this.speedLabel = new Label("Simulator Speed");
@@ -76,7 +78,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             fastBreak.confirm();
             lunchBreak.confirm();
             startTime.confirm();
-            callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakTimeSave, fastBreakLengthSave, lunchBreakTimeSave, lunchBreakLengthSave, startingTime));
+            callbacks.forEach(callback -> callback.onSettingChange(new SettingCallback.ScheduleSettings(speedSave, themeColorSave, textDarkness, classBlockLengthSave, fastBreakTimeSave, fastBreakLengthSave, lunchBreakTimeSave, lunchBreakLengthSave, startingTime)));
         });
         cancel.setOnAction(event -> {
             speedSelector.cancel();
@@ -88,6 +90,10 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
         });
         borderPane.setTop(titleLabel);
         borderPane.setCenter(centralPane);
+    }
+
+    public void addCallback(SettingCallback callback) {
+        callbacks.add(callback);
     }
 
     public BorderPane getContent() {
@@ -139,7 +145,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.set(save.getClassBlockLength());
             fastBreak.set(save.getFastBreakTime(), save.getFastBreakLength());
             lunchBreak.set(save.getLunchBreakTime(), save.getLunchBreakLength());
-            startTime.set(save.getTime());
+            startTime.set(save.getStartTime());
 
             confirm.fire();
         } catch (IOException e) {

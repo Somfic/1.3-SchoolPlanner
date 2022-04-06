@@ -100,6 +100,7 @@ public class Map {
         int[][] obstacles = layoutAndObstacles.getValue();
 
         Map world = new Map(tiles.getWidth(), tiles.getHeight());
+        world.setObstacles(obstacles);
 
         // Add the tiles to the world
         for (int y = 0; y < tiles.getHeight(); y++) {
@@ -126,6 +127,12 @@ public class Map {
 
         int[][][] layout = new int[width + 39][height + 39][layers.size()];
         int[][] obstacles = new int[width][height];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                obstacles[width - x - 1][y] = 1;
+            }
+        }
 
         for (int z = 0; z < layers.size(); z++) {
             TilesLayer layer = layers.get(z);
@@ -161,8 +168,8 @@ public class Map {
                                 amountOfImportedTiles++;
                                 layout[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()][z] = block;
 
-                                if (layer.getName().equals("Walls")) {
-                                    obstacles[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()] = 1;
+                                if (layer.getName().equals("Walls") || layer.getName().equals("Obstacles")) {
+                                    obstacles[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()] = 0;
                                 }
                             }
 
@@ -240,5 +247,13 @@ public class Map {
         }
 
         return sprites;
+    }
+
+    public int[][] getObstacles() {
+        return obstacles;
+    }
+
+    public void setObstacles(int[][] obstacles) {
+        this.obstacles = obstacles;
     }
 }

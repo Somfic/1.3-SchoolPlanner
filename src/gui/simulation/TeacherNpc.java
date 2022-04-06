@@ -36,29 +36,28 @@ public class TeacherNpc extends Npc {
     }
 
     @Override
-    Vector2 getNextMove(Schedule schedule, int period, MapInfo mapInfo) {
+    void calculateTarget(Schedule schedule, int period, MapInfo mapInfo) {
+        if(this.target != null) {
+            return;
+        }
+
         // Get the current period
         ScheduleItem currentPeriod = null;
 
         for (ScheduleItem item : schedule.getItems()) {
-            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period && item.getTeachers().equals(teacher)) {
+            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period && item.getTeacher().equals(teacher)) {
                 currentPeriod = item;
                 break;
             }
         }
 
-        // The student is not in a class
         if (currentPeriod == null) {
-            return new Vector2(0, 0);
+            // Not in a lesson, get a break area seat
+            this.target = mapInfo.getBreakArea().getSeat();
+        } else {
+            // Get a seat in the classroom
+            this.target = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
         }
-
-        // Get a seat
-        return mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
-    }
-
-    @Override
-    void giveUpSeat() {
-        // Do nothing
     }
 
     public Teacher getTeacher() {

@@ -16,8 +16,6 @@ public class StudentNpc extends Npc {
     private final Student student;
     private final String studentGroup;
 
-    private Vector2 seat;
-
     public StudentNpc(Student student, String studentGroup) {
         super(student);
         this.student = student;
@@ -37,7 +35,11 @@ public class StudentNpc extends Npc {
     }
 
     @Override
-    Vector2 getNextMove(Schedule schedule, int period, MapInfo mapInfo) {
+    void calculateTarget(Schedule schedule, int period, MapInfo mapInfo) {
+        if(this.target != null) {
+            return;
+        }
+
         // Get the current period
         ScheduleItem currentPeriod = null;
 
@@ -53,23 +55,13 @@ public class StudentNpc extends Npc {
             }
         }
 
-        // The student is not in a class
+
         if (currentPeriod == null) {
-            return new Vector2(0, 0);
+            // The student is not in a class
+            this.target = mapInfo.getBreakArea().getSeat();
+        } else {
+            this.target = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getSeat();
         }
-
-        // Get a seat
-        if(seat == null) {
-            seat = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getSeat();
-        }
-
-        return seat;
-
-    }
-
-    @Override
-    void giveUpSeat() {
-        this.seat = null;
     }
 
     public Student getStudent() {

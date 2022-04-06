@@ -14,7 +14,7 @@ public class StudentGroup {
         this.name = name;
 		this.students = new ArrayList<>();
 
-		for (int i = 0; i < Math.random() * 6 + 6; i++) {
+		for (int i = 0; i < 6; i++) {
 			this.students.add(new Student(Gender.MALE, "Hello", (int) (Math.random() * 99999)));
 		}
 

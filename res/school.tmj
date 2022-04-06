@@ -13,21 +13,21 @@
         {
          "chunks":[
                 {
-                 "data":"eJw7y8LAcJZC3IgHEwLE6D\/IghuP6h\/c4d+IR+9Q0E+M\/ykBMP1hrORhSvUDANqJhlU=",
+                 "data":"eJw7y8LAcJZC3IgHEwLE6D\/IghuP6keoxSZPSvjj0k+J\/bjEh4p+YvwPA8SEN7bwB4EwVvIwpfoB\/72Omg==",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":0
                 }, 
                 {
-                 "data":"eJw7y8LAcJYCjAwaWRAYH0BWdxAJowNzVuw0Lv1hrAhMqX5zHJhU+ynRjysscYUzsn5kNfgwLvuHun70cKKVflzhTyxA1jMQGACFo2lT",
+                 "data":"eJw7y8LAcJYCjAwaWRAYH0BWdxAJowNzVuw0Lv1hrAhMqX5zHJhU+ynRjysscYUzsn50s4nB6PpBNCX6KbWfEv0gQA\/9uMIfGeBL48h6BgIDALtCeLg=",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":0
                 }, 
                 {
-                 "data":"eJw7y8LAcJYIfBqIsYFGFuLwqP5R\/cNRPyFASH8YK25MD\/0AELZbiw==",
+                 "data":"eJw7y8LAcJYIfBqIsYFGFuLwqH7a6D\/IghuP6qe9fkKAkP4wVtyYHvoBo6ZmCw==",
                  "height":16,
                  "width":16,
                  "x":32,
@@ -71,42 +71,42 @@
         {
          "chunks":[
                 {
-                 "data":"eJxjYKAt4GZlYODCgwkBTiLUjOrHDXxHw5\/m+vGlcV0iwn8g\/QgAESAC4g==",
+                 "data":"eJxjYKAt4GZlYODCgwkBTiLUDAf9uMLJj0j9uOzxJTL8cekn1v0jWT8o7nSg6rTQwleXiPAfyDQKADvPBAk=",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYKAMcLFCMA8rqjg3VJwXjUZXBwO+rAizQNgPqo4TB40O0MVx6cOln1hAqv3k6kcPDxjWQVOHHl6E7MEFiHU\/rfQTMo\/W9pOrH1e8aOOIP3Q80AAAncwE+w==",
+                 "data":"eJxjYKAMcLFCMA8rqjg3VJwXjUZXBwO+rAizQNgPqo4TB40OPFmx89FpXPqJBbj0a7Li5xPSjy6OHh4wrItD3I8Vv3mEALp6UvWjhz+twhkXQA9vevkfFv46aOq1oeJeSOJaWOJtoAEAln4HCw==",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBgFo2AUkAu4WHFjHlbKzOakg34AX\/YAlw==",
+                 "data":"eJxjYBgFAwm4WHFjHlbKzOYc1U9z\/fjiz28IuB8AM54Bpw==",
                  "height":16,
                  "width":16,
                  "x":32,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYGBg4GRloAhoA\/V7IZnBhcTWArJ5WSFi6JiHSHtxuY9Yd9NKP7FgsLp\/oPX70sl+bRzpT4fCeB0OAAC7sQMY",
+                 "data":"eJxjYGBg4GRloAhoA\/V7IZnBhcTWArJ5WSFi6JiHSHtxuY9Yd+NS50mhfmIBLv2aA+z\/gdbvSyf7tXGkPx0K43U4AADNQAN4",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":16
                 }, 
                 {
-                 "data":"eJxjYKAe4GZlYODCgnlxiPOwournZMVuLrHilOrHBShVRy\/3D4R+5Pj0I1G\/L5Xdr40jneniENchMl6HMwAAeJoEBw==",
+                 "data":"eJxjYKAe4GZlYODCgnlxiPOwournZMVuLrHiniTqx6WeWP3oQJNE+9HVU+r\/gdCPHJ9+JOr3pbL7tXGkM10c4jpExutwBgCtuATH",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":16
                 }, 
                 {
-                 "data":"eJxjYMANOFnxSGIB3ED1XEhYF0rzEGkOLvuIdQel+kk1l9r2D0X9yPHtN8Du10ZLfzCsQ2H8D2cAAAPPAqo=",
+                 "data":"eJxjYMANOFnxSGIB3ED1XEhYF0rzEGkOLvuIdYcnhfpxAWL1a1JoP6X+Hwj9yPHtN8Du10ZLfzCsQ2H8D2cAACdeAwo=",
                  "height":16,
                  "width":16,
                  "x":32,
@@ -129,7 +129,14 @@
         {
          "chunks":[
                 {
-                 "data":"eJxjYBi+gAUHjQ0wEeCPAtqC0fAeGAAAOAAAEw==",
+                 "data":"eJxjYBgFo2AUUANwDLQDyAAACaAACQ==",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYBi+gAUHjQ0wEeCPAtqC4RzeoHTHMdCOwAEAPzAAHw==",
                  "height":16,
                  "width":16,
                  "x":16,
@@ -173,42 +180,42 @@
         {
          "chunks":[
                 {
-                 "data":"eJxjYBj8IJmRoaGVCcK+wMzAcJEZQRMLllKon1qAHPuTOSjTTykYDX\/K9FMDZDAyMGQCcRYQZzMixCgFAFpLIX4=",
+                 "data":"eJxjYBh64CIzKk1v\/ZQCeri\/loM8s5HBAhxm4LI\/AU39ARL1N6Cpx2U\/sYBU+2FgHlDffDx20zL9ZDAyMGQCcRYQZzMSFqMUAACCChcK",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBhYcIGZgeEiM3a5hThoYvXTA+CzX4uD4QA2mlj95AILRuLVYrOfnvqxgYF2Pz1BJtCtWUCcjcPNZoz4MaUAAGT2Fgg=",
+                 "data":"eJxjYBh4cJEZu\/hCHDSx+ukFKLWfVu6\/zIjAuPjUsB+X\/jAmBMbFJwXQ2\/3ogFL3YwNZQD9kM1JuDrkAAN5\/Fj8=",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBgFo2AUDBQwY4RgEGhnhmB6AgC1BAGD",
+                 "data":"eJxjYBgFQxlcZoRgZDaMTw8QxgTByGwYnxgw1N1PTdDODMH0BABHEAzN",
                  "height":16,
                  "width":16,
                  "x":32,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBgY0MZEup5ERgjdzMHAsIxE\/YuB6peQYSe1wHpmCEZnEwvOM0MwOnvU\/lFACQAAKLUVmQ==",
+                 "data":"eJxjYBg6IJFxoF0wcOA8MwSjs0ftHwWUAAAioAo7",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":16
                 }, 
                 {
-                 "data":"eJxjYKAOsGAkTX0bE3b9TRyo4omMmOxmoJplOPQjg8VANUuYMNm0ADD71zNDMLFsdP3nmSGYWPZgsR8GyLUfBii1fxSQBgCGRSuP",
+                 "data":"eJxjYBjcIJERO3u4gvPMEEwse9T+UUAJAAAyJxR1",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":16
                 }, 
                 {
-                 "data":"eJxjYMAOUnGI0wpYMELoJg5U8URG8s1czMTAsISJfP3kgPXMEIzOJgRg\/j\/PDMHobGL1D5T9MECu\/TBAqf2jgDQAAMWkFbE=",
+                 "data":"eJxjYBjcIJFxoF1AX3CeGYLR2aP2jwJaAAAThwo7",
                  "height":16,
                  "width":16,
                  "x":32,
@@ -218,7 +225,88 @@
          "encoding":"base64",
          "height":32,
          "id":3,
-         "name":"Objects",
+         "name":"Seats",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":48,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[
+                {
+                 "data":"eJxjYBh40MzMwNDCjF9NKxOEvsCMSoPAYiB7CQH9S\/HopxWoEcAUI8X+FA4IncxBnP4MIPbiZGDw5oTwWzgw1ZAL8IU\/MWAgwh8bwGb\/fRxuaYSGXzOR4T8UAQBmYhbb",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYKAe+M+MwPjAfST5CwTUYgONQD1NzOTrXwjUs4gMfdgAPvu1OBgOYKOJ1U8usGAkXi02+2H6TZkYGMyA2JwJNx+ffnIBTP8UDgaGqRz41eKzfwtQ71Yk\/cS6HwauAPVeJWA\/rYEZIyobHVMKAK4xGOE=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYMAPagUYGOoECCjCA\/YC9e4jQ38zMwNDCzP59i4G6l1CpP6DQHWHKLDrIVDvIwr04wN3aGQuDJgxMTCYM0HYpkyo\/KEAaOX+Jg7KzSAGmDFCMDLQB\/INGLGrJxUQStsAylYOVg==",
+                 "height":16,
+                 "width":16,
+                 "x":32,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYKA+iGYmrKaNCcFuBqpvwaHnNxbxZg4GhmVI+hcD1SzBof+vAFQNUP0SJuxq8NlPDMBnPwysZ4ZgdDat7d8jMLD2w8BA2W8nSL65IwEAAI9VGqU=",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":16
+                }, 
+                {
+                 "data":"eJxjYKAOsGAkTX0bE3b9TRyE9TYD1SzDoR8ZLAaqWcKEyaYFgNm\/nhmCiWWj6x+q9sMAufaTC\/4zI\/AoIB0AABO5GiE=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":16
+                }, 
+                {
+                 "data":"eJxjYMAOUqH0Q2YGhkfMOBRREVgwQugmDuqZuZiJgWEJE\/XMIwasZ4ZgdDYhAPM\/uQCmf6DshwFS7d8jAKGXk5nG\/jMj8CggHQAAhSIRvA==",
+                 "height":16,
+                 "width":16,
+                 "x":32,
+                 "y":16
+                }],
+         "compression":"zlib",
+         "encoding":"base64",
+         "height":32,
+         "id":5,
+         "name":"Obstacles",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":48,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[
+                {
+                 "data":"eJxjYKAdeMHBwPCSg3z9HJwMDJyc5OvXAOrVpEA\/pWDU\/0Pb\/xoDGHb0AgB6xQdn",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":16
+                }],
+         "compression":"zlib",
+         "encoding":"base64",
+         "height":32,
+         "id":6,
+         "name":"Walkable obstacles",
          "opacity":1,
          "startx":0,
          "starty":0,
@@ -228,7 +316,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":5,
+ "nextlayerid":7,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -246,6 +334,10 @@
         {
          "firstgid":2049,
          "source":"objects_2.tsj"
+        }, 
+        {
+         "firstgid":3073,
+         "source":"objects_3.tsj"
         }],
  "tilewidth":64,
  "type":"map",
