@@ -172,7 +172,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     private int period = 1;
     private int lastPeriod = -1;
-    LocalDateTime lastPeriodChange = LocalDateTime.now();
+    private double timeSinceLastPeriodChange = 0;
 
     public void update(double deltaTime) {
         InputManager.update();
@@ -184,8 +184,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             if (tabPane == null || tabPane.getSelectionModel().getSelectedIndex() != 1)
                 return;
 
-//            Logger.debug(tabPane.getSelectionModel().getSelectedIndex() + " selected");
-
+            timeSinceLastPeriodChange += deltaTime * 1000;
             gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
             // Go to 6:00 if past 18:00
@@ -219,9 +218,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 //        }
 
             for (Npc npc : npcs) {
-                long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
-                int iteration = (int) Math.floor(milis / 100f);
-                double factor = Math.round(milis % 100f) / 100f;
+                int iteration = (int) Math.floor(timeSinceLastPeriodChange / 100f);
+                double factor = Math.round(timeSinceLastPeriodChange % 100f) / 100f;
 
                 npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
             }
@@ -234,7 +232,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
             mapInfo.getBreakArea().resetSeats();
             mapInfo.getTeacherArea().resetSeats();
-            lastPeriodChange = LocalDateTime.now();
+            timeSinceLastPeriodChange = 0;
 
             npcs.forEach(npc -> {
             try {
