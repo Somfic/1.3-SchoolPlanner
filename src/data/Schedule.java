@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
+    private final List<ScheduleItem> items = new ArrayList<>();
     private static Schedule instance = new Schedule();
     private static List<Student> students = new ArrayList<>();
 
@@ -18,10 +19,8 @@ public class Schedule {
         Schedule.instance = schedule;
     }
 
-    private final List<ScheduleItem> items;
-
     public Schedule() {
-        this.items = new ArrayList<>();
+
     }
 
     public void add(ScheduleItem item) {
