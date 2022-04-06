@@ -104,7 +104,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             }
 
             if (!isInSpawn) {
-                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, (int) (tileSize * 16 / 34 * 1.2), (int) (tileSize * 1.2), null);
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, null);
             }
         }
 
