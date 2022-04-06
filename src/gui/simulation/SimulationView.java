@@ -94,20 +94,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics = graphics2D;
         graphics.setTransform(camera.getTransform());
 
-        for (Npc npc : npcs) {
-            boolean isInSpawn = false;
-            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
-                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
-                    isInSpawn = true;
-                    break;
-                }
-            }
-
-            if (!isInSpawn) {
-                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
-            }
-        }
-
         // Linear interpolation between morning red and evening blue
         double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
 
@@ -137,7 +123,17 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
         npcs.sort(sorter);
         for (Npc npc : npcs) {
-            graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, null);
+            boolean isInSpawn = false;
+            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
+                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
+                    isInSpawn = true;
+                    break;
+                }
+            }
+
+            if (!isInSpawn) {
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, (int) (tileSize * 16 / 34 * 1.2), (int) (tileSize * 1.2), null);
+            }
         }
     }
 
