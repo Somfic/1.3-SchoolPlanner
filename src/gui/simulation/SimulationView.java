@@ -5,13 +5,10 @@ import data.map.Map;
 import data.map.Tile;
 import gui.schedule.ScheduleChangeCallback;
 import gui.settings.SettingCallback;
-import gui.settings.StartTimeCallback;
-import io.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import logging.Logger;
@@ -42,8 +39,10 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private LocalTime gameTime = LocalTime.of(6, 0);
     private final NpcSorter sorter = new NpcSorter();
 
+
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
+    private TabPane tabPane;
 
     public SimulationView() {
         fps = new FramesPerSecond();
@@ -171,6 +170,11 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     LocalDateTime lastPeriodChange = LocalDateTime.now();
 
     public void update(double deltaTime) {
+        if(tabPane == null || tabPane.getSelectionModel().getSelectedIndex() != 1)
+            return;
+
+        Logger.debug(tabPane.getSelectionModel().getSelectedIndex() + " selected");
+
         gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
         // Go to 6:00 if past 18:00
@@ -342,6 +346,10 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         });
 
         calculateNewTargets();
+    }
+
+    public void setTabPane(TabPane tabPane) {
+        this.tabPane = tabPane;
     }
 
     private ScheduleSettings settings = new ScheduleSettings();

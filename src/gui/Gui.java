@@ -30,22 +30,23 @@ public class Gui extends Application implements SettingCallback {
     private WindowBar windowBar;
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
-    private SimulationView simulationPane = new SimulationView();
+    private SimulationView simulationPane;
     private SettingView settingsPane = new SettingView();
 
     @Override
     public void start(Stage stage) {
         // Custom title bar
         this.canvas = new Canvas(600, 700);
+
+        //Making tabs
+        this.tabPane = new TabPane();
+        this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
         this.simulationPane = new SimulationView();
         scheduleView.addCallback(simulationPane);
 
         settingsPane.addCallback(this);
         settingsPane.addCallback(simulationPane);
-
-        //Making tabs
-        this.tabPane = new TabPane();
-        this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         Tab scheduleTab = new Tab("Schedule", schedulePane);
         scheduleTab.setClosable(false);
@@ -58,6 +59,8 @@ public class Gui extends Application implements SettingCallback {
 
         this.tabPane = new TabPane(scheduleTab, simulationTab, settingsTab);
         this.tabPane.getSelectionModel().select(2); // select settings pane
+
+        simulationPane.setTabPane(tabPane);
 
         //SchedulePane
 //        Button button = new Button("Testing pop-up function");
