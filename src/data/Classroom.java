@@ -6,6 +6,7 @@ public class Classroom {
     private int index;
 
     public Classroom() {
+
     }
 
     public Classroom(int capacity, String name, int index) {

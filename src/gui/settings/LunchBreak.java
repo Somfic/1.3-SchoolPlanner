@@ -9,11 +9,6 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class LunchBreak {
     //BreakLength means the amount of minutes a break takes
     //BreakTime means after which lesson a break starts
@@ -30,9 +25,9 @@ public class LunchBreak {
     private int breakLengthMemory;
     private int breakTimeCurrent;
     private int breakTimeMemory;
-    private ArrayList<String> lessons = new ArrayList<>();
+    private String[] lessons = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
     public LunchBreak(BreakTimeCallback callback) {
-        Collections.addAll(lessons,"1", "2", "3", "4", "5", "6", "7", "8", "9");
         this.label = new Label("Select ");
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.breakLengthSpinner = new Spinner(valueFactory);
@@ -41,7 +36,7 @@ public class LunchBreak {
 
         this.breakTimeDropdown = new Dropdown();
         breakTimeDropdown.setDropdownItems(lessons);
-        this.breakTimeCurrent = Integer.parseInt(lessons.get(4));
+        this.breakTimeCurrent = Integer.valueOf(lessons[4]);
         this.breakTimeMemory = this.breakLengthCurrent;
 
         this.callback = callback;
