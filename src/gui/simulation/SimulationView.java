@@ -1,9 +1,6 @@
 package gui.simulation;
 
-import data.FramesPerSecond;
-import data.Schedule;
-import data.StudentGroup;
-import data.Teacher;
+import data.*;
 import data.map.Map;
 import data.map.Tile;
 import gui.schedule.ScheduleChangeCallback;
@@ -42,6 +39,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private Pane pane;
     private boolean toUpdateBackground;
     private LocalTime gameTime = LocalTime.of(6, 0);
+    private NpcSorter sorter = new NpcSorter();
 
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
@@ -104,6 +102,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.drawString("Period: " + period, 10, 75);
 
         graphics.setTransform(camera.getTransform());
+
+        npcs.sort(sorter);
         for (Npc npc : npcs) {
             graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, null);
         }
