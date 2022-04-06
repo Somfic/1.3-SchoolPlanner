@@ -45,6 +45,11 @@ public class ScheduleView extends Pane {
         this.buildScheduleTable(startTime);
     }
 
+    private List<ScheduleChangeCallback> callbacks = new ArrayList<>();
+    public void addCallback(ScheduleChangeCallback callback) {
+        callbacks.add(callback);
+    }
+
     /*private void TESTMETHOD() {
         //hardcoding a schedule
         ArrayList<StudentGroup> students = new ArrayList<>();
@@ -104,6 +109,8 @@ public class ScheduleView extends Pane {
             //Add to view
             this.getChildren().add(pane);
         }
+
+        callbacks.forEach(ScheduleChangeCallback::onChange);
     }
 
     private VBox createScheduleItemContent(ScheduleItem scheduleItem) {
