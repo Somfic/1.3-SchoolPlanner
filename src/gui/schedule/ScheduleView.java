@@ -14,8 +14,6 @@ import javafx.scene.text.FontWeight;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ScheduleView extends Pane {
@@ -46,21 +44,10 @@ public class ScheduleView extends Pane {
     }
 
     private List<ScheduleChangeCallback> callbacks = new ArrayList<>();
+
     public void addCallback(ScheduleChangeCallback callback) {
         callbacks.add(callback);
     }
-
-    /*private void TESTMETHOD() {
-        //hardcoding a schedule
-        ArrayList<StudentGroup> students = new ArrayList<>();
-        Collections.addAll(students, new StudentGroup("1"), new StudentGroup("2"));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Pieter")), students,
-                new Classroom(30, "Classroom 5", 4), 3, 3, new Lesson("MATH")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Edwin")), students,
-                new Classroom(30, "Classroom 2", 1), 2, 3, new Lesson("OGP")));
-        this.schedule.add(new ScheduleItem(Arrays.asList(new Teacher(Gender.MALE, "Johan")), students,
-                new Classroom(30, "Classroom 3", 2), 1, 6, new Lesson("2D")));
-    }*/
 
     public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
@@ -265,7 +252,8 @@ public class ScheduleView extends Pane {
 
     /**
      * Change color of the schedule items visable and yet to be made.
-     * @param color = theme color of schedule item.
+     *
+     * @param color      = theme color of schedule item.
      * @param brightness = black text is true, light gray text if false.
      */
     public void updateColor(Color color, boolean brightness) {
