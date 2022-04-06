@@ -66,7 +66,7 @@ public class Gui extends Application implements SettingCallback {
 //        button.setOnAction(event -> {
 //            PopUpAddItems.PupUp("Testing");
 //        });
-        
+
         //this.schedulePane.setCenter(button);
         //this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
