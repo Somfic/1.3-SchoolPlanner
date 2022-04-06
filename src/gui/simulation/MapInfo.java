@@ -8,21 +8,22 @@ import java.util.*;
 public class MapInfo {
     private final List<SeatInfo> classRooms = new ArrayList<>();
     private final SeatInfo teacherArea = new SeatInfo("Teacher Area").setSeats(
-        new Vector2(6, 7),new Vector2(3, 9),new Vector2(3, 10),new Vector2(7, 8),new Vector2(7, 9)
-        ,new Vector2(7, 10),new Vector2(7, 11),new Vector2(5, 12),new Vector2(6, 12));
+            new Vector2(6, 7), new Vector2(3, 9), new Vector2(3, 10), new Vector2(7, 8), new Vector2(7, 9)
+            , new Vector2(7, 10), new Vector2(7, 11), new Vector2(5, 12), new Vector2(6, 12));
+
     private final SeatInfo breakArea = new SeatInfo("Break Area").setSeats(
-            new Vector2(4, 14),   new Vector2(5, 14),  new Vector2(6, 14),  new Vector2(7, 14),
-            new Vector2(9, 14),   new Vector2(10, 14),  new Vector2(11, 14),  new Vector2(12, 14),
-            new Vector2(14, 14),   new Vector2(15, 14),  new Vector2(16, 14),  new Vector2(17, 14),
-            new Vector2(35, 14),   new Vector2(36, 14), new Vector2(23, 7),new Vector2(24, 7)
-            ,new Vector2(25, 7), new Vector2(23, 9),new Vector2(24, 9),new Vector2(25, 9),new Vector2(27, 7)
-        ,new Vector2(28, 7),new Vector2(29, 7),new Vector2(27, 9),new Vector2(28, 9),new Vector2(29, 9)
-        ,new Vector2(31, 7),new Vector2(32, 7),new Vector2(33, 7),new Vector2(31, 9),new Vector2(32, 9)
-        ,new Vector2(33, 9),new Vector2(35, 7),new Vector2(36, 7),new Vector2(37, 7),new Vector2(35, 9)
-        ,new Vector2(36, 9),new Vector2(37, 9),new Vector2(27, 10),new Vector2(28, 10),new Vector2(29, 10)
-        ,new Vector2(27, 12),new Vector2(28, 12),new Vector2(29, 12),new Vector2(31, 10),new Vector2(32, 10)
-        ,new Vector2(33, 10),new Vector2(31, 12),new Vector2(32, 12),new Vector2(33, 12),new Vector2(35, 10),
-        new Vector2(36, 10),new Vector2(37, 10),new Vector2(35, 12),new Vector2(36, 12),new Vector2(37, 12));
+            new Vector2(4, 14), new Vector2(5, 14), new Vector2(6, 14), new Vector2(7, 14),
+            new Vector2(9, 14), new Vector2(10, 14), new Vector2(11, 14), new Vector2(12, 14),
+            new Vector2(14, 14), new Vector2(15, 14), new Vector2(16, 14), new Vector2(17, 14),
+            new Vector2(35, 14), new Vector2(36, 14), new Vector2(23, 7), new Vector2(24, 7)
+            , new Vector2(25, 7), new Vector2(23, 9), new Vector2(24, 9), new Vector2(25, 9), new Vector2(27, 7)
+            , new Vector2(28, 7), new Vector2(29, 7), new Vector2(27, 9), new Vector2(28, 9), new Vector2(29, 9)
+            , new Vector2(31, 7), new Vector2(32, 7), new Vector2(33, 7), new Vector2(31, 9), new Vector2(32, 9)
+            , new Vector2(33, 9), new Vector2(35, 7), new Vector2(36, 7), new Vector2(37, 7), new Vector2(35, 9)
+            , new Vector2(36, 9), new Vector2(37, 9), new Vector2(27, 10), new Vector2(28, 10), new Vector2(29, 10)
+            , new Vector2(27, 12), new Vector2(28, 12), new Vector2(29, 12), new Vector2(31, 10), new Vector2(32, 10)
+            , new Vector2(33, 10), new Vector2(31, 12), new Vector2(32, 12), new Vector2(33, 12), new Vector2(35, 10),
+            new Vector2(36, 10), new Vector2(37, 10), new Vector2(35, 12), new Vector2(36, 12), new Vector2(37, 12));
 
     public MapInfo() {
         classRooms.add(new SeatInfo("Classroom 1")
@@ -96,7 +97,7 @@ class SeatInfo {
 
     public Vector2 getSeat() {
         // Return a random available seat
-        if(availableSeats.isEmpty()) {
+        if (availableSeats.isEmpty()) {
             Logger.warn("No available seats in " + name);
             return new Vector2(0, 0);
         }
