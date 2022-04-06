@@ -68,7 +68,7 @@ public class StudentNpc extends Npc {
                 ScheduleItem firstPeriod = applicablePeriods.get(0);
                 ScheduleItem lastPeriod = applicablePeriods.get(applicablePeriods.size() - 1);
 
-                if(firstPeriod.getStartPeriod() > period || lastPeriod.getEndPeriod() < period) {
+                if(period < firstPeriod.getStartPeriod() || period > lastPeriod.getEndPeriod()) {
                     target = mapInfo.getSpawnPoints().get((int)(Math.floor(Math.random() * mapInfo.getSpawnPoints().size())));
                     return;
                 }
