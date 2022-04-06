@@ -7,6 +7,9 @@ import java.util.*;
 
 public class MapInfo {
     private final List<SeatInfo> classRooms = new ArrayList<>();
+    private final SeatInfo teacherArea = new SeatInfo("Teacher Area").setSeats(
+        new Vector2(6, 7),new Vector2(3, 9),new Vector2(3, 10),new Vector2(7, 8),new Vector2(7, 9)
+        ,new Vector2(7, 10),new Vector2(7, 11),new Vector2(5, 12),new Vector2(6, 12));
     private final SeatInfo breakArea = new SeatInfo("Break Area").setSeats(
             new Vector2(4, 14),   new Vector2(5, 14),  new Vector2(6, 14),  new Vector2(7, 14),
             new Vector2(9, 14),   new Vector2(10, 14),  new Vector2(11, 14),  new Vector2(12, 14),
