@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
+    private final List<ScheduleItem> items = new ArrayList<>();
     private static Schedule instance = new Schedule();
     private static List<Student> students = new ArrayList<>();
 
@@ -18,16 +19,19 @@ public class Schedule {
         Schedule.instance = schedule;
     }
 
-    private final List<ScheduleItem> items;
-
     public Schedule() {
-        this.items = new ArrayList<>();
+
     }
 
     public void add(ScheduleItem item) {
         for (int i = 0; i <items.size(); i++) {
-            if(item.getClassroom().getName().equals(items.get(i).getClassroom().getName()) ){
-                if(item.getStartPeriod()>=items.get(i).getStartPeriod() && item.getStartPeriod()<=items.get(i).getEndPeriod() || item.getEndPeriod()>=items.get(i).getStartPeriod()&&item.getEndPeriod()<=items.get(i).getEndPeriod()){
+            if (overlapping(item, items.get(i))) {
+                // students
+                ScheduleItem compareItem = items.get(i);
+                ArrayList<StudentGroup> itemStudents = new ArrayList<>(item.getStudentGroups());
+                itemStudents.retainAll(compareItem.getStudentGroups());
+                if (item.getTeacher().equals(compareItem.getTeacher()) || item.getClassroom().equals(compareItem.getClassroom())
+                        || itemStudents.size()!=item.getStudentGroups().size()) {
                     items.remove(i);
                 }
             }
@@ -36,6 +40,20 @@ public class Schedule {
             items.add(item);
         }
     }
+
+    private boolean overlapping(ScheduleItem item1, ScheduleItem item2) {
+        if((item1.getStartPeriod() >= item2.getStartPeriod() && item1.getStartPeriod() <= item2.getEndPeriod())
+                || (item1.getEndPeriod() >= item2.getStartPeriod() && item1.getEndPeriod()<=item2.getEndPeriod())) {
+            return true;
+        }
+        return false;
+            /*
+            ((item.getStartPeriod() >= items.get(i).getStartPeriod() && item.getStartPeriod() <= items.get(i).getEndPeriod())
+                        || (item.getEndPeriod() >= items.get(i).getStartPeriod() && item.getEndPeriod() <= items.get(i).getEndPeriod())
+                        || item.getTeacher().equals(items.get(i).getTeacher()) || (items.get(i).getStudentGroups().contains(item.getStudentGroups())))
+             */
+    }
+
 
     public void add(List<ScheduleItem> items) {
         for (ScheduleItem item : items) {

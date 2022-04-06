@@ -1,41 +1,51 @@
 package gui.simulation;
 
-import data.*;
+import data.FramesPerSecond;
 import data.map.Map;
-import gui.GameNode;
-import gui.schedule.ScheduleChangeCallback;
+import data.map.Tile;
 import io.InputManager;
+import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import logging.Logger;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import org.dyn4j.geometry.Vector2;
+import org.jfree.fx.FXGraphics2D;
+import org.jfree.fx.Resizable;
+import org.jfree.fx.ResizableCanvas;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class SimulationView extends BorderPane implements GameNode, ScheduleChangeCallback {
-
+public class SimulationView extends VBox implements Resizable {
     private Map map;
-    private BufferedImage mapImage;
+    private Canvas canvas;
+    private double tileSize = 25;
+    private FramesPerSecond fps;
+    private LocalDateTime lastFps = LocalDateTime.now();
+    private Canvas backgroundCanvas;
+    private Camera camera;
+    private FXGraphics2D graphics2D;
+    private FXGraphics2D backgroundGraphics;
+    private Pane pane;
+    private boolean toUpdateBackground;
+    private MapInfo mapInfo = new MapInfo();
 
-    private final List<Npc> npcs = new ArrayList<>();
+    public SimulationView() {
+        fps = new FramesPerSecond();
+        setToUpdateBackground(true);
 
-    private final int tileSize = 25;
-
-    public SimulationView(Canvas canvas) {
-        this.setCenter(canvas);
+        map = Map.fromFile("./res/school.tmj");
+        canvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight()-50);
+        backgroundCanvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight()-50);
+        this.pane = new Pane();
+        pane.getChildren().addAll(backgroundCanvas, canvas);
+        canvas.toFront();
+        camera = new Camera(this);
+        onStart();
     }
 
-    MapInfo mapInfo = new MapInfo();
-
-    @Override
     public void onStart() {
         this.map = Map.fromFile("./res/school.tmj");
 
@@ -44,138 +54,164 @@ public class SimulationView extends BorderPane implements GameNode, ScheduleChan
             return;
         }
 
-        mapImage = map.generateImage(tileSize);
+        graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
+        backgroundGraphics = new FXGraphics2D(backgroundCanvas.getGraphicsContext2D());
+        new AnimationTimer() {
+            long last = -1;
 
-        generateNpcs();
+            @Override
+            public void handle(long now) {
+                if (last == -1)
+                    last = now;
+                update((now - last) / 1000000000.0);
+                last = now;
+                draw(graphics2D);
+            }
+        }.start();
+        draw(graphics2D);
+
+        this.getChildren().add(pane);
     }
 
     @Override
-    public void onRender(GraphicsContext context) {
-        context.drawImage(SwingFXUtils.toFXImage(mapImage, null), 0, 0, map.getWidth() * tileSize, map.getHeight() * tileSize);
-        npcs.forEach(npc -> {
-            if (npc instanceof StudentNpc) {
-                context.setFill(new Color(0, 0, 1, 0.5));
-            } else {
-                context.setFill(new Color(1, 0, 0, 0.5));
-            }
+    public void draw(FXGraphics2D graphics) {
+        if (toUpdateBackground)
+            drawBackground(backgroundGraphics);
 
-            context.fillOval(npc.getPosition().x * tileSize, npc.getPosition().y * tileSize, tileSize, tileSize);
-        });
+        canvas = createNewCanvas();
+        graphics = graphics2D;
+        graphics.setTransform(camera.getTransform());
 
-        context.setFill(new Color(1, 1, 1, 1));
-
-        context.fillText("Period: " + period, 10, 10);
+        graphics.setTransform(new AffineTransform());
+        graphics.setColor(Color.GREEN);
+        graphics.setFont(new Font("Arial", Font.PLAIN, 20));
+        graphics.drawString(fps + "", (int) backgroundCanvas.getWidth() - 30, 25);
     }
 
-    private int period = 1;
-    LocalDateTime periodChange = LocalDateTime.now();
+    public void drawBackground(FXGraphics2D graphics) {
+        graphics.setTransform(new AffineTransform());
+        graphics.clearRect(0, 0, (int) backgroundCanvas.getWidth(), (int) backgroundCanvas.getHeight());
+        graphics.setTransform(camera.getTransform());
+        graphics.setBackground(Color.BLACK);
+        this.toUpdateBackground = false;
 
-    @Override
-    public void onUpdate(double deltaTime) {
-        // Move the npcs
-        npcs.forEach(npc -> {
-            try {
-
-                // Seconds since the last period change
-                long milis = ChronoUnit.MILLIS.between(periodChange, LocalDateTime.now());
-                int iteration = (int)Math.floor(milis / 500f);
-                double factor = Math.round(milis % 500f) / 500f;
-
-
-                npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
-
-            } catch (Exception e) {
-                Logger.warn(e, "Could not move npc for " + npc.getPerson().getName());
+        for (Tile tile : map.getTiles()) {
+            if(tile.getImage() == null)
+                continue;
+            Vector2 coords = new Vector2(tile.getX() * tileSize, tile.getY() * tileSize);
+            AffineTransform transform = graphics.getTransform();
+            transform.translate(coords.x, coords.y);
+            if(tile.getWritableImage() == null) {
+                tile.setWritableImage(SwingFXUtils.toFXImage(tile.getImage(), null));
             }
-        });
-
-        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
-            period++;
-            calculateNewTargets();
+            backgroundCanvas.getGraphicsContext2D().drawImage(tile.getWritableImage(), coords.x, coords.y, tileSize, tileSize);
+            //graphics.drawImage(tile.getImage(), transform, null);
         }
 
-        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
-            period--;
-            calculateNewTargets();
+    }
+
+    private Canvas createNewCanvas() {
+        pane.getChildren().remove(canvas);
+        this.canvas = new Canvas(canvas.getWidth(), canvas.getHeight());
+        pane.getChildren().add(this.canvas);
+        this.canvas.toFront();
+        graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
+        return this.canvas;
+    }
+
+    public void update(double deltaTime) {
+        InputManager.update();
+
+        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+            fps.update(deltaTime);
+            lastFps = LocalDateTime.now();
+//            Logger.debug("FPS: " + fps.getPfs());
         }
 
-        period = Math.min(period, 10);
-        period = Math.max(period, 1);
+//        for (Event event : Festival.getInstance().getEventList()) {
+//            if (time.isBefore(event.getEndTime()) && time.isAfter(event.getStartTime())) {
+//                Podium selectedPodium = event.getPodium();
+//                if (!event.isEventVisitorsSpawned()) {
+//                    event.setEventVisitorsSpawned(true);
+//                    for (int i = 0; i < event.getPopularity() * 3; i++) {
+//                        Festival.getInstance().getVisitors().add(new Visitor(new Target(tiledMap.getCollisionLayer(), selectedPodium.getObject().getCenterTile())));
+//                    }
+//                }
+//            }
+//        }
+//        for (Visitor visitor : Festival.getInstance().getVisitors()) {
+//            if (!visitor.isSpawned()) {
+//                if (timer <= 0) {
+//                    visitor.spawn(tiledMap.getSpawn());
+//                    timer = 1;
+//                }
+//            } else {
+//                visitor.update(deltaTime);
+//            }
+//        }
     }
 
-    private void calculateNewTargets() {
-        npcs.forEach(Npc::resetTarget);
-        mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
-        mapInfo.getBreakArea().resetSeats();
-
-        periodChange = LocalDateTime.now();
-
-        npcs.forEach(npc -> {
-            try {
-                npc.calculateTarget(Schedule.get(), period, mapInfo);
-                npc.calculateRoute(map);
-            }
-            catch (Exception e) {
-                Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
-            }
-        });
+    public Canvas getBackgroundCanvas() {
+        return backgroundCanvas;
     }
 
-    private void generateNpcs() {
-        npcs.clear();
-
-        // Get all the unique student groups
-        List<StudentGroup> studentGroups = new ArrayList<>();
-        Schedule.get().getItems().forEach(item -> {
-            if (item.getStudentGroups() != null) {
-                item.getStudentGroups().forEach(studentGroup -> {
-                    if (!studentGroups.contains(studentGroup)) {
-                        studentGroups.add(studentGroup);
-                    }
-                });
-            }
-        });
-
-        List<Integer> students = new ArrayList<>();
-
-        // Create a NPC for each student
-        studentGroups.forEach(studentGroup -> {
-            studentGroup.getStudents().forEach(student -> {
-                if (!students.contains(student.getStudentNumber())) {
-                    Logger.debug("Creating NPC for student " + student.getName() + " (" + student.getStudentNumber() + ")");
-                    students.add(student.getStudentNumber());
-                    npcs.add(new StudentNpc(student, studentGroup.getName()));
-                }
-            });
-        });
-
-        // Create a NPC for each teacher
-        List<Teacher> teachers = new ArrayList<>();
-        Schedule.get().getItems().forEach(item -> {
-            if (item.getTeachers() != null) {
-                item.getTeachers().forEach(teacher -> {
-                    if (!teachers.contains(teacher)) {
-                        teachers.add(teacher);
-                    }
-                });
-            }
-
-            if (item.getTeacher() != null) {
-                if (!teachers.contains(item.getTeacher())) {
-                    teachers.add(item.getTeacher());
-                }
-            }
-        });
-
-        teachers.forEach(teacher -> {
-            Logger.debug("Creating NPC for teacher: " + teacher.getName());
-            npcs.add(new TeacherNpc(teacher));
-        });
+    public void setBackgroundCanvas(Canvas backgroundCanvas) {
+        this.backgroundCanvas = backgroundCanvas;
     }
 
-    @Override
-    public void onChange() {
-        generateNpcs();
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
+    public FXGraphics2D getGraphics2D() {
+        return graphics2D;
+    }
+
+    public void setGraphics2D(FXGraphics2D graphics2D) {
+        this.graphics2D = graphics2D;
+    }
+
+    public FXGraphics2D getBackgroundGraphics() {
+        return backgroundGraphics;
+    }
+
+    public void setBackgroundGraphics(FXGraphics2D backgroundGraphics) {
+        this.backgroundGraphics = backgroundGraphics;
+    }
+
+    public boolean isToUpdateBackground() {
+        return toUpdateBackground;
+    }
+
+    public void setToUpdateBackground(boolean toUpdateBackground) {
+        this.toUpdateBackground = toUpdateBackground;
+    }
+
+    public Pane getPane() {
+        return pane;
+    }
+
+    public void setPane(Pane pane) {
+        this.pane = pane;
     }
 }
-
