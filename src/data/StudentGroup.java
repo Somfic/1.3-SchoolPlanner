@@ -15,8 +15,15 @@ public class StudentGroup {
         this.name = name;
 		this.students = new ArrayList<>();
 
-		for (int i = 0; i < 6; i++) {
-			this.students.add(new Student(Gender.MALE, createName(), (int) (Math.random() * 99999)));
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            Gender gender;
+            if (random.nextBoolean()) {
+                gender = Gender.MALE;
+            } else {
+                gender = Gender.FEMALE;
+            }
+			this.students.add(new Student(gender, createName(), (int) (Math.random() * 99999)));
 		}
 
         this.name = name;

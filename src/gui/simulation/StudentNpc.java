@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class StudentNpc extends Npc {
     private final Student student;
@@ -23,10 +24,12 @@ public class StudentNpc extends Npc {
 
         try {
             BufferedImage sprite;
+            Random random = new Random();
+            int colorOffset = 36 * random.nextInt(3);
             if (student.getGender() == Gender.MALE) {
-                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(41, 0, 15, 34);
+                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(41 + colorOffset, 0, 15, 34);
             } else {
-                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(56, 0, 21, 34);
+                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(56 + colorOffset, 0, 21, 34);
             }
             setSprite(sprite);
         } catch (IOException e) {
