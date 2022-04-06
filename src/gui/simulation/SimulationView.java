@@ -194,6 +194,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         npcs.forEach(Npc::resetTarget);
         mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
         mapInfo.getBreakArea().resetSeats();
+        mapInfo.getTeacherArea().resetSeats();
         lastPeriodChange = LocalDateTime.now();
 
         npcs.forEach(npc -> {

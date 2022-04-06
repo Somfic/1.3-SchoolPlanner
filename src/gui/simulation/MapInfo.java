@@ -82,10 +82,14 @@ public class MapInfo {
     public SeatInfo getBreakArea() {
         return breakArea;
     }
+
+    public SeatInfo getTeacherArea() {
+        return teacherArea;
+    }
 }
 
 class SeatInfo {
-    private Queue<Vector2> availableSeats = new LinkedList<>();
+    private List<Vector2> availableSeats = new ArrayList<>();
     private List<Vector2> occupiedSeats = new ArrayList<>();
 
     private Vector2 teacherSeat;
@@ -99,10 +103,10 @@ class SeatInfo {
         // Return a random available seat
         if (availableSeats.isEmpty()) {
             Logger.warn("No available seats in " + name);
-            return new Vector2(0, 0);
+            return new Vector2(5, 28);
         }
 
-        Vector2 seat = availableSeats.remove();
+        Vector2 seat = availableSeats.remove(new Random().nextInt(availableSeats.size()));
         occupiedSeats.add(seat);
 
         return seat;

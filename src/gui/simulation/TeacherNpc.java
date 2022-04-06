@@ -33,7 +33,7 @@ public class TeacherNpc extends Npc {
 
         if (currentPeriod == null) {
             // Not in a lesson, get a break area seat
-            this.target = mapInfo.getBreakArea().getSeat();
+            this.target = mapInfo.getTeacherArea().getSeat();
         } else {
             // Get a seat in the classroom
             this.target = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
