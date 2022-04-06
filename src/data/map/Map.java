@@ -168,7 +168,7 @@ public class Map {
                                 amountOfImportedTiles++;
                                 layout[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()][z] = block;
 
-                                if (layer.getName().equals("Walls")) {
+                                if (layer.getName().equals("Walls") || layer.getName().equals("Obstacles")) {
                                     obstacles[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()] = 0;
                                 }
                             }

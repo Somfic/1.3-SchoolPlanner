@@ -173,42 +173,42 @@
         {
          "chunks":[
                 {
-                 "data":"eJxjYBj8IJmRoaGVCcK+wMzAcJEZQRMLllKon1qAHPuTOSjTTykYDX\/K9JMCMhgZGDKBOAuIsxkJi1EKAC8ZI5I=",
+                 "data":"eJxjYBh64CIzKk1v\/ZSCUfdTpp9SMJjdn8HIwJAJxFlAnM1IWIxSAABochFo",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBhYcIGZgeEiM3a5hThoYvXTA+CzX4uD4QA2mlj95AILRuLVYrOfnvqxgYF2Pz1BFtCt2Xjca8aIH1MKADNTFZ4=",
+                 "data":"eJxjYBh4cJEZu\/hCHDSx+ukFKLV\/1P0Da\/9Auj+LkYEhm3Hg7AcAkwUJWw==",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBgFo2AUDBQwY4RgEGhnhmB6AgC1BAGD",
+                 "data":"eJxjYBgFo2AUDAbQzgzB9AQAfuIBFQ==",
                  "height":16,
                  "width":16,
                  "x":32,
                  "y":0
                 }, 
                 {
-                 "data":"eJxjYBgY0MZEup5ERgjdzMHAsIxE\/YuB6peQYSe1wHpmCEZnEwvOM0MwOnvU\/lFACQAAKLUVmQ==",
+                 "data":"eJxjYBg6IJFxoF0wcOA8MwSjs0ftHwWUAAAioAo7",
                  "height":16,
                  "width":16,
                  "x":0,
                  "y":16
                 }, 
                 {
-                 "data":"eJxjYKAOsGAkTX0bE3b9TRyo4omMmOxmoJplOPQjg8VANUuYMNm0ADD71zNDMLFsdP3nmSGYWPZgsR8GyLUfBii1fxSQBgCGRSuP",
+                 "data":"eJxjYBjcIJERO3u4gvPMEEwse9T+UUAJAAAyJxR1",
                  "height":16,
                  "width":16,
                  "x":16,
                  "y":16
                 }, 
                 {
-                 "data":"eJxjYMAOUnGI0wpYMELoJg5U8URG8s1czMTAsISJfP3kgPXMEIzOJgRg\/j\/PDMHobGL1D5T9MECu\/TBAqf2jgDQAAMWkFbE=",
+                 "data":"eJxjYBjcIJFxoF1AX3CeGYLR2aP2jwJaAAAThwo7",
                  "height":16,
                  "width":16,
                  "x":32,
@@ -218,7 +218,65 @@
          "encoding":"base64",
          "height":32,
          "id":3,
-         "name":"Objects",
+         "name":"Seats",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":48,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[
+                {
+                 "data":"eJxjYBgaoJUJQl9gRqWJBUsp1E8tQI79yRyU6acGGA1\/8vUPZgAAJ34QYw==",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYBhYcIF5YPVTCvDZr8XBcAAbTax+coEFI\/FqsdlPT\/3YwEC7fzABM0b8mFIAAKQ\/DEQ=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYBgFo2AUDBQwY4TggQIAOiIAbw==",
+                 "height":16,
+                 "width":16,
+                 "x":32,
+                 "y":0
+                }, 
+                {
+                 "data":"eJxjYBgY0MZEvt5mDgaGZSTqXwxUv4QCOykF65khGJ09av8oGEgAAAoVC18=",
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":16
+                }, 
+                {
+                 "data":"eJxjYKAOsGAkTX0bE3b9TRyE9TYD1SzDoR8ZLAaqWcKEyaYFgNm\/nhmCiWWj6x+q9sMAufaPgoEBAFgeFxs=",
+                 "height":16,
+                 "width":16,
+                 "x":16,
+                 "y":16
+                }, 
+                {
+                 "data":"eJxjYMAOUnGI0wpYMELoJg7qmbmYiYFhCRP1zCMGrGeGYHQ2IQDzP7kApn+g7IcBcu0fBQMDALYdC3c=",
+                 "height":16,
+                 "width":16,
+                 "x":32,
+                 "y":16
+                }],
+         "compression":"zlib",
+         "encoding":"base64",
+         "height":32,
+         "id":5,
+         "name":"Obstacles",
          "opacity":1,
          "startx":0,
          "starty":0,
@@ -228,7 +286,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":5,
+ "nextlayerid":6,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
