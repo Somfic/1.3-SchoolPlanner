@@ -15,6 +15,10 @@ public class ScheduleItem {
     private Teacher teacher;
     private List<Lesson> lessons;
 
+    public ScheduleItem() {
+
+    }
+
     public ScheduleItem(Teacher teacher, List<StudentGroup> studentGroups, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         this.teacher = teacher;
         this.classroom = classroom;
