@@ -2,14 +2,17 @@ package io;
 
 import logging.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class FileManager {
     public static String read(String path) {
         File file = new File(path);
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             Logger.warn("Could not find file: '" + path + "'");
             return "";
         }
@@ -18,7 +21,7 @@ public class FileManager {
             Scanner scanner = new Scanner(new FileReader(file));
             StringBuilder source = new StringBuilder();
 
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 source.append(scanner.nextLine());
                 source.append("\n");
             }
@@ -41,7 +44,7 @@ public class FileManager {
     public static InputStream getResource(String file) {
         InputStream stream = FileManager.class.getClassLoader().getResourceAsStream(file);
 
-        if(stream == null) {
+        if (stream == null) {
             Logger.warn("Could not find resource file: '" + file + "'");
         }
 

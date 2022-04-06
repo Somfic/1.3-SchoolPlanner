@@ -34,7 +34,7 @@ public class FastBreak {
 
 
     public FastBreak(BreakTimeCallback callback) {
-        Collections.addAll(lessons,"1", "2", "3", "4", "5", "6", "7", "8", "9");
+        Collections.addAll(lessons, "1", "2", "3", "4", "5", "6", "7", "8", "9");
         this.label = new Label("Select ");
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.breakLengthSpinner = new Spinner(valueFactory);

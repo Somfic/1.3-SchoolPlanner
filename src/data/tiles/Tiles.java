@@ -1,9 +1,9 @@
 
 package data.tiles;
 
-import logging.Logger;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

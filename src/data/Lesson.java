@@ -1,7 +1,7 @@
 package data;
 
 public class Lesson {
-	private String name;
+    private String name;
 
     public Lesson() {
 

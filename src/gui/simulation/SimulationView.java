@@ -28,10 +28,10 @@ import java.util.List;
 
 public class SimulationView extends VBox implements Resizable, ScheduleChangeCallback, SettingCallback {
     private Map map;
-    private Canvas canvas;
     private double tileSize = 25;
     private FramesPerSecond fps;
     private LocalDateTime lastFps = LocalDateTime.now();
+    private Canvas canvas;
     private Canvas backgroundCanvas;
     private Camera camera;
     private FXGraphics2D graphics2D;
@@ -41,13 +41,12 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private LocalTime gameTime = LocalTime.of(6, 0);
     private final NpcSorter sorter = new NpcSorter();
     private boolean isRunning = true;
-
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
     private TabPane tabPane;
     private int period = 1;
     private int lastPeriod = -1;
-    LocalDateTime lastPeriodChange = LocalDateTime.now();
+    private double timeSinceLastPeriodChange = 0;
 
     public SimulationView() {
         fps = new FramesPerSecond();
@@ -91,52 +90,35 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     @Override
     public void draw(FXGraphics2D graphics) {
-            if (toUpdateBackground)
-                drawBackground(backgroundGraphics);
+        if (toUpdateBackground)
+            drawBackground(backgroundGraphics);
 
-            canvas = createNewCanvas();
-            graphics = graphics2D;
-            graphics.setTransform(camera.getTransform());
+        canvas = createNewCanvas();
+        graphics = graphics2D;
+        graphics.setTransform(camera.getTransform());
 
-            npcs.sort(sorter);
-            for (Npc npc : npcs) {
-                boolean isInSpawn = false;
-                for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
-                    if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
-                        isInSpawn = true;
-                        break;
-                    }
-                }
-
-                if (!isInSpawn) {
-                    graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, null);
+        npcs.sort(sorter);
+        for (Npc npc : npcs) {
+            boolean isInSpawn = false;
+            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
+                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
+                    isInSpawn = true;
+                    break;
                 }
             }
 
-            // Linear interpolation between morning red and evening blue
-            double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
+            if (!isInSpawn) {
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, null);
+            }
+        }
 
-            // Sunset and sunrise filter
-//        // Red in the morning
-//        double red = Math.max(Math.min(1, time / 6.0 / 2), 0);
-//
-//        // Blue in the evening
-//        double blue = Math.max(Math.min(1, (time - 6.0) / 6.0 / 2), 0);
-//
-//        // 0 in the middle of the day, 1 at midnight
-//        double alpha = Math.max(Math.min(1, (time - 12.0) / 12.0), 0);
-//
-//        GraphicsContext context = canvas.getGraphicsContext2D();
-//        context.setFill(new javafx.scene.paint.Color(red, 0, blue, alpha));
-//        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphics.setTransform(new AffineTransform());
+        graphics.setColor(Color.GREEN);
+        graphics.setFont(new Font("Arial", Font.PLAIN, 20));
 
-            graphics.setTransform(new AffineTransform());
-            graphics.setColor(Color.GREEN);
-            graphics.setFont(new Font("Arial", Font.PLAIN, 20));
-
-            graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
-            graphics.drawString(String.format("%02d", gameTime.getHour()) + ":" + String.format("%02d", gameTime.getMinute()), 10, 50);
-            graphics.drawString("Period: " + period, 10, 75);
+        graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", 10, 25);
+        graphics.drawString(String.format("%02d", gameTime.getHour()) + ":" + String.format("%02d", gameTime.getMinute()), 10, 50);
+        graphics.drawString("Period: " + period, 10, 75);
     }
 
     public void drawBackground(FXGraphics2D graphics) {
@@ -168,8 +150,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
         return this.canvas;
     }
-
-    private double timeSinceLastPeriodChange = 0;
 
     public void update(double deltaTime) {
         InputManager.update();
@@ -225,66 +205,18 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             timeSinceLastPeriodChange = 0;
 
             npcs.forEach(npc -> {
-            try {
-                npc.calculateTarget(Schedule.get(), period, mapInfo);
-                npc.calculateRoute(map);
-            } catch (Exception e) {
-                Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
-            }
+                try {
+                    npc.calculateTarget(Schedule.get(), period, mapInfo);
+                    npc.calculateRoute(map);
+                } catch (Exception e) {
+                    Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
+                }
             });
         }
     }
 
-    public Canvas getBackgroundCanvas() {
-        return backgroundCanvas;
-    }
-
-    public void setBackgroundCanvas(Canvas backgroundCanvas) {
-        this.backgroundCanvas = backgroundCanvas;
-    }
-
     public Canvas getCanvas() {
         return canvas;
-    }
-
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
-    public Camera getCamera() {
-        return camera;
-    }
-
-    public void setCamera(Camera camera) {
-        this.camera = camera;
-    }
-
-    public FXGraphics2D getGraphics2D() {
-        return graphics2D;
-    }
-
-    public void setGraphics2D(FXGraphics2D graphics2D) {
-        this.graphics2D = graphics2D;
-    }
-
-    public FXGraphics2D getBackgroundGraphics() {
-        return backgroundGraphics;
-    }
-
-    public void setBackgroundGraphics(FXGraphics2D backgroundGraphics) {
-        this.backgroundGraphics = backgroundGraphics;
-    }
-
-    public boolean isToUpdateBackground() {
-        return toUpdateBackground;
     }
 
     public void setToUpdateBackground(boolean toUpdateBackground) {
@@ -293,10 +225,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     public Pane getPane() {
         return pane;
-    }
-
-    public void setPane(Pane pane) {
-        this.pane = pane;
     }
 
     @Override
@@ -322,15 +250,13 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         List<Integer> students = new ArrayList<>();
 
         // Create a NPC for each student
-        studentGroups.forEach(studentGroup -> {
-            studentGroup.getStudents().forEach(student -> {
-                if (!students.contains(student.getStudentNumber())) {
-                    Logger.debug("Creating NPC for student " + student.getName() + " (" + student.getStudentNumber() + ")");
-                    students.add(student.getStudentNumber());
-                    npcs.add(new StudentNpc(student, studentGroup.getName()));
-                }
-            });
-        });
+        studentGroups.forEach(studentGroup -> studentGroup.getStudents().forEach(student -> {
+            if (!students.contains(student.getStudentNumber())) {
+                Logger.debug("Creating NPC for student " + student.getName() + " (" + student.getStudentNumber() + ")");
+                students.add(student.getStudentNumber());
+                npcs.add(new StudentNpc(student, studentGroup.getName()));
+            }
+        }));
 
         // Create a NPC for each teacher
         List<Teacher> teachers = new ArrayList<>();

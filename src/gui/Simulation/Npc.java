@@ -2,7 +2,6 @@ package gui.simulation;
 
 import data.Person;
 import data.Schedule;
-import data.Teacher;
 import data.map.Map;
 import logging.Logger;
 import org.dyn4j.geometry.Vector2;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public abstract class Npc {
     Vector2 position = new Vector2(5, 28);
-    Vector2 target = new Vector2( 5, 28);
+    Vector2 target = new Vector2(5, 28);
 
     private final Person person;
     private BufferedImage[] sprites;
@@ -42,17 +41,17 @@ public abstract class Npc {
     }
 
     public Vector2 calculatePositionOnRoute(int iteration, double factor) {
-        if(this.route == null || iteration < 0) {
+        if (this.route == null || iteration < 0) {
             currentSpriteI = 0;
             return this.position;
         }
 
-        if(iteration >= this.route.size()) {
+        if (iteration >= this.route.size()) {
             currentSpriteI = 0;
             return this.target;
         }
 
-        if(iteration == this.route.size() - 1) {
+        if (iteration == this.route.size() - 1) {
             currentSpriteI = 0;
             return this.route.get(iteration);
         }
@@ -90,7 +89,7 @@ public abstract class Npc {
 
         ArrayList<ArrayList<Integer>> obstacleList = new ArrayList<>();
         int[][] fixedObstacles = new int[obstacles[0].length][obstacles.length];
-        for (int j = 0; j<obstacles[0].length; j++) {
+        for (int j = 0; j < obstacles[0].length; j++) {
             for (int i = 0; i < obstacles.length; i++) {
                 fixedObstacles[j][i] = obstacles[i][j];
             }

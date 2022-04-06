@@ -29,8 +29,9 @@ public class LunchBreak {
     private int breakTimeCurrent;
     private int breakTimeMemory;
     private ArrayList<String> lessons = new ArrayList<>();
+
     public LunchBreak(BreakTimeCallback callback) {
-        Collections.addAll(lessons,"1", "2", "3", "4", "5", "6", "7", "8", "9");
+        Collections.addAll(lessons, "1", "2", "3", "4", "5", "6", "7", "8", "9");
         this.label = new Label("Select ");
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.breakLengthSpinner = new Spinner(valueFactory);

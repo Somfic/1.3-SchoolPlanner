@@ -1,8 +1,8 @@
 package data;
 
 public class Classroom {
-	private int capacity;
-	private String name;
+    private int capacity;
+    private String name;
     private int index;
 
     public Classroom() {

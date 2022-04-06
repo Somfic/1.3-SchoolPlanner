@@ -16,21 +16,17 @@ import java.awt.geom.Point2D;
 public class Camera {
     private Point2D centerPoint;
     private double zoom = 1;
-    private double rotation = 0;
     private Point2D lastMousePos;
-    private Node canvas;
-    private SimulationView simView;
+    private final SimulationView simView;
 
     public Camera(SimulationView simulationView) {
-        this.canvas = simulationView.getPane();
+        Node canvas = simulationView.getPane();
         this.simView = simulationView;
         this.centerPoint = new Point2D.Double(-simView.getCanvas().getWidth() / 2, -simView.getCanvas().getHeight() / 2);
 
-        canvas.setOnMousePressed(e -> {
-            lastMousePos = new Point2D.Double(e.getX(), e.getY());
-        });
-        canvas.setOnMouseDragged(e -> mouseDragged(e));
-        canvas.setOnScroll(e -> mouseScroll(e));
+        canvas.setOnMousePressed(e -> lastMousePos = new Point2D.Double(e.getX(), e.getY()));
+        canvas.setOnMouseDragged(this::mouseDragged);
+        canvas.setOnScroll(this::mouseScroll);
     }
 
 
@@ -39,6 +35,7 @@ public class Camera {
         tx.translate(simView.getCanvas().getWidth() / 2, simView.getCanvas().getHeight() / 2);
         tx.scale(zoom, zoom);
         tx.translate(centerPoint.getX(), centerPoint.getY());
+        double rotation = 0;
         tx.rotate(rotation);
         return tx;
     }

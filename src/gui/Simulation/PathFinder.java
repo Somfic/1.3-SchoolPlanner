@@ -1,12 +1,7 @@
 package gui.simulation;
 
-import javafx.util.Pair;
-import logging.Logger;
-import org.dyn4j.geometry.Vector2;
-
 import java.awt.*;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 

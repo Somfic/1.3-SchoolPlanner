@@ -27,7 +27,7 @@ public class MapInfo {
             , new Vector2(27, 12), new Vector2(28, 12), new Vector2(29, 12), new Vector2(31, 10), new Vector2(32, 10)
             , new Vector2(33, 10), new Vector2(31, 12), new Vector2(32, 12), new Vector2(33, 12), new Vector2(35, 10),
             new Vector2(36, 10), new Vector2(37, 10), new Vector2(35, 12), new Vector2(36, 12), new Vector2(37, 12),
-            new Vector2(23, 2), new Vector2(25,2), new Vector2(27, 2));
+            new Vector2(23, 2), new Vector2(25, 2), new Vector2(27, 2));
 
     public MapInfo() {
         classRooms.add(new SeatInfo("Classroom 1")

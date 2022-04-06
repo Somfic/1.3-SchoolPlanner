@@ -1,9 +1,5 @@
 package gui.settings;
 
-import saving.ColorDeserializer;
-import saving.LocalTimeDeserializer;
-import saving.LocalTimeSerializer;
-import logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -14,6 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
+import logging.Logger;
+import saving.ColorDeserializer;
+import saving.LocalTimeDeserializer;
+import saving.LocalTimeSerializer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -49,7 +49,6 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
     private int lunchBreakTimeSave;
     private int lunchBreakLengthSave;
     private LocalTime startingTime;
-
     private final List<SettingCallback> callbacks = new ArrayList<>();
 
     public SettingView() {
@@ -168,6 +167,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
 
     /**
      * Chooses if the text within the schedule is gray or black.
+     *
      * @param darkness of the theme color, true if darkness is above 0.4, false if darkness is under 0.4
      */
     @Override

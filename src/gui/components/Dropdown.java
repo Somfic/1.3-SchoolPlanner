@@ -8,7 +8,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Dropdown<T> extends ComboBox<T> {
@@ -72,6 +71,7 @@ public class Dropdown<T> extends ComboBox<T> {
         this.allItems.addAll(items);
         this.getItems().setAll(this.allItems);
     }
+
     public void addAllDropdownItems(ArrayList<T> items) {
         this.getItems().clear();
         this.allItems.addAll(items);

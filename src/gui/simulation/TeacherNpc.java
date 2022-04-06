@@ -37,7 +37,7 @@ public class TeacherNpc extends Npc {
 
     @Override
     void calculateTarget(Schedule schedule, int period, MapInfo mapInfo) {
-        if(this.target != null) {
+        if (this.target != null) {
             return;
         }
 

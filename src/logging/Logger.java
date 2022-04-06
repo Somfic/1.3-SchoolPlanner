@@ -65,7 +65,7 @@ public class Logger {
             for (int i = 0, traceLength = trace.length; i < traceLength; i++) {
                 StackTraceElement stack = trace[i];
 
-                if(stack.getClassName().startsWith("logging") || stack.getClassName().startsWith("java.lang")) {
+                if (stack.getClassName().startsWith("logging") || stack.getClassName().startsWith("java.lang")) {
                     continue;
                 }
 

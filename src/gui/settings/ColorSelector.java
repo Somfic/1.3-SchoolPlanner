@@ -2,8 +2,8 @@ package gui.settings;
 
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class ColorSelector {
     private ColorCallback callback;

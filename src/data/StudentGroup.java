@@ -1,19 +1,20 @@
 package data;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class StudentGroup {
-	private List<Student> students;
-	private String name;
+    private List<Student> students;
+    private String name;
 
-	public StudentGroup() {
+    public StudentGroup() {
 
-	}
+    }
 
-	public StudentGroup(String name) {
+    public StudentGroup(String name) {
         this.name = name;
-		this.students = new ArrayList<>();
+        this.students = new ArrayList<>();
 
         Random random = new Random();
         for (int i = 0; i < 6; i++) {
@@ -23,11 +24,11 @@ public class StudentGroup {
             } else {
                 gender = Gender.FEMALE;
             }
-			this.students.add(new Student(gender, createName(), (int) (Math.random() * 99999)));
-		}
+            this.students.add(new Student(gender, createName(), (int) (Math.random() * 99999)));
+        }
 
         this.name = name;
-	}
+    }
 
     public String createName() {
         Random r = new Random();
@@ -40,31 +41,31 @@ public class StudentGroup {
         return name;
     }
 
-	public void addStudent(Student student) {
-		this.students.add(student);
-	}
+    public void addStudent(Student student) {
+        this.students.add(student);
+    }
 
-	public void addStudents(List<Student> students) {
-		this.students.addAll(students);
-	}
+    public void addStudents(List<Student> students) {
+        this.students.addAll(students);
+    }
 
-	public List<Student> getStudents() {
-		return this.students;
-	}
+    public List<Student> getStudents() {
+        return this.students;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {
         String s = "";
         for (Student student : students) {
-            s+=student + " ";
+            s += student + " ";
         }
         return s;
     }

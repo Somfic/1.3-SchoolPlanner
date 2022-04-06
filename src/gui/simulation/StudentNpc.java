@@ -1,15 +1,14 @@
 package gui.simulation;
 
 import data.*;
-import data.Student;
 import io.FileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class StudentNpc extends Npc {
     private final Student student;
@@ -64,12 +63,12 @@ public class StudentNpc extends Npc {
         }
 
         if (currentPeriod == null) {
-            if(applicablePeriods.size() > 0) {
+            if (applicablePeriods.size() > 0) {
                 ScheduleItem firstPeriod = applicablePeriods.get(0);
                 ScheduleItem lastPeriod = applicablePeriods.get(applicablePeriods.size() - 1);
 
-                if(period < firstPeriod.getStartPeriod() || period > lastPeriod.getEndPeriod()) {
-                    target = mapInfo.getSpawnPoints().get((int)(Math.floor(Math.random() * mapInfo.getSpawnPoints().size())));
+                if (period < firstPeriod.getStartPeriod() || period > lastPeriod.getEndPeriod()) {
+                    target = mapInfo.getSpawnPoints().get((int) (Math.floor(Math.random() * mapInfo.getSpawnPoints().size())));
                     return;
                 }
             }

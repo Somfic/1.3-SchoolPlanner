@@ -2,17 +2,16 @@ package data.map;
 
 import data.tiles.*;
 import io.FileManager;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 import javafx.util.Pair;
 import logging.Logger;
-import org.dyn4j.geometry.Vector2;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.zip.Inflater;
 

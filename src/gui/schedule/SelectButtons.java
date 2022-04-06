@@ -3,7 +3,6 @@ package gui.schedule;
 import data.*;
 import gui.components.Dropdown;
 import io.FileManager;
-import logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import logging.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -162,7 +162,7 @@ public class SelectButtons extends Pane {
                     String json = FileManager.read(file.getAbsolutePath());
                     Schedule schedule = Schedule.fromJson(json);
 
-                    if(schedule == null) {
+                    if (schedule == null) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error importing schedule");
                         alert.setHeaderText("Oh no!");

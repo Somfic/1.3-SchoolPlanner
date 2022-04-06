@@ -8,7 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class PopUpAddItems {
     private static Labeled teacherLabel;
@@ -94,7 +95,7 @@ public class PopUpAddItems {
         });
 
         VBox VBox = new VBox(10);
-        VBox.getChildren().addAll(new Label("Enter a Teacher name and gender to add teacher."), teacherHBox,new Label("Enter a Subject name to add subject."), subjectHBox, closeButton);
+        VBox.getChildren().addAll(new Label("Enter a Teacher name and gender to add teacher."), teacherHBox, new Label("Enter a Subject name to add subject."), subjectHBox, closeButton);
         VBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(VBox);
