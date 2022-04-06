@@ -60,16 +60,6 @@ public class TeacherNpc extends Npc {
         }
 
         if (currentPeriod == null) {
-            if(applicablePeriods.size() > 0) {
-                ScheduleItem firstPeriod = applicablePeriods.get(0);
-                ScheduleItem lastPeriod = applicablePeriods.get(applicablePeriods.size() - 1);
-
-                if(firstPeriod.getStartPeriod() > period || lastPeriod.getEndPeriod() < period) {
-                    target = mapInfo.getSpawnPoints().get((int)(Math.floor(Math.random() * mapInfo.getSpawnPoints().size())));
-                    return;
-                }
-            }
-
             // Not in a lesson, get a break area seat
             this.target = mapInfo.getTeacherArea().getSeat();
 
