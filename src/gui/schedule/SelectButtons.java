@@ -19,16 +19,16 @@ import java.util.Arrays;
 public class SelectButtons extends Pane {
     private HBox buttons = new HBox();
     //Buttons
-    private TextField startTime = new TextField();                                                      //Time
+    private TextField startTime = new TextField();
     private TextField endTime = new TextField();
-
-    private Dropdown<Classroom> classRoomSelect = new Dropdown<>();                                     //ComboBoxes
+    private Dropdown<Classroom> classRoomSelect = new Dropdown<>();
     private Dropdown<Teacher> teacherSelect = new Dropdown<>();
     private Dropdown<Lesson> courseSelect = new Dropdown<>();
     private MenuButton studentGroupSelect = new MenuButton("Class");
     private ScheduleView scheduleView;
-    private ArrayList<Teacher> teachers;
+    private ArrayList<Teacher> teachers = new ArrayList<>();
     private ArrayList<StudentGroup> students = new ArrayList<>();
+    private ArrayList<Lesson> lessons = new ArrayList<>();
 
     public SelectButtons(ScheduleView scheduleView) {
         this.scheduleView = scheduleView;
@@ -57,15 +57,15 @@ public class SelectButtons extends Pane {
         this.courseSelect.setPrefWidth(150);
         this.studentGroupSelect.setPrefWidth(150);
 
-        this.courseSelect.setDropdownItems(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"),
-                new Lesson("OOSD"));
-        this.teacherSelect.setDropdownItems(
+        this.courseSelect.setDropdownItems(new ArrayList<>(Arrays.asList(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"),
+                new Lesson("OOSD"))));
+        this.teacherSelect.setDropdownItems(new ArrayList<>(Arrays.asList(
                 new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"),
-                new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Joli"), new Teacher(Gender.FEMALE, "Jessica"));
-        this.classRoomSelect.setDropdownItems(new Classroom(30, "Classroom 1", 0),
+                new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Joli"), new Teacher(Gender.FEMALE, "Jessica"))));
+        this.classRoomSelect.setDropdownItems(new ArrayList<>(Arrays.asList(new Classroom(30, "Classroom 1", 0),
                 new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2),
                 new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4),
-                new Classroom(30, "Classroom 6", 5));
+                new Classroom(30, "Classroom 6", 5))));
         this.buildStudentGroups(new ArrayList());
 
         HBox topRowButtons = new HBox(this.startTime, this.classRoomSelect, this.teacherSelect);                        //Layout
@@ -90,9 +90,9 @@ public class SelectButtons extends Pane {
         apply.setOnAction(event -> {
             try {
                 students.clear();
-                for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
+                for (int i = 0; i < studentGroupSelect.getItems().size(); i++) {
                     if (((CheckMenuItem) studentGroupSelect.getItems().get(i)).isSelected())
-                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                        students.add(new StudentGroup(String.valueOf(i+1)));
                 }
                 scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(),
                         Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
@@ -183,8 +183,15 @@ public class SelectButtons extends Pane {
         VBox saveLoadButtons = new VBox(save, load);
         saveLoadButtons.setSpacing(10);
 
+        // add teacher or subject
+        Button addItems = new Button("Add new item");
+        addItems.setOnAction(e -> {
+            PopUpAddItems.PupUp("Add teacher or Subject", this);
+        });
+        VBox addButtons = new VBox(addItems);
+
         //final
-        this.buttons.getChildren().addAll(allButtons, applyRemoveResetButtons, saveLoadButtons);
+        this.buttons.getChildren().addAll(allButtons, applyRemoveResetButtons, saveLoadButtons, addButtons);
         this.buttons.setSpacing(10);
         this.buttons.setPadding(new Insets(10, 10, 10, 10));
     }
@@ -197,6 +204,16 @@ public class SelectButtons extends Pane {
         this.teacherSelect.setValue(scheduleItem.getTeacher());
         this.courseSelect.setValue(scheduleItem.getLesson());
         this.buildStudentGroups((ArrayList<StudentGroup>) scheduleItem.getStudentGroups());
+    }
+
+    public void addTeacher(Teacher teacher) {
+        teachers.add(teacher);
+        teacherSelect.addAllDropdownItems(teachers);
+    }
+
+    public void addSubject(Lesson lesson) {
+        lessons.add(lesson);
+        courseSelect.addAllDropdownItems(lessons);
     }
 
     private void buildStudentGroups(ArrayList<StudentGroup> selectedGroups) {

@@ -47,11 +47,6 @@ public class Schedule {
             return true;
         }
         return false;
-            /*
-            ((item.getStartPeriod() >= items.get(i).getStartPeriod() && item.getStartPeriod() <= items.get(i).getEndPeriod())
-                        || (item.getEndPeriod() >= items.get(i).getStartPeriod() && item.getEndPeriod() <= items.get(i).getEndPeriod())
-                        || item.getTeacher().equals(items.get(i).getTeacher()) || (items.get(i).getStudentGroups().contains(item.getStudentGroups())))
-             */
     }
 
 
