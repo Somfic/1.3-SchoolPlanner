@@ -14,14 +14,12 @@ import javafx.scene.text.FontWeight;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ScheduleView extends Pane {
     private Gui parent;
     private GridPane scheduleGridPane = new GridPane();
-    private Schedule schedule = new Schedule();
     private Label lessonLabel, teacherLabel, studentGroupsLabel, divider1, divider2;
     private ArrayList<Label> labels = new ArrayList<>(5);
     private int width;
@@ -49,17 +47,18 @@ public class ScheduleView extends Pane {
         clear();
         this.schedule.add(new ScheduleItem(teacher, new ArrayList<>(students), classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
+
     }
 
     public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
+        Schedule.get().remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
     }
 
     public void resetSchedule() {
         clear();
-        this.schedule.reset();
+        Schedule.get().reset();
         this.addSchedule();
     }
 
@@ -70,8 +69,11 @@ public class ScheduleView extends Pane {
     }
 
     private void addSchedule() {
-        for (ScheduleItem scheduleItem : schedule.getItems()) {
+        for (ScheduleItem scheduleItem : Schedule.get().getItems()) {
             Pane pane = new Pane();
+            /*
+             * TODO: change the translate so it updates along with the schedule size!
+             */
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
 
@@ -89,6 +91,8 @@ public class ScheduleView extends Pane {
             //Add to view
             this.getChildren().add(pane);
         }
+
+        callbacks.forEach(ScheduleChangeCallback::onChange);
     }
 
     private VBox createScheduleItemContent(ScheduleItem scheduleItem) {
@@ -106,7 +110,7 @@ public class ScheduleView extends Pane {
 
         //Make labels
         this.lessonLabel = new Label(scheduleItem.getLesson().getName());
-        this.teacherLabel = new Label(scheduleItem.getTeacher().toString());
+        this.teacherLabel = new Label(scheduleItem.getTeacher().getName());
         this.studentGroupsLabel = new Label(studentGroups.toString());
         this.divider1 = new Label("|");
         this.divider2 = new Label("|");
@@ -249,12 +253,8 @@ public class ScheduleView extends Pane {
         return this.scheduleGridPane;
     }
 
-    public Schedule getSchedule() {
-        return this.schedule;
-    }
-
     public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
+        Schedule.set(schedule);
         this.addSchedule();
     }
 }

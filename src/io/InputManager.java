@@ -91,7 +91,7 @@ public class InputManager {
         }
     }
 
-    private static class Mouse {
+    public static class Mouse {
         private double x;
         private double y;
 
@@ -159,23 +159,35 @@ public class InputManager {
         }
     }
 
-    private static class Keyboard {
-        private final Hashtable<KeyCode, Boolean> keys;
+    public static class Keyboard {
+        private final Hashtable<KeyCode, Boolean> keys = new Hashtable<>();
+        private final Hashtable<KeyCode, Boolean> firstKeys = new Hashtable<>();
 
         public Keyboard() {
-            this.keys = new Hashtable<>();
+
         }
 
         void setKey(KeyCode key, boolean state) {
             this.keys.put(key, state);
+            this.firstKeys.put(key, state);
         }
 
         public boolean isKeyDown(KeyCode key) {
-            return this.keys.get(key);
+            return this.keys.getOrDefault(key, false);
+        }
+
+        public boolean isKeyDownFirst(KeyCode key) {
+            boolean value = this.firstKeys.getOrDefault(key, false);
+            this.firstKeys.put(key, false);
+            return value;
+        }
+
+        public boolean isKeyUpFirst(KeyCode key) {
+            return !isKeyDownFirst(key);
         }
 
         public boolean isKeyUp(KeyCode key) {
-            return !this.keys.get(key);
+            return !this.keys.getOrDefault(key, false);
         }
     }
 }

@@ -15,4 +15,9 @@ public class FramesPerSecond {
     public void update(double deltatime) {
         this.pfs = (int) (1 / deltatime);
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(pfs);
+    }
 }

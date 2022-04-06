@@ -32,6 +32,10 @@ public class ScheduleItem {
 		return false;
 	}
 
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     public int getStartPeriod() {
         return startPeriod;
     }
@@ -88,7 +92,7 @@ public class ScheduleItem {
         this.teacher = teachers;
     }
 
-    public List<Lesson> getLessons() {
+    public ArrayList<Lesson> getLessons() {
         return lessons;
     }
 
