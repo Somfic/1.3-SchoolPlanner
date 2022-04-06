@@ -105,7 +105,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             }
 
             if (!isInSpawn) {
-                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, null);
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, (int) (tileSize * 16 / 34 * 1.2), (int) (tileSize * 1.2), null);
             }
         }
 
@@ -133,8 +133,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
         graphics.drawString(String.format("%02d", gameTime.getHour())+ ":" +  String.format("%02d", gameTime.getMinute()), 10, 50);
         graphics.drawString("Period: " + period, 10, 75);
-
-        graphics.setTransform(camera.getTransform());
     }
 
     public void drawBackground(FXGraphics2D graphics) {
