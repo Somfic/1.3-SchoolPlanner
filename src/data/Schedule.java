@@ -29,7 +29,7 @@ public class Schedule {
                 if (overlapping(item, items.get(i))) {
                     ScheduleItem compareItem = items.get(i);
                     ArrayList<StudentGroup> itemStudents = new ArrayList<>(item.getStudentGroups());
-                    itemStudents.retainAll(compareItem.getStudentGroups());
+                    itemStudents.removeAll(compareItem.getStudentGroups());
                     if (item.getTeacher().equals(compareItem.getTeacher()) || item.getClassroom().equals(compareItem.getClassroom())
                             || itemStudents.size() != item.getStudentGroups().size()) {
                         items.remove(i);
@@ -45,6 +45,7 @@ public class Schedule {
     private boolean overlapping(ScheduleItem item1, ScheduleItem item2) {
         if ((item1.getStartPeriod() >= item2.getStartPeriod() && item1.getStartPeriod() <= item2.getEndPeriod())
                 || (item1.getEndPeriod() >= item2.getStartPeriod() && item1.getEndPeriod() <= item2.getEndPeriod())) {
+            Logger.debug(item1.toString() + " is overlapping with " + item2.toString());
             return true;
         }
         return false;

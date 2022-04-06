@@ -158,7 +158,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
                 tile.setWritableImage(SwingFXUtils.toFXImage(tile.getImage(), null));
             }
             backgroundCanvas.getGraphicsContext2D().drawImage(tile.getWritableImage(), coords.x, coords.y, tileSize, tileSize);
-            //graphics.drawImage(tile.getImage(), transform, null);
         }
     }
 

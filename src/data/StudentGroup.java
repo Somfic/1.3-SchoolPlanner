@@ -59,4 +59,13 @@ public class StudentGroup {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    @Override
+    public String toString() {
+        String s = "";
+        for (Student student : students) {
+            s+=student + " ";
+        }
+        return s;
+    }
 }
