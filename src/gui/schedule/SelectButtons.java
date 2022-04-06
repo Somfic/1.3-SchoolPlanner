@@ -27,10 +27,14 @@ public class SelectButtons extends Pane {
     private MenuButton studentGroupSelect = new MenuButton("Class");
     private ScheduleView scheduleView;
     private ArrayList<Teacher> teachers = new ArrayList<>();
-    private ArrayList<StudentGroup> students = new ArrayList<>();
+    private ArrayList<StudentGroup> allStudents = new ArrayList<>();
+    private ArrayList<StudentGroup> selectedStudents = new ArrayList<>();
     private ArrayList<Lesson> lessons = new ArrayList<>();
 
     public SelectButtons(ScheduleView scheduleView) {
+        for (int i = 0; i < 4; i++) {
+            allStudents.add(new StudentGroup(String.valueOf(i + 1)));
+        }
         this.scheduleView = scheduleView;
         this.getChildren().add(this.buttons);
         this.buildSelectButtons();
@@ -89,12 +93,12 @@ public class SelectButtons extends Pane {
 
         apply.setOnAction(event -> {
             try {
-                students.clear();
+                selectedStudents.clear();
                 for (int i = 0; i < studentGroupSelect.getItems().size(); i++) {
                     if (((CheckMenuItem) studentGroupSelect.getItems().get(i)).isSelected())
-                        students.add(new StudentGroup(String.valueOf(i+1)));
+                        selectedStudents.add(allStudents.get(i));
                 }
-                scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(),
+                scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), selectedStudents, classRoomSelect.getDropdownValue(),
                         Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not apply schedule item");
@@ -103,7 +107,7 @@ public class SelectButtons extends Pane {
 
         reset.setOnAction(event -> {
             try {
-                students.clear();
+                selectedStudents.clear();
                 scheduleView.resetSchedule();
             } catch (Exception e) {
                 Logger.warn(e, "Could not reset schedule");
@@ -112,13 +116,12 @@ public class SelectButtons extends Pane {
 
         remove.setOnAction(event -> {
             try {
-                students.clear();
+                selectedStudents.clear();
                 for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
                     CheckMenuItem temp = (CheckMenuItem) studentGroupSelect.getItems().get(i);
                     if (temp.isSelected()) {
-                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                        selectedStudents.add(allStudents.get(i));
                     }
-                    ;
                 }
 //                scheduleView.removeScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {

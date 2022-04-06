@@ -1,6 +1,7 @@
 package data;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class StudentGroup {
 	private List<Student> students;
@@ -15,11 +16,22 @@ public class StudentGroup {
 		this.students = new ArrayList<>();
 
 		for (int i = 0; i < 6; i++) {
-			this.students.add(new Student(Gender.MALE, "Hello", (int) (Math.random() * 99999)));
+			this.students.add(new Student(Gender.MALE, createName(), (int) (Math.random() * 99999)));
 		}
 
         this.name = name;
 	}
+
+    public String createName() {
+        Random r = new Random();
+        String name = r.ints(48, 123)
+                .filter(num -> (num < 58 || num > 64) && (num < 91 || num > 96))
+                .limit(10)
+                .mapToObj(c -> (char) c).collect(StringBuffer::new, StringBuffer::append, StringBuffer::append)
+                .toString();
+        name.toLowerCase();
+        return name;
+    }
 
 	public void addStudent(Student student) {
 		this.students.add(student);

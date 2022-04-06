@@ -27,7 +27,6 @@ public class Schedule {
         if (!item.getStudentGroups().isEmpty()) {
             for (int i = 0; i < items.size(); i++) {
                 if (overlapping(item, items.get(i))) {
-                    // students
                     ScheduleItem compareItem = items.get(i);
                     ArrayList<StudentGroup> itemStudents = new ArrayList<>(item.getStudentGroups());
                     itemStudents.retainAll(compareItem.getStudentGroups());
