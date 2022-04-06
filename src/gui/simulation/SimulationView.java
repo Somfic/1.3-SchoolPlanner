@@ -151,7 +151,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
                 tile.setWritableImage(SwingFXUtils.toFXImage(tile.getImage(), null));
             }
             backgroundCanvas.getGraphicsContext2D().drawImage(tile.getWritableImage(), coords.x, coords.y, tileSize, tileSize);
-            //graphics.drawImage(tile.getImage(), transform, null);
         }
     }
 
@@ -194,18 +193,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             fps.update(deltaTime);
             lastFps = LocalDateTime.now();
-//            Logger.debug("FPS: " + fps.getPfs());
+            Logger.debug("FPS: " + fps.getPfs());
         }
-
-//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
-//            period++;
-//            calculateNewTargets();
-//        }
-//
-//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
-//            period--;
-//            calculateNewTargets();
-//        }
 
         for (Npc npc : npcs) {
             long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
