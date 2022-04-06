@@ -97,7 +97,17 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.setTransform(camera.getTransform());
 
         for (Npc npc : npcs) {
-            graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
+            boolean isInSpawn = false;
+            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
+                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
+                    isInSpawn = true;
+                    break;
+                }
+            }
+
+            if (!isInSpawn) {
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
+            }
         }
 
         // Linear interpolation between morning red and evening blue
@@ -122,7 +132,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.setFont(new Font("Arial", Font.PLAIN, 20));
 
         graphics.drawString(fps + " fps", (int) 10, 25);
-        graphics.drawString(gameTime.toString(), 10, 50);
+        graphics.drawString(gameTime.getHour() + ":" + gameTime.getMinute(), 10, 50);
         graphics.drawString("Period: " + period, 10, 75);
 
     }
@@ -163,13 +173,13 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     LocalDateTime lastPeriodChange = LocalDateTime.now();
 
     public void update(double deltaTime) {
-        gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 1000));
+        gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
         // Calculate the current period
         int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
         period = minutesPastStart / settings.getClassBlockLength() + 1;
 
-        if(lastPeriod != period) {
+        if (lastPeriod != period) {
             lastPeriod = period;
             calculateNewTargets();
         }
@@ -192,7 +202,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
         for (Npc npc : npcs) {
             long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
-            int iteration = (int)Math.floor(milis / 100f);
+            int iteration = (int) Math.floor(milis / 100f);
             double factor = Math.round(milis % 100f) / 100f;
 
             npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
@@ -327,6 +337,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             Logger.debug("Creating NPC for teacher: " + teacher.getName());
             npcs.add(new TeacherNpc(teacher));
         });
+
+        calculateNewTargets();
     }
 
     private ScheduleSettings settings = new ScheduleSettings();

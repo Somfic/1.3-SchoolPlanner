@@ -14,8 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Npc {
-    Vector2 position = new Vector2(20, 15);
-    Vector2 target = new Vector2( 20, 15);
+    Vector2 position = new Vector2(5, 28);
+    Vector2 target = new Vector2( 5, 28);
 
     private final Person person;
     private BufferedImage sprite;

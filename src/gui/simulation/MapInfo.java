@@ -6,6 +6,9 @@ import org.dyn4j.geometry.Vector2;
 import java.util.*;
 
 public class MapInfo {
+
+    private List<Vector2> spawnPoints;
+
     private final List<SeatInfo> classRooms = new ArrayList<>();
     private final SeatInfo teacherArea = new SeatInfo("Teacher Area").setSeats(
             new Vector2(6, 7), new Vector2(3, 9), new Vector2(3, 10), new Vector2(7, 8), new Vector2(7, 9)
@@ -70,6 +73,9 @@ public class MapInfo {
                         new Vector2(36, 24), new Vector2(37, 24), new Vector2(39, 24), new Vector2(40, 24),
                         new Vector2(36, 26), new Vector2(37, 26), new Vector2(39, 26), new Vector2(40, 26))
                 .setTeacherSeat(new Vector2(40, 18)));
+
+
+        setSpawnPoints(new Vector2(3, 28), new Vector2(4, 28), new Vector2(5, 28), new Vector2(6, 28), new Vector2(7, 28));
     }
 
     public List<SeatInfo> getClassRooms() {
@@ -86,6 +92,14 @@ public class MapInfo {
 
     public SeatInfo getTeacherArea() {
         return teacherArea;
+    }
+
+    public List<Vector2> getSpawnPoints() {
+        return spawnPoints;
+    }
+
+    public void setSpawnPoints(Vector2... spawnPoints) {
+        this.spawnPoints = new LinkedList<>(Arrays.asList(spawnPoints));
     }
 }
 
@@ -104,7 +118,7 @@ class SeatInfo {
         // Return a random available seat
         if (availableSeats.isEmpty()) {
             Logger.warn("No available seats in " + name);
-            return new Vector2(5, 28);
+            return new Vector2(20, 15);
         }
 
         Vector2 seat = availableSeats.remove(new Random().nextInt(availableSeats.size()));

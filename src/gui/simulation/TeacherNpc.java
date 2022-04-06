@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherNpc extends Npc {
 
@@ -41,24 +43,38 @@ public class TeacherNpc extends Npc {
             return;
         }
 
-        if(period > 10 || period < 0) {
-            this.target = new Vector2(5, 28);
-            return;
-        }
-
         // Get the current period
         ScheduleItem currentPeriod = null;
 
+        List<ScheduleItem> applicablePeriods = new ArrayList<>();
+
         for (ScheduleItem item : schedule.getItems()) {
-            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period && item.getTeacher().equals(teacher)) {
+            if (item.getTeacher().equals(teacher)) {
+                applicablePeriods.add(item);
+            }
+        }
+
+        for (ScheduleItem item : applicablePeriods) {
+            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period) {
                 currentPeriod = item;
                 break;
             }
         }
 
         if (currentPeriod == null) {
+            if(applicablePeriods.size() > 0) {
+                ScheduleItem firstPeriod = applicablePeriods.get(0);
+                ScheduleItem lastPeriod = applicablePeriods.get(applicablePeriods.size() - 1);
+
+                if(firstPeriod.getStartPeriod() > period || lastPeriod.getEndPeriod() < period) {
+                    target = mapInfo.getSpawnPoints().get((int)(Math.floor(Math.random() * mapInfo.getSpawnPoints().size())));
+                    return;
+                }
+            }
+
             // Not in a lesson, get a break area seat
             this.target = mapInfo.getTeacherArea().getSeat();
+
         } else {
             // Get a seat in the classroom
             this.target = mapInfo.getClassRoom(currentPeriod.getClassroom().getName()).getTeacherSeat();
