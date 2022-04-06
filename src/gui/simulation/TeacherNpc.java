@@ -5,12 +5,8 @@ import data.Schedule;
 import data.ScheduleItem;
 import data.Teacher;
 import io.FileManager;
-import javafx.embed.swing.SwingFXUtils;
-import logging.Logger;
-import org.dyn4j.geometry.Vector2;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -23,13 +19,15 @@ public class TeacherNpc extends Npc {
         this.teacher = teacher;
 
         try {
-            BufferedImage sprite;
+            BufferedImage[] sprites = new BufferedImage[2];
             if (teacher.getGender() == Gender.MALE) {
-                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(0, 0, 20, 34);
+                sprites[0] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(0, 0, 20, 34);
+                sprites[1] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(0, 34, 20, 34);
             } else {
-                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(20, 0, 21, 34);
+                sprites[0] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(20, 0, 21, 34);
+                sprites[1] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(20, 34, 21, 34);
             }
-            setSprite(sprite);
+            setSprites(sprites);
         } catch (IOException e) {
             e.printStackTrace();
         }
