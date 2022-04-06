@@ -5,10 +5,12 @@ import data.map.Map;
 import data.map.Tile;
 import gui.schedule.ScheduleChangeCallback;
 import gui.settings.SettingCallback;
+import io.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import logging.Logger;
@@ -38,11 +40,14 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private boolean toUpdateBackground;
     private LocalTime gameTime = LocalTime.of(6, 0);
     private final NpcSorter sorter = new NpcSorter();
-
+    private boolean isRunning = true;
 
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
     private TabPane tabPane;
+    private int period = 1;
+    private int lastPeriod = -1;
+    LocalDateTime lastPeriodChange = LocalDateTime.now();
 
     public SimulationView() {
         fps = new FramesPerSecond();
@@ -86,32 +91,33 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     @Override
     public void draw(FXGraphics2D graphics) {
-        if (toUpdateBackground)
-            drawBackground(backgroundGraphics);
+        if (isRunning) {
+            if (toUpdateBackground)
+                drawBackground(backgroundGraphics);
 
-        canvas = createNewCanvas();
-        graphics = graphics2D;
-        graphics.setTransform(camera.getTransform());
+            canvas = createNewCanvas();
+            graphics = graphics2D;
+            graphics.setTransform(camera.getTransform());
 
-        npcs.sort(sorter);
-        for (Npc npc : npcs) {
-            boolean isInSpawn = false;
-            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
-                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
-                    isInSpawn = true;
-                    break;
+            npcs.sort(sorter);
+            for (Npc npc : npcs) {
+                boolean isInSpawn = false;
+                for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
+                    if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
+                        isInSpawn = true;
+                        break;
+                    }
+                }
+
+                if (!isInSpawn) {
+                    graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, null);
                 }
             }
 
-            if (!isInSpawn) {
-                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, null);
-            }
-        }
+            // Linear interpolation between morning red and evening blue
+            double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
 
-        // Linear interpolation between morning red and evening blue
-        double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
-
-        // Sunset and sunrise filter
+            // Sunset and sunrise filter
 //        // Red in the morning
 //        double red = Math.max(Math.min(1, time / 6.0 / 2), 0);
 //
@@ -125,13 +131,14 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 //        context.setFill(new javafx.scene.paint.Color(red, 0, blue, alpha));
 //        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        graphics.setTransform(new AffineTransform());
-        graphics.setColor(Color.GREEN);
-        graphics.setFont(new Font("Arial", Font.PLAIN, 20));
+            graphics.setTransform(new AffineTransform());
+            graphics.setColor(Color.GREEN);
+            graphics.setFont(new Font("Arial", Font.PLAIN, 20));
 
-        graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
-        graphics.drawString(String.format("%02d", gameTime.getHour())+ ":" +  String.format("%02d", gameTime.getMinute()), 10, 50);
-        graphics.drawString("Period: " + period, 10, 75);
+            graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
+            graphics.drawString(String.format("%02d", gameTime.getHour()) + ":" + String.format("%02d", gameTime.getMinute()), 10, 50);
+            graphics.drawString("Period: " + period, 10, 75);
+        }
     }
 
     public void drawBackground(FXGraphics2D graphics) {
@@ -166,57 +173,81 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     private int period = 1;
     private int lastPeriod = -1;
-    LocalDateTime lastPeriodChange = LocalDateTime.now();
+    private double timeSinceLastPeriodChange = 0;
 
     public void update(double deltaTime) {
-        if(tabPane == null || tabPane.getSelectionModel().getSelectedIndex() != 1)
-            return;
-
-        gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
-
-        // Go to 6:00 if past 18:00
-        if(gameTime.getHour() >= 18) {
+        InputManager.update();
+        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
+            isRunning = !isRunning;
+        }
+        if (InputManager.getKeys().isKeyDown(KeyCode.R)) {
+            Logger.debug("KeyCode.R is pressed");
             gameTime = LocalTime.of(6, 0);
         }
 
-        // Calculate the current period
-        int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
-        period = minutesPastStart / settings.getClassBlockLength() + 1;
+        if (isRunning) {
+            if (tabPane == null || tabPane.getSelectionModel().getSelectedIndex() != 1)
+                return;
 
-        if (lastPeriod != period) {
-            lastPeriod = period;
-            calculateNewTargets();
-        }
+            timeSinceLastPeriodChange += deltaTime * 1000;
+            gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
-        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
-            fps.update(deltaTime);
-            lastFps = LocalDateTime.now();
-        }
+            // Go to 6:00 if past 18:00
+            if (gameTime.getHour() >= 18) {
+                gameTime = LocalTime.of(6, 0);
+            }
 
-        for (Npc npc : npcs) {
-            long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
-            int iteration = (int) Math.floor(milis / 100f);
-            double factor = Math.round(milis % 100f) / 100f;
+            // Calculate the current period
+            int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
+            period = minutesPastStart / settings.getClassBlockLength() + 1;
 
-            npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
+            if (lastPeriod != period) {
+                lastPeriod = period;
+                calculateNewTargets();
+            }
+
+            if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+                fps.update(deltaTime);
+                lastFps = LocalDateTime.now();
+//            Logger.debug("FPS: " + fps.getPfs());
+            }
+
+//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
+//            period++;
+//            calculateNewTargets();
+//        }
+//
+//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
+//            period--;
+//            calculateNewTargets();
+//        }
+
+            for (Npc npc : npcs) {
+                int iteration = (int) Math.floor(timeSinceLastPeriodChange / 100f);
+                double factor = Math.round(timeSinceLastPeriodChange % 100f) / 100f;
+
+                npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
+            }
         }
     }
 
     private void calculateNewTargets() {
-        npcs.forEach(Npc::resetTarget);
-        mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
-        mapInfo.getBreakArea().resetSeats();
-        mapInfo.getTeacherArea().resetSeats();
-        lastPeriodChange = LocalDateTime.now();
+        if (isRunning) {
+            npcs.forEach(Npc::resetTarget);
+            mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
+            mapInfo.getBreakArea().resetSeats();
+            mapInfo.getTeacherArea().resetSeats();
+            timeSinceLastPeriodChange = 0;
 
-        npcs.forEach(npc -> {
+            npcs.forEach(npc -> {
             try {
                 npc.calculateTarget(Schedule.get(), period, mapInfo);
                 npc.calculateRoute(map);
             } catch (Exception e) {
                 Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
             }
-        });
+            });
+        }
     }
 
     public Canvas getBackgroundCanvas() {
