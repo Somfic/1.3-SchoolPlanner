@@ -42,10 +42,12 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private final NpcSorter sorter = new NpcSorter();
     private boolean isRunning = true;
 
-
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
     private TabPane tabPane;
+    private int period = 1;
+    private int lastPeriod = -1;
+    LocalDateTime lastPeriodChange = LocalDateTime.now();
 
     public SimulationView() {
         fps = new FramesPerSecond();
@@ -178,6 +180,10 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         InputManager.update();
         if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
             isRunning = !isRunning;
+        }
+        if (InputManager.getKeys().isKeyDown(KeyCode.R)) {
+            Logger.debug("KeyCode.R is pressed");
+            gameTime = LocalTime.of(6, 0);
         }
 
         if (isRunning) {
