@@ -2,6 +2,7 @@ package gui.simulation;
 
 import data.Person;
 import data.Schedule;
+import data.Teacher;
 import data.map.Map;
 import logging.Logger;
 import org.dyn4j.geometry.Vector2;
@@ -17,6 +18,7 @@ public abstract class Npc {
 
     private final Person person;
     private BufferedImage[] sprites;
+    private int currentSpriteI = 0;
     private List<Vector2> route;
 
     public Npc(Person person) {
@@ -28,15 +30,7 @@ public abstract class Npc {
     }
 
     public BufferedImage getSprite() {
-        BufferedImage sprite;
-        if (target.y >= position.y) {
-            sprite = sprites[0];
-        } else if (Math.abs(target.y - position.y) == 2) {
-            sprite = sprites[0];
-        } else {
-            sprite = sprites[1];
-        }
-        return sprite;
+        return sprites[currentSpriteI];
     }
 
     public void setPosition(Vector2 position) {
@@ -49,14 +43,17 @@ public abstract class Npc {
 
     public Vector2 calculatePositionOnRoute(int iteration, double factor) {
         if(this.route == null || iteration < 0) {
+            currentSpriteI = 0;
             return this.position;
         }
 
         if(iteration >= this.route.size()) {
+            currentSpriteI = 0;
             return this.target;
         }
 
         if(iteration == this.route.size() - 1) {
+            currentSpriteI = 0;
             return this.route.get(iteration);
         }
 
@@ -67,7 +64,15 @@ public abstract class Npc {
         double x = p1.x + (p2.x - p1.x) * factor;
         double y = p1.y + (p2.y - p1.y) * factor;
 
-        return new Vector2(x, y);
+        Vector2 newPosition = new Vector2(x, y);
+
+        if (newPosition.y >= position.y) {
+            currentSpriteI = 0;
+        } else {
+            currentSpriteI = 1;
+        }
+
+        return newPosition;
     }
 
     abstract void calculateTarget(Schedule schedule, int period, MapInfo mapInfo);

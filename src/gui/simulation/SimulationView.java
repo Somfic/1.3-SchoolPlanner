@@ -40,7 +40,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private Pane pane;
     private boolean toUpdateBackground;
     private LocalTime gameTime = LocalTime.of(6, 0);
-    private NpcSorter sorter = new NpcSorter();
+    private final NpcSorter sorter = new NpcSorter();
 
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
@@ -94,6 +94,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics = graphics2D;
         graphics.setTransform(camera.getTransform());
 
+        npcs.sort(sorter);
         for (Npc npc : npcs) {
             boolean isInSpawn = false;
             for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
@@ -104,7 +105,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             }
 
             if (!isInSpawn) {
-                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, null);
             }
         }
 
@@ -134,11 +135,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.drawString("Period: " + period, 10, 75);
 
         graphics.setTransform(camera.getTransform());
-
-        npcs.sort(sorter);
-        for (Npc npc : npcs) {
-            graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, null);
-        }
     }
 
     public void drawBackground(FXGraphics2D graphics) {
