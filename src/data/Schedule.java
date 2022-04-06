@@ -8,19 +8,22 @@ import java.util.List;
 
 public class Schedule {
     private final List<ScheduleItem> items = new ArrayList<>();
+    private static Schedule instance = new Schedule();
+    private static List<Student> students = new ArrayList<>();
+
+    public static Schedule get() {
+        return Schedule.instance;
+    }
+
+    public static void set(Schedule schedule) {
+        Schedule.instance = schedule;
+    }
 
     public Schedule() {
 
     }
 
     public void add(ScheduleItem item) {
-        validate(item);
-        if(item.getEndPeriod() - item.getStartPeriod() >= 0 && item.getEndPeriod() >= 1 && item.getEndPeriod()<= 10 &&  item.getStartPeriod() >= 1 && item.getStartPeriod() <= 10){
-            items.add(item);
-        }
-    }
-
-    private void validate(ScheduleItem item) {
         for (int i = 0; i <items.size(); i++) {
             if (overlapping(item, items.get(i))) {
                 // students
@@ -32,6 +35,9 @@ public class Schedule {
                     items.remove(i);
                 }
             }
+        }
+        if(item.getEndPeriod()- item.getStartPeriod()>=0&& item.getEndPeriod()>=1 && item.getEndPeriod()<=10 &&  item.getStartPeriod()>=1 && item.getStartPeriod()<=10){
+            items.add(item);
         }
     }
 

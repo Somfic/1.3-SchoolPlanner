@@ -2,12 +2,18 @@ package data.map;
 
 import data.tiles.*;
 import io.FileManager;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.util.Pair;
 import logging.Logger;
+import org.dyn4j.geometry.Vector2;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 import java.util.zip.Inflater;
 
 public class Map {
@@ -15,6 +21,8 @@ public class Map {
     private final int width;
     private final int height;
     private final List<Tile> tiles = new ArrayList<>();
+
+    private int[][] obstacles;
 
     public Map(int width, int height) {
 
@@ -49,6 +57,26 @@ public class Map {
         return null;
     }
 
+    public BufferedImage generateImage(int tileSize) {
+        BufferedImage image = new BufferedImage(width * tileSize, height * tileSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+
+        for (Tile tile : tiles) {
+            if (tile.getImage() != null) {
+//                if(tile.isCanWalk()) {
+//                    g.setColor(Color.GREEN);
+//                } else {
+//                    g.setColor(Color.RED);
+//                }
+//
+//                g.fillRect(tile.getX() * tileSize, tile.getY() * tileSize, tileSize, tileSize);
+                g.drawImage(tile.getImage(), tile.getX() * tileSize, tile.getY() * tileSize, tileSize, tileSize, null);
+            }
+        }
+
+        return image;
+    }
+
     public static Map fromFile(String path) {
         // Read the JSON from the Tiles file
         String json = FileManager.read(path);
@@ -66,9 +94,13 @@ public class Map {
 
         // Import the sprites and layout
         HashMap<Integer, BufferedImage> sprites = importSprites(tiles.getTileSets());
-        int[][][] layout = importLayout(tiles.getLayers(), tiles.getWidth(), tiles.getHeight());
+        Pair<int[][][], int[][]> layoutAndObstacles = importLayout(tiles.getLayers(), tiles.getWidth(), tiles.getHeight());
+
+        int[][][] layout = layoutAndObstacles.getKey();
+        int[][] obstacles = layoutAndObstacles.getValue();
 
         Map world = new Map(tiles.getWidth(), tiles.getHeight());
+        world.setObstacles(obstacles);
 
         // Add the tiles to the world
         for (int y = 0; y < tiles.getHeight(); y++) {
@@ -82,7 +114,7 @@ public class Map {
 
                     BufferedImage sprite = sprites.get(blockId);
 
-                    world.addTile(new data.map.Tile(x, y, z, sprite));
+                    world.addTile(new data.map.Tile(x, y, z, sprite, obstacles[x][y] != 1));
                 }
             }
         }
@@ -90,10 +122,17 @@ public class Map {
         return world;
     }
 
-    private static int[][][] importLayout(List<TilesLayer> layers, int width, int height) {
+    private static Pair<int[][][], int[][]> importLayout(List<TilesLayer> layers, int width, int height) {
         Logger.debug("Importing " + width + "x" + height + " layout");
 
         int[][][] layout = new int[width + 39][height + 39][layers.size()];
+        int[][] obstacles = new int[width][height];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                obstacles[width - x - 1][y] = 1;
+            }
+        }
 
         for (int z = 0; z < layers.size(); z++) {
             TilesLayer layer = layers.get(z);
@@ -128,6 +167,10 @@ public class Map {
                             if (block != 0) {
                                 amountOfImportedTiles++;
                                 layout[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()][z] = block;
+
+                                if (layer.getName().equals("Walls")) {
+                                    obstacles[x + chunk.getX() + layer.getStartX()][y + chunk.getY() + layer.getStartY()] = 0;
+                                }
                             }
 
                             // Move to the next block of 4 bytes
@@ -143,7 +186,7 @@ public class Map {
             }
         }
 
-        return layout;
+        return new Pair<>(layout, obstacles);
     }
 
     private static HashMap<Integer, BufferedImage> importSprites(List<TilesTileSetSource> tileSets) {
@@ -204,5 +247,13 @@ public class Map {
         }
 
         return sprites;
+    }
+
+    public int[][] getObstacles() {
+        return obstacles;
+    }
+
+    public void setObstacles(int[][] obstacles) {
+        this.obstacles = obstacles;
     }
 }
