@@ -14,6 +14,7 @@ import javafx.scene.text.FontWeight;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,14 +46,13 @@ public class ScheduleView extends Pane {
 
     public void applyScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        this.schedule.add(new ScheduleItem(teacher, new ArrayList<>(students), classroom, startPeriod, endPeriod, lesson));
+        Schedule.get().add(new ScheduleItem(teacher, new ArrayList<>(students), classroom, startPeriod, endPeriod, lesson));
         this.addSchedule();
-
     }
 
     public void removeScheduleItem(Teacher teacher, ArrayList<StudentGroup> students, Classroom classroom, int startPeriod, int endPeriod, Lesson lesson) {
         clear();
-        Schedule.get().remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));
+        Schedule.get().remove(new ScheduleItem(teacher, students, classroom, startPeriod, endPeriod, lesson));   //FIXME
         this.addSchedule();
     }
 
@@ -71,9 +71,6 @@ public class ScheduleView extends Pane {
     private void addSchedule() {
         for (ScheduleItem scheduleItem : Schedule.get().getItems()) {
             Pane pane = new Pane();
-            /*
-             * TODO: change the translate so it updates along with the schedule size!
-             */
             pane.setMinWidth(215);
             pane.setMinHeight(50 * (scheduleItem.getEndPeriod() - scheduleItem.getStartPeriod() + 1));                          //Height = 50 * (end - start + 1)
 
@@ -91,8 +88,6 @@ public class ScheduleView extends Pane {
             //Add to view
             this.getChildren().add(pane);
         }
-
-        callbacks.forEach(ScheduleChangeCallback::onChange);
     }
 
     private VBox createScheduleItemContent(ScheduleItem scheduleItem) {
@@ -110,7 +105,7 @@ public class ScheduleView extends Pane {
 
         //Make labels
         this.lessonLabel = new Label(scheduleItem.getLesson().getName());
-        this.teacherLabel = new Label(scheduleItem.getTeacher().getName());
+        this.teacherLabel = new Label(scheduleItem.getTeacher().toString());
         this.studentGroupsLabel = new Label(studentGroups.toString());
         this.divider1 = new Label("|");
         this.divider2 = new Label("|");

@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleItem {
-	private int startPeriod;
-	private int endPeriod;
-	private Classroom classroom;
-	private Lesson lesson;
-	private List<StudentGroup> studentGroups;
-	private List<Classroom> classrooms;
-	private Teacher teacher;
-	private List<Lesson> lessons;
+    private int startPeriod;
+    private int endPeriod;
+    private Classroom classroom;
+    private Lesson lesson;
+    private List<StudentGroup> studentGroups;
+    private List<Classroom> classrooms;
+    private Teacher teacher;
+    private List<Lesson> lessons;
 
     public ScheduleItem() {
     }
@@ -29,11 +29,7 @@ public class ScheduleItem {
 
     @JsonIgnore
     public boolean isValid() {
-		return false;
-	}
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+        return false;
     }
 
     public int getStartPeriod() {
@@ -92,7 +88,7 @@ public class ScheduleItem {
         this.teacher = teachers;
     }
 
-    public ArrayList<Lesson> getLessons() {
+    public List<Lesson> getLessons() {
         return lessons;
     }
 

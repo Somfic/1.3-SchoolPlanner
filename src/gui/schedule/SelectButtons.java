@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import javax.security.auth.Subject;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SelectButtons extends Pane {
     private HBox buttons = new HBox();
@@ -27,6 +28,7 @@ public class SelectButtons extends Pane {
     private Dropdown<Lesson> courseSelect = new Dropdown<>();
     private MenuButton studentGroupSelect = new MenuButton("Class");
     private ScheduleView scheduleView;
+    private ArrayList<Teacher> teachers;
     private ArrayList<StudentGroup> students = new ArrayList<>();
     private ArrayList<Lesson> lessons = new ArrayList<>();
 
