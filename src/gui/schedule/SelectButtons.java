@@ -157,7 +157,17 @@ public class SelectButtons extends Pane {
 
                 if (file != null && file.exists()) {
                     String json = FileManager.read(file.getAbsolutePath());
-                    this.scheduleView.setSchedule(Schedule.fromJson(json));
+                    Schedule schedule = Schedule.fromJson(json);
+
+                    if(schedule == null) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error importing schedule");
+                        alert.setHeaderText("Oh no!");
+                        alert.setContentText("Could not import schedule.\n\n" + "Schedule is empty");
+                        alert.showAndWait();
+                    } else {
+                        this.scheduleView.setSchedule(schedule);
+                    }
                 }
             } catch (Exception ex) {
                 Logger.warn(ex, "Could not load schedule");

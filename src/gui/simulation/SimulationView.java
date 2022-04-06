@@ -1,14 +1,21 @@
 package gui.simulation;
 
 import data.FramesPerSecond;
+import data.Schedule;
+import data.StudentGroup;
+import data.Teacher;
 import data.map.Map;
 import data.map.Tile;
+import gui.schedule.ScheduleChangeCallback;
+import gui.settings.SettingCallback;
 import io.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
@@ -17,8 +24,12 @@ import org.jfree.fx.ResizableCanvas;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SimulationView extends VBox implements Resizable {
+public class SimulationView extends VBox implements Resizable, ScheduleChangeCallback, SettingCallback {
     private Map map;
     private Canvas canvas;
     private double tileSize = 25;
@@ -30,7 +41,10 @@ public class SimulationView extends VBox implements Resizable {
     private FXGraphics2D backgroundGraphics;
     private Pane pane;
     private boolean toUpdateBackground;
-    private MapInfo mapInfo = new MapInfo();
+    private LocalTime gameTime = LocalTime.of(6, 0);
+
+    private final MapInfo mapInfo = new MapInfo();
+    private final List<Npc> npcs = new ArrayList<>();
 
     public SimulationView() {
         fps = new FramesPerSecond();
@@ -43,10 +57,9 @@ public class SimulationView extends VBox implements Resizable {
         pane.getChildren().addAll(backgroundCanvas, canvas);
         canvas.toFront();
         camera = new Camera(this);
-        onStart();
     }
 
-    public void onStart() {
+    public void start() {
         this.map = Map.fromFile("./res/school.tmj");
 
         if (map == null) {
@@ -85,7 +98,23 @@ public class SimulationView extends VBox implements Resizable {
         graphics.setTransform(new AffineTransform());
         graphics.setColor(Color.GREEN);
         graphics.setFont(new Font("Arial", Font.PLAIN, 20));
-        graphics.drawString(fps + "", (int) backgroundCanvas.getWidth() - 30, 25);
+
+        graphics.drawString(fps + " fps", (int) 10, 25);
+        graphics.drawString(gameTime.toString(), 10, 50);
+        graphics.drawString("Period: " + period, 10, 75);
+
+        graphics.setTransform(camera.getTransform());
+        for (Npc npc : npcs) {
+
+            // TODO: change this with the NPC sprites
+            if (npc instanceof StudentNpc) {
+                graphics.setColor(Color.BLUE);
+            } else {
+                graphics.setColor(Color.RED);
+            }
+
+            graphics.fillOval((int)(npc.getPosition().x * tileSize), (int)(npc.getPosition().y * tileSize), (int)(tileSize), (int)(tileSize));
+        }
     }
 
     public void drawBackground(FXGraphics2D graphics) {
@@ -107,8 +136,8 @@ public class SimulationView extends VBox implements Resizable {
             backgroundCanvas.getGraphicsContext2D().drawImage(tile.getWritableImage(), coords.x, coords.y, tileSize, tileSize);
             //graphics.drawImage(tile.getImage(), transform, null);
         }
-
     }
+
 
     private Canvas createNewCanvas() {
         pane.getChildren().remove(canvas);
@@ -119,8 +148,11 @@ public class SimulationView extends VBox implements Resizable {
         return this.canvas;
     }
 
+    private int period = 1;
+    LocalDateTime lastPeriodChange = LocalDateTime.now();
+
     public void update(double deltaTime) {
-        InputManager.update();
+        gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             fps.update(deltaTime);
@@ -128,27 +160,40 @@ public class SimulationView extends VBox implements Resizable {
 //            Logger.debug("FPS: " + fps.getPfs());
         }
 
-//        for (Event event : Festival.getInstance().getEventList()) {
-//            if (time.isBefore(event.getEndTime()) && time.isAfter(event.getStartTime())) {
-//                Podium selectedPodium = event.getPodium();
-//                if (!event.isEventVisitorsSpawned()) {
-//                    event.setEventVisitorsSpawned(true);
-//                    for (int i = 0; i < event.getPopularity() * 3; i++) {
-//                        Festival.getInstance().getVisitors().add(new Visitor(new Target(tiledMap.getCollisionLayer(), selectedPodium.getObject().getCenterTile())));
-//                    }
-//                }
-//            }
-//        }
-//        for (Visitor visitor : Festival.getInstance().getVisitors()) {
-//            if (!visitor.isSpawned()) {
-//                if (timer <= 0) {
-//                    visitor.spawn(tiledMap.getSpawn());
-//                    timer = 1;
-//                }
-//            } else {
-//                visitor.update(deltaTime);
-//            }
-//        }
+        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
+            period++;
+            calculateNewTargets();
+        }
+
+        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
+            period--;
+            calculateNewTargets();
+        }
+
+        for (Npc npc : npcs) {
+            long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
+            int iteration = (int)Math.floor(milis / 500f);
+            double factor = Math.round(milis % 500f) / 500f;
+
+            npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
+        }
+    }
+
+    private void calculateNewTargets() {
+        npcs.forEach(Npc::resetTarget);
+        mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
+        mapInfo.getBreakArea().resetSeats();
+        lastPeriodChange = LocalDateTime.now();
+
+        npcs.forEach(npc -> {
+            try {
+                npc.calculateTarget(Schedule.get(), period, mapInfo);
+                npc.calculateRoute(map);
+            }
+            catch (Exception e) {
+                Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
+            }
+        });
     }
 
     public Canvas getBackgroundCanvas() {
@@ -213,5 +258,60 @@ public class SimulationView extends VBox implements Resizable {
 
     public void setPane(Pane pane) {
         this.pane = pane;
+    }
+
+    @Override
+    public void onChange() {
+        generateNpcs();
+    }
+
+    private void generateNpcs() {
+        npcs.clear();
+
+        // Get all the unique student groups
+        List<StudentGroup> studentGroups = new ArrayList<>();
+        Schedule.get().getItems().forEach(item -> {
+            if (item.getStudentGroups() != null) {
+                item.getStudentGroups().forEach(studentGroup -> {
+                    if (!studentGroups.contains(studentGroup)) {
+                        studentGroups.add(studentGroup);
+                    }
+                });
+            }
+        });
+
+        List<Integer> students = new ArrayList<>();
+
+        // Create a NPC for each student
+        studentGroups.forEach(studentGroup -> {
+            studentGroup.getStudents().forEach(student -> {
+                if (!students.contains(student.getStudentNumber())) {
+                    Logger.debug("Creating NPC for student " + student.getName() + " (" + student.getStudentNumber() + ")");
+                    students.add(student.getStudentNumber());
+                    npcs.add(new StudentNpc(student, studentGroup.getName()));
+                }
+            });
+        });
+
+        // Create a NPC for each teacher
+        List<Teacher> teachers = new ArrayList<>();
+        Schedule.get().getItems().forEach(item -> {
+            if (item.getTeacher() != null) {
+                if (!teachers.contains(item.getTeacher())) {
+                    teachers.add(item.getTeacher());
+                }
+            }
+        });
+
+        teachers.forEach(teacher -> {
+            Logger.debug("Creating NPC for teacher: " + teacher.getName());
+            npcs.add(new TeacherNpc(teacher));
+        });
+    }
+
+    private ScheduleSettings settings = new ScheduleSettings();
+    @Override
+    public void onSettingChange(ScheduleSettings newSettings) {
+        this.settings = newSettings;
     }
 }

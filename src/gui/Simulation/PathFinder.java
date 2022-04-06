@@ -5,9 +5,8 @@ import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -55,17 +54,6 @@ public class PathFinder {
             }
 
             if (!change || paths.get(position.y).get(position.x) != 0) {
-                System.out.print("\nAll paths:");
-                for (ArrayList<Integer> layer : paths) {
-                    System.out.println();
-                    for (int path : layer) {
-                        if(path != 0)
-                            System.out.print(path + "\t");
-                        else
-                            System.out.print("\t");
-                    }
-                    System.out.println();
-                }
                 break;
             }
             change = false;
@@ -78,6 +66,7 @@ public class PathFinder {
         }
         int x = position.x;
         int y = position.y;
+        route.add(position);
         for (int j = i + 1; j >= 1; j--) {
             if (y >= 1 && paths.get(y - 1).get(x) == j) {
                 y--;

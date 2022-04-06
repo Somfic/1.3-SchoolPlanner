@@ -9,6 +9,7 @@ import org.dyn4j.geometry.Vector2;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Npc {
@@ -66,22 +67,14 @@ public abstract class Npc {
     public void calculateRoute(Map map) {
         int[][] obstacles = map.getObstacles();
 
-        // Print the map
-        for(int i = 0; i < obstacles.length; i++) {
-            for(int j = 0; j < obstacles[i].length; j++) {
-                int value = obstacles[i][j];
-
-                if(value == 1) {
-                    System.out.print("\t");
-                } else {
-                    System.out.print(obstacles[i][j] + "\t");
-                }
-            }
-            System.out.println();
-        }
-
         ArrayList<ArrayList<Integer>> obstacleList = new ArrayList<>();
-        for (int[] obstacle : obstacles) {
+        int[][] fixedObstacles = new int[obstacles[0].length][obstacles.length];
+        for (int j = 0; j<obstacles[0].length; j++) {
+            for (int i = 0; i < obstacles.length; i++) {
+                fixedObstacles[j][i] = obstacles[i][j];
+            }
+        }
+        for (int[] obstacle : fixedObstacles) {
             ArrayList<Integer> row = new ArrayList<>();
             for (int i : obstacle) {
                 row.add(i);

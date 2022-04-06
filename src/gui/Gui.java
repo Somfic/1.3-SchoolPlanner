@@ -36,14 +36,19 @@ public class Gui extends Application implements SettingCallback {
     private TabPane tabPane;
     private BorderPane schedulePane = new BorderPane();
     private SimulationView simulationPane = new SimulationView();
-    private SettingView settingsPane = new SettingView(this);
+    private SettingView settingsPane = new SettingView();
 
     @Override
     public void start(Stage stage) {
+
+
         // Custom title bar
         this.canvas = new Canvas(600, 700);
         this.simulationPane = new SimulationView();
-//        scheduleView.addCallback(simulationPane);
+        scheduleView.addCallback(simulationPane);
+
+        settingsPane.addCallback(this);
+        settingsPane.addCallback(simulationPane);
 
         //Making tabs
         this.tabPane = new TabPane();
@@ -82,6 +87,7 @@ public class Gui extends Application implements SettingCallback {
         this.mainPane.setStyle("-fx-padding: 3");
         this.mainPane.setSpacing(3);
         this.scene = new Scene(mainPane);
+        InputManager.setup(scene);
 
         this.scene.widthProperty().addListener((observable, oldValue, newValue) -> {
             this.canvas.setWidth(newValue.doubleValue());
@@ -96,7 +102,6 @@ public class Gui extends Application implements SettingCallback {
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(this.scene);
-        InputManager.setup(this.scene);
         stage.setResizable(true);
         stage.getIcons().add(new Image(FileManager.getResource("./Icon.png")));
         stage.show();
@@ -104,6 +109,8 @@ public class Gui extends Application implements SettingCallback {
         settingsPane.load();
 
         this.scheduleView.build((int) this.scheduleView.getGridPane().widthProperty().doubleValue());
+
+        simulationPane.start();
     }
 
     @Override
