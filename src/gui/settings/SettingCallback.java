@@ -15,7 +15,7 @@ public interface SettingCallback {
         private Color color;
         private boolean textBrightness;
         private int classBlockLength;
-        private LocalTime time;
+        private LocalTime startTime;
         private int fastBreakTime;
         private int fastBreakLength;
         private int lunchBreakTime;
@@ -24,7 +24,7 @@ public interface SettingCallback {
         public ScheduleSettings() {
         }
 
-        public ScheduleSettings(int speed, Color color, boolean textBrightness, int classBlockLength, int fastBreakTime, int fastBreakLength, int lunchBreakTime, int lunchBreakLength, LocalTime time) {
+        public ScheduleSettings(int speed, Color color, boolean textBrightness, int classBlockLength, int fastBreakTime, int fastBreakLength, int lunchBreakTime, int lunchBreakLength, LocalTime startTime) {
             this.speed = speed;
             this.color = color;
             this.textBrightness = textBrightness;
@@ -33,7 +33,7 @@ public interface SettingCallback {
             this.fastBreakLength = fastBreakLength;
             this.lunchBreakTime = lunchBreakTime;
             this.lunchBreakLength = lunchBreakLength;
-            this.time = time;
+            this.startTime = startTime;
         }
 
         public int getSpeed() {
@@ -52,8 +52,8 @@ public interface SettingCallback {
             return classBlockLength;
         }
 
-        public LocalTime getTime() {
-            return time;
+        public LocalTime getStartTime() {
+            return startTime;
         }
 
         public int getFastBreakTime() {
@@ -89,7 +89,7 @@ public interface SettingCallback {
         }
 
         public void setTime(LocalTime time) {
-            this.time = time;
+            this.startTime = time;
         }
 
         public void setFastBreakTime(int fastBreakTime) {

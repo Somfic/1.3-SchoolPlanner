@@ -1,19 +1,15 @@
 package gui;
 
 import gui.components.WindowBar;
-import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
 import gui.simulation.SimulationView;
 import io.FileManager;
 import io.InputManager;
-import logging.Logger;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -21,7 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jfree.fx.FXGraphics2D;
 
 public class Gui extends Application implements SettingCallback {
     private Scene scene;
@@ -115,7 +110,7 @@ public class Gui extends Application implements SettingCallback {
 
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
-        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreakTime(), newSettings.getLunchBreakLength(), newSettings.getFastBreakTime(), newSettings.getFastBreakLength(), newSettings.getTime());
+        scheduleView.updateScheduleTime(newSettings.getClassBlockLength(), newSettings.getLunchBreakTime(), newSettings.getLunchBreakLength(), newSettings.getFastBreakTime(), newSettings.getFastBreakLength(), newSettings.getStartTime());
         scheduleView.updateColor(newSettings.getColor(), newSettings.isTextBrightness());
     }
 }

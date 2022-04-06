@@ -8,6 +8,7 @@ import data.map.Map;
 import data.map.Tile;
 import gui.schedule.ScheduleChangeCallback;
 import gui.settings.SettingCallback;
+import gui.settings.StartTimeCallback;
 import io.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
@@ -149,10 +150,20 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     }
 
     private int period = 1;
+    private int lastPeriod = -1;
     LocalDateTime lastPeriodChange = LocalDateTime.now();
 
     public void update(double deltaTime) {
         gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
+
+        // Calculate the current period
+        int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
+        period = minutesPastStart / settings.getClassBlockLength() + 1;
+
+        if(lastPeriod != period) {
+            lastPeriod = period;
+            calculateNewTargets();
+        }
 
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             fps.update(deltaTime);
@@ -160,20 +171,20 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 //            Logger.debug("FPS: " + fps.getPfs());
         }
 
-        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
-            period++;
-            calculateNewTargets();
-        }
-
-        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
-            period--;
-            calculateNewTargets();
-        }
+//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
+//            period++;
+//            calculateNewTargets();
+//        }
+//
+//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
+//            period--;
+//            calculateNewTargets();
+//        }
 
         for (Npc npc : npcs) {
             long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
-            int iteration = (int)Math.floor(milis / 500f);
-            double factor = Math.round(milis % 500f) / 500f;
+            int iteration = (int)Math.floor(milis / 100f);
+            double factor = Math.round(milis % 100f) / 100f;
 
             npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
         }

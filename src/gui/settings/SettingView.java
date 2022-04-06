@@ -145,7 +145,7 @@ public class SettingView implements SpeedSelectorCallback, ColorCallback, ClassB
             classBlock.set(save.getClassBlockLength());
             fastBreak.set(save.getFastBreakTime(), save.getFastBreakLength());
             lunchBreak.set(save.getLunchBreakTime(), save.getLunchBreakLength());
-            startTime.set(save.getTime());
+            startTime.set(save.getStartTime());
 
             confirm.fire();
         } catch (IOException e) {
