@@ -175,6 +175,11 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     public void update(double deltaTime) {
         gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
+        // Go to 6:00 if past 18:00
+        if(gameTime.getHour() >= 18) {
+            gameTime = LocalTime.of(6, 0);
+        }
+
         // Calculate the current period
         int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
         period = minutesPastStart / settings.getClassBlockLength() + 1;
