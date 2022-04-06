@@ -13,6 +13,7 @@ import io.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -95,6 +96,27 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics = graphics2D;
         graphics.setTransform(camera.getTransform());
 
+        for (Npc npc : npcs) {
+            graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
+        }
+
+        // Linear interpolation between morning red and evening blue
+        double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
+
+        // Sunset and sunrise filter
+//        // Red in the morning
+//        double red = Math.max(Math.min(1, time / 6.0 / 2), 0);
+//
+//        // Blue in the evening
+//        double blue = Math.max(Math.min(1, (time - 6.0) / 6.0 / 2), 0);
+//
+//        // 0 in the middle of the day, 1 at midnight
+//        double alpha = Math.max(Math.min(1, (time - 12.0) / 12.0), 0);
+//
+//        GraphicsContext context = canvas.getGraphicsContext2D();
+//        context.setFill(new javafx.scene.paint.Color(red, 0, blue, alpha));
+//        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
         graphics.setTransform(new AffineTransform());
         graphics.setColor(Color.GREEN);
         graphics.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -103,10 +125,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.drawString(gameTime.toString(), 10, 50);
         graphics.drawString("Period: " + period, 10, 75);
 
-        graphics.setTransform(camera.getTransform());
-        for (Npc npc : npcs) {
-            graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
-        }
     }
 
     public void drawBackground(FXGraphics2D graphics) {
@@ -145,7 +163,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     LocalDateTime lastPeriodChange = LocalDateTime.now();
 
     public void update(double deltaTime) {
-        gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
+        gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 1000));
 
         // Calculate the current period
         int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
