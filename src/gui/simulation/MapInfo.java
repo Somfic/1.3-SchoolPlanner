@@ -23,7 +23,8 @@ public class MapInfo {
             , new Vector2(36, 9), new Vector2(37, 9), new Vector2(27, 10), new Vector2(28, 10), new Vector2(29, 10)
             , new Vector2(27, 12), new Vector2(28, 12), new Vector2(29, 12), new Vector2(31, 10), new Vector2(32, 10)
             , new Vector2(33, 10), new Vector2(31, 12), new Vector2(32, 12), new Vector2(33, 12), new Vector2(35, 10),
-            new Vector2(36, 10), new Vector2(37, 10), new Vector2(35, 12), new Vector2(36, 12), new Vector2(37, 12));
+            new Vector2(36, 10), new Vector2(37, 10), new Vector2(35, 12), new Vector2(36, 12), new Vector2(37, 12),
+            new Vector2(23, 2), new Vector2(25,2), new Vector2(27, 2));
 
     public MapInfo() {
         classRooms.add(new SeatInfo("Classroom 1")
@@ -82,10 +83,14 @@ public class MapInfo {
     public SeatInfo getBreakArea() {
         return breakArea;
     }
+
+    public SeatInfo getTeacherArea() {
+        return teacherArea;
+    }
 }
 
 class SeatInfo {
-    private Queue<Vector2> availableSeats = new LinkedList<>();
+    private List<Vector2> availableSeats = new ArrayList<>();
     private List<Vector2> occupiedSeats = new ArrayList<>();
 
     private Vector2 teacherSeat;
@@ -99,10 +104,10 @@ class SeatInfo {
         // Return a random available seat
         if (availableSeats.isEmpty()) {
             Logger.warn("No available seats in " + name);
-            return new Vector2(0, 0);
+            return new Vector2(5, 28);
         }
 
-        Vector2 seat = availableSeats.remove();
+        Vector2 seat = availableSeats.remove(new Random().nextInt(availableSeats.size()));
         occupiedSeats.add(seat);
 
         return seat;
