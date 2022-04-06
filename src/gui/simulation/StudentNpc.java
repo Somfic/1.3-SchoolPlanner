@@ -1,11 +1,16 @@
 package gui.simulation;
 
-import data.Schedule;
-import data.ScheduleItem;
+import data.*;
 import data.Student;
-import data.StudentGroup;
+import io.FileManager;
 import logging.Logger;
 import org.dyn4j.geometry.Vector2;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class StudentNpc extends Npc {
     private final Student student;
@@ -15,6 +20,18 @@ public class StudentNpc extends Npc {
         super(student);
         this.student = student;
         this.studentGroup = studentGroup;
+
+        try {
+            BufferedImage sprite;
+            if (student.getGender() == Gender.MALE) {
+                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(41, 0, 15, 34);
+            } else {
+                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(56, 0, 21, 34);
+            }
+            setSprite(sprite);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

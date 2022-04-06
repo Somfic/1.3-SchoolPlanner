@@ -8,6 +8,7 @@ import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,10 +18,19 @@ public abstract class Npc {
     Vector2 target = new Vector2( 20, 15);
 
     private final Person person;
+    private BufferedImage sprite;
     private List<Vector2> route;
 
     public Npc(Person person) {
         this.person = person;
+    }
+
+    public void setSprite(BufferedImage sprite) {
+        this.sprite = sprite;
+    }
+
+    public BufferedImage getSprite() {
+        return sprite;
     }
 
     public void setPosition(Vector2 position) {

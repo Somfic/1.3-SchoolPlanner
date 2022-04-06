@@ -20,7 +20,6 @@ import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.Resizable;
-import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -52,8 +51,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         setToUpdateBackground(true);
 
         map = Map.fromFile("./res/school.tmj");
-        canvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight()-50);
-        backgroundCanvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight()-50);
+        canvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 50);
+        backgroundCanvas = new Canvas(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 50);
         this.pane = new Pane();
         pane.getChildren().addAll(backgroundCanvas, canvas);
         canvas.toFront();
@@ -114,7 +113,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
                 graphics.setColor(Color.RED);
             }
 
-            graphics.fillOval((int)(npc.getPosition().x * tileSize), (int)(npc.getPosition().y * tileSize), (int)(tileSize), (int)(tileSize));
+            graphics.fillOval((int) (npc.getPosition().x * tileSize), (int) (npc.getPosition().y * tileSize), (int) (tileSize), (int) (tileSize));
         }
     }
 
@@ -126,12 +125,12 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         this.toUpdateBackground = false;
 
         for (Tile tile : map.getTiles()) {
-            if(tile.getImage() == null)
+            if (tile.getImage() == null)
                 continue;
             Vector2 coords = new Vector2(tile.getX() * tileSize, tile.getY() * tileSize);
             AffineTransform transform = graphics.getTransform();
             transform.translate(coords.x, coords.y);
-            if(tile.getWritableImage() == null) {
+            if (tile.getWritableImage() == null) {
                 tile.setWritableImage(SwingFXUtils.toFXImage(tile.getImage(), null));
             }
             backgroundCanvas.getGraphicsContext2D().drawImage(tile.getWritableImage(), coords.x, coords.y, tileSize, tileSize);
@@ -201,8 +200,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             try {
                 npc.calculateTarget(Schedule.get(), period, mapInfo);
                 npc.calculateRoute(map);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Logger.warn(e, "Could not calculate route for " + npc.getPerson().getName());
             }
         });
@@ -322,6 +320,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     }
 
     private ScheduleSettings settings = new ScheduleSettings();
+
     @Override
     public void onSettingChange(ScheduleSettings newSettings) {
         this.settings = newSettings;
