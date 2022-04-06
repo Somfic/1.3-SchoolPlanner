@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentNpc extends Npc {
     private final Student student;
@@ -37,27 +39,42 @@ public class StudentNpc extends Npc {
 
     @Override
     void calculateTarget(Schedule schedule, int period, MapInfo mapInfo) {
-        if(this.target != null) {
+        if (this.target != null) {
             return;
         }
 
         // Get the current period
         ScheduleItem currentPeriod = null;
 
+        List<ScheduleItem> applicablePeriods = new ArrayList<>();
+
         for (ScheduleItem item : schedule.getItems()) {
-            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period) {
-                for (StudentGroup studentGroup : item.getStudentGroups()) {
-                    if (studentGroup.getName().equals(this.studentGroup)) {
-                        currentPeriod = item;
-                        break;
-                    }
+            for (StudentGroup studentGroup : item.getStudentGroups()) {
+                if (studentGroup.getName().equals(this.studentGroup)) {
+                    applicablePeriods.add(item);
                 }
+            }
+        }
+
+        for (ScheduleItem item : applicablePeriods) {
+            if (item.getStartPeriod() <= period && item.getEndPeriod() >= period) {
+                currentPeriod = item;
                 break;
             }
         }
 
-
         if (currentPeriod == null) {
+            if(applicablePeriods.size() > 0) {
+                ScheduleItem firstPeriod = applicablePeriods.get(0);
+                ScheduleItem lastPeriod = applicablePeriods.get(applicablePeriods.size() - 1);
+
+                if(firstPeriod.getStartPeriod() > period || lastPeriod.getEndPeriod() < period) {
+                    target = mapInfo.getSpawnPoints().get((int)(Math.floor(Math.random() * mapInfo.getSpawnPoints().size())));
+                    return;
+                }
+            }
+
+
             // The student is not in a class
             this.target = mapInfo.getBreakArea().getSeat();
         } else {

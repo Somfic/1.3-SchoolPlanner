@@ -10,6 +10,7 @@ import io.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -93,12 +94,43 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics = graphics2D;
         graphics.setTransform(camera.getTransform());
 
+        for (Npc npc : npcs) {
+            boolean isInSpawn = false;
+            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
+                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
+                    isInSpawn = true;
+                    break;
+                }
+            }
+
+            if (!isInSpawn) {
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
+            }
+        }
+
+        // Linear interpolation between morning red and evening blue
+        double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
+
+        // Sunset and sunrise filter
+//        // Red in the morning
+//        double red = Math.max(Math.min(1, time / 6.0 / 2), 0);
+//
+//        // Blue in the evening
+//        double blue = Math.max(Math.min(1, (time - 6.0) / 6.0 / 2), 0);
+//
+//        // 0 in the middle of the day, 1 at midnight
+//        double alpha = Math.max(Math.min(1, (time - 12.0) / 12.0), 0);
+//
+//        GraphicsContext context = canvas.getGraphicsContext2D();
+//        context.setFill(new javafx.scene.paint.Color(red, 0, blue, alpha));
+//        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
         graphics.setTransform(new AffineTransform());
         graphics.setColor(Color.GREEN);
         graphics.setFont(new Font("Arial", Font.PLAIN, 20));
 
-        graphics.drawString(fps + " fps", (int) 10, 25);
-        graphics.drawString(gameTime.toString(), 10, 50);
+        graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
+        graphics.drawString(String.format("%02d", gameTime.getHour())+ ":" +  String.format("%02d", gameTime.getMinute()), 10, 50);
         graphics.drawString("Period: " + period, 10, 75);
 
         graphics.setTransform(camera.getTransform());
@@ -147,11 +179,16 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     public void update(double deltaTime) {
         gameTime = gameTime.plusSeconds((long) (deltaTime * settings.getSpeed() * 100));
 
+        // Go to 6:00 if past 18:00
+        if(gameTime.getHour() >= 18) {
+            gameTime = LocalTime.of(6, 0);
+        }
+
         // Calculate the current period
         int minutesPastStart = (int) settings.getStartTime().until(gameTime, ChronoUnit.MINUTES);
         period = minutesPastStart / settings.getClassBlockLength() + 1;
 
-        if(lastPeriod != period) {
+        if (lastPeriod != period) {
             lastPeriod = period;
             calculateNewTargets();
         }
@@ -174,7 +211,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
         for (Npc npc : npcs) {
             long milis = ChronoUnit.MILLIS.between(lastPeriodChange, LocalDateTime.now());
-            int iteration = (int)Math.floor(milis / 100f);
+            int iteration = (int) Math.floor(milis / 100f);
             double factor = Math.round(milis % 100f) / 100f;
 
             npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
@@ -309,6 +346,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             Logger.debug("Creating NPC for teacher: " + teacher.getName());
             npcs.add(new TeacherNpc(teacher));
         });
+
+        calculateNewTargets();
     }
 
     private ScheduleSettings settings = new ScheduleSettings();
