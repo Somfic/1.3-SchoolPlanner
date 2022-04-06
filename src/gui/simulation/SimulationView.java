@@ -181,7 +181,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         }
 
         if (InputManager.getKeys().isKeyDown(KeyCode.R)) {
-            Logger.debug("KeyCode.R is pressed");
             gameTime = LocalTime.of(6, 0);
         }
 
