@@ -143,11 +143,11 @@ public class Gui extends Application implements SettingCallback {
         InputManager.update();
         if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
             lastFps = LocalDateTime.now();
-            Logger.debug("FPS: " + fps.getPfs());
+//            Logger.debug("FPS: " + fps.getPfs());
             if (this.tabPane.getSelectionModel().isSelected(1) && startTime != null) {
                 startTime = ChronoUnit.MINUTES.addTo(startTime,timeMultiplier);
                 for (int i = 0; i <10 ; i++) {
-                    if(startTime.isAfter(startTimes.get(i).minusHours(1))&&startTime.isBefore(startTimes.get(i))){
+                    if(startTime.isAfter(startTimes.get(i).minusMinutes(classBlockLength-1))&&startTime.isBefore(startTimes.get(i))){
                         timeLabel.setText(startTime.toString() + " Classblock " + (i+1));
                         break;
                     }
@@ -183,14 +183,15 @@ public class Gui extends Application implements SettingCallback {
         endTimes.clear();
         for (int i = 1; i <= 10; i++) {
             endTime = ChronoUnit.MINUTES.addTo(this.classBlockTime, classBlockLength);
-            if (i == fastBreakTime) {
+            if (i-1 == fastBreakTime) {
                 this.classBlockTime = ChronoUnit.MINUTES.addTo(endTime, fastBreakLength);
-            } else if (i == lunchBreakTime) {
+            } else if (i-1 == lunchBreakTime) {
                 this.classBlockTime = ChronoUnit.MINUTES.addTo(endTime, lunchBreakLength);
             } else {
                 this.classBlockTime = endTime;
             }
           startTimes.add(classBlockTime);
+            System.out.println(classBlockTime.toString());
         }
     }
 
