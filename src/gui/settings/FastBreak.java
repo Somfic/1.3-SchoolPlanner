@@ -9,9 +9,6 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 
 public class FastBreak {
     //BreakLength means the amount of minutes a break takes
@@ -29,12 +26,9 @@ public class FastBreak {
     private int breakLengthMemory;
     private int BTCurrent;
     private int BTMemory;
-//    private String[] lessons = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    private ArrayList<String> lessons = new ArrayList<>();
-
+    private String[] lessons = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     public FastBreak(BreakTimeCallback callback) {
-        Collections.addAll(lessons,"1", "2", "3", "4", "5", "6", "7", "8", "9");
         this.label = new Label("Select ");
         SpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimumValue, maximumValue, initialValue, incrementValue);
         this.breakLengthSpinner = new Spinner(valueFactory);
@@ -43,7 +37,7 @@ public class FastBreak {
 
         this.BTDropdown = new Dropdown();
         BTDropdown.setDropdownItems(lessons);
-        this.BTCurrent = Integer.parseInt(lessons.get(0));
+        this.BTCurrent = Integer.valueOf(lessons[0]);
         this.BTMemory = this.breakLengthCurrent;
 
         this.callback = callback;

@@ -5,6 +5,7 @@ public abstract class Person {
 	private String name;
 
     public Person() {
+
     }
 
     public Person(Gender gender, String name) {
