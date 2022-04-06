@@ -131,8 +131,8 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.setColor(Color.GREEN);
         graphics.setFont(new Font("Arial", Font.PLAIN, 20));
 
-        graphics.drawString(fps + " fps", (int) 10, 25);
-        graphics.drawString(gameTime.getHour() + ":" + gameTime.getMinute(), 10, 50);
+        graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
+        graphics.drawString(String.format("%02d", gameTime.getHour())+ ":" +  String.format("%02d", gameTime.getMinute()), 10, 50);
         graphics.drawString("Period: " + period, 10, 75);
 
     }
