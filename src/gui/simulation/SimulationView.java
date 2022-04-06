@@ -105,15 +105,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
         graphics.setTransform(camera.getTransform());
         for (Npc npc : npcs) {
-
-            // TODO: change this with the NPC sprites
-            if (npc instanceof StudentNpc) {
-                graphics.setColor(Color.BLUE);
-            } else {
-                graphics.setColor(Color.RED);
-            }
-
-            graphics.fillOval((int) (npc.getPosition().x * tileSize), (int) (npc.getPosition().y * tileSize), (int) (tileSize), (int) (tileSize));
+            graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 7, (int) (npc.getPosition().y * tileSize) - 4, (int) tileSize * 16 / 34, (int) tileSize, null);
         }
     }
 
@@ -193,6 +185,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         npcs.forEach(Npc::resetTarget);
         mapInfo.getClassRooms().forEach(SeatInfo::resetSeats);
         mapInfo.getBreakArea().resetSeats();
+        mapInfo.getTeacherArea().resetSeats();
         lastPeriodChange = LocalDateTime.now();
 
         npcs.forEach(npc -> {
