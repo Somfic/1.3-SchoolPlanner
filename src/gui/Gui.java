@@ -2,18 +2,16 @@ package gui;
 
 import data.FramesPerSecond;
 import gui.components.WindowBar;
-import gui.schedule.PopUpAddItems;
 import gui.schedule.ScheduleView;
 import gui.settings.SettingCallback;
 import gui.settings.SettingView;
 import gui.simulation.SimulationView;
 import io.InputManager;
-import logging.Logger;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -22,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logging.Logger;
 import org.jfree.fx.FXGraphics2D;
 
 import java.time.LocalDateTime;
@@ -65,12 +64,12 @@ public class Gui extends Application implements SettingCallback {
         this.tabPane.getSelectionModel().select(2); // select settings pane
 
         //SchedulePane
-        Button button = new Button("Testing pop-up function");
-        button.setOnAction(event -> {
-            PopUpAddItems.PupUp("Testing");
-        });
-        //this.schedulePane.setCenter(button);
-        //this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
+//        Button button = new Button("Testing pop-up function");
+//        button.setOnAction(event -> {
+//            PopUpAddItems.PupUp("Testing");
+//        });
+//        this.schedulePane.setCenter(button);
+//        this.schedulePane.setPrefSize(canvas.getWidth(), canvas.getHeight());
 
         //SimulationPane
         //this.simulationPane.setPrefSize(canvas.getWidth(), canvas.getHeight());

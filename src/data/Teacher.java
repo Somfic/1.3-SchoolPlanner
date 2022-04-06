@@ -1,8 +1,6 @@
 package data;
 public class Teacher extends Person {
-
     public Teacher() {
-
     }
 
     public Teacher(Gender gender, String name) {

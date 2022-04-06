@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import logging.Logger;
 
+import javax.security.auth.Subject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class SelectButtons extends Pane {
     private ScheduleView scheduleView;
     private ArrayList<Teacher> teachers;
     private ArrayList<StudentGroup> students = new ArrayList<>();
+    private ArrayList<Lesson> lessons = new ArrayList<>();
 
     public SelectButtons(ScheduleView scheduleView) {
         this.scheduleView = scheduleView;
@@ -41,6 +43,17 @@ public class SelectButtons extends Pane {
         this.teacherSelect.setPrefWidth(150);
         this.courseSelect.setPrefWidth(150);
         this.studentGroupSelect.setPrefWidth(150);
+        teachers = new ArrayList<>();
+    }
+
+    public void addTeacher(Teacher teacher) {
+        teachers.add(teacher);
+        teacherSelect.addAllDropdownItems(teachers);
+    }
+
+    public void addSubject(Lesson lesson) {
+        lessons.add(lesson);
+        courseSelect.addAllDropdownItems(lessons);
     }
 
     private void buildSelectButtons() {
@@ -58,15 +71,15 @@ public class SelectButtons extends Pane {
         this.courseSelect.setPrefWidth(150);
         this.studentGroupSelect.setPrefWidth(150);
 
-        this.courseSelect.setDropdownItems(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"),
-                new Lesson("OOSD"));
-        this.teacherSelect.setDropdownItems(
+        this.courseSelect.setDropdownItems(new ArrayList<Lesson>(Arrays.asList(new Lesson("Math"), new Lesson("2D Graphics"), new Lesson("OGP"),
+                new Lesson("OOSD"))));
+        this.teacherSelect.setDropdownItems(new ArrayList<Teacher>(Arrays.asList(
                 new Teacher(Gender.MALE, "Johan"), new Teacher(Gender.MALE, "Pieter"), new Teacher(Gender.MALE, "Edwin"),
-                new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Joli"), new Teacher(Gender.FEMALE, "Jessica"));
-        this.classRoomSelect.setDropdownItems(new Classroom(30, "Classroom 1", 0),
+                new Teacher(Gender.MALE, "Etienne"), new Teacher(Gender.FEMALE, "Joli"), new Teacher(Gender.FEMALE, "Jessica"))));
+        this.classRoomSelect.setDropdownItems(new ArrayList<>(Arrays.asList(new Classroom(30, "Classroom 1", 0),
                 new Classroom(30, "Classroom 2", 1), new Classroom(30, "Classroom 3", 2),
                 new Classroom(30, "Classroom 4", 3), new Classroom(30, "Classroom 5", 4),
-                new Classroom(30, "Classroom 6", 5));
+                new Classroom(30, "Classroom 6", 5))));
         this.buildStudentGroups(new ArrayList());
 
         HBox topRowButtons = new HBox(this.startTime, this.classRoomSelect, this.teacherSelect);                        //Layout
@@ -91,9 +104,9 @@ public class SelectButtons extends Pane {
         apply.setOnAction(event -> {
             try {
                 students.clear();
-                for (int i = 0; i < studentGroupSelect.getItems().size() - 1; i++) {
+                for (int i = 0; i < studentGroupSelect.getItems().size(); i++) {
                     if (((CheckMenuItem) studentGroupSelect.getItems().get(i)).isSelected())
-                        students.add(new StudentGroup(String.valueOf(i + 1)));
+                        students.add(new StudentGroup(String.valueOf(i+1)));
                 }
                 scheduleView.applyScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(),
                         Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
@@ -120,7 +133,8 @@ public class SelectButtons extends Pane {
                         students.add(new StudentGroup(String.valueOf(i + 1)));
                     }
                 }
-//                scheduleView.removeScheduleItem(Arrays.asList(teacherSelect.getDropdownValue()), students, classRoomSelect.getDropdownValue(), Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
+                scheduleView.removeScheduleItem(teacherSelect.getDropdownValue(), students, classRoomSelect.getDropdownValue(),
+                        Integer.parseInt(startTime.getText()), Integer.parseInt(endTime.getText()), courseSelect.getDropdownValue());
             } catch (Exception e) {
                 Logger.warn(e, "Could not remove schedule item");
             }
@@ -173,8 +187,15 @@ public class SelectButtons extends Pane {
         VBox saveLoadButtons = new VBox(save, load);
         saveLoadButtons.setSpacing(10);
 
+        // add teacher or subject
+        Button addItems = new Button("Add new item");
+        addItems.setOnAction(e -> {
+            PopUpAddItems.PupUp("Add teacher or Subject", this);
+        });
+        VBox addButtons = new VBox(addItems);
+
         //final
-        this.buttons.getChildren().addAll(allButtons, applyRemoveResetButtons, saveLoadButtons);
+        this.buttons.getChildren().addAll(allButtons, applyRemoveResetButtons, saveLoadButtons, addButtons);
         this.buttons.setSpacing(10);
         this.buttons.setPadding(new Insets(10, 10, 10, 10));
     }
