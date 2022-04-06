@@ -3,14 +3,12 @@ package gui.simulation;
 import data.Person;
 import data.Schedule;
 import data.map.Map;
-import javafx.util.Pair;
 import logging.Logger;
 import org.dyn4j.geometry.Vector2;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class Npc {
@@ -18,18 +16,26 @@ public abstract class Npc {
     Vector2 target = new Vector2( 5, 28);
 
     private final Person person;
-    private BufferedImage sprite;
+    private BufferedImage[] sprites;
     private List<Vector2> route;
 
     public Npc(Person person) {
         this.person = person;
     }
 
-    public void setSprite(BufferedImage sprite) {
-        this.sprite = sprite;
+    public void setSprites(BufferedImage[] sprites) {
+        this.sprites = sprites;
     }
 
     public BufferedImage getSprite() {
+        BufferedImage sprite;
+        if (target.y >= position.y) {
+            sprite = sprites[0];
+        } else if (Math.abs(target.y - position.y) == 2) {
+            sprite = sprites[0];
+        } else {
+            sprite = sprites[1];
+        }
         return sprite;
     }
 

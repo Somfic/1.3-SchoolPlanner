@@ -3,14 +3,11 @@ package gui.simulation;
 import data.*;
 import data.Student;
 import io.FileManager;
-import logging.Logger;
-import org.dyn4j.geometry.Vector2;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +21,17 @@ public class StudentNpc extends Npc {
         this.studentGroup = studentGroup;
 
         try {
-            BufferedImage sprite;
+            BufferedImage sprites[] = new BufferedImage[2];
+            Random random = new Random();
+            int colorOffset = 36 * random.nextInt(3);
             if (student.getGender() == Gender.MALE) {
-                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(41, 0, 15, 34);
+                sprites[0] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(41 + colorOffset, 0, 15, 34);
+                sprites[1] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(41 + colorOffset, 34, 15, 34);
             } else {
-                sprite = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(56, 0, 21, 34);
+                sprites[0] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(56 + colorOffset, 0, 21, 34);
+                sprites[1] = ImageIO.read(FileManager.getResource("./npcSprites.png")).getSubimage(56 + colorOffset, 34, 21, 34);
             }
-            setSprite(sprite);
+            setSprites(sprites);
         } catch (IOException e) {
             e.printStackTrace();
         }
