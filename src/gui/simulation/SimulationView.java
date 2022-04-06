@@ -171,15 +171,15 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         return this.canvas;
     }
 
-    private int period = 1;
-    private int lastPeriod = -1;
     private double timeSinceLastPeriodChange = 0;
 
     public void update(double deltaTime) {
         InputManager.update();
+
         if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
             isRunning = !isRunning;
         }
+
         if (InputManager.getKeys().isKeyDown(KeyCode.R)) {
             Logger.debug("KeyCode.R is pressed");
             gameTime = LocalTime.of(6, 0);
@@ -211,16 +211,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
                 lastFps = LocalDateTime.now();
 //            Logger.debug("FPS: " + fps.getPfs());
             }
-
-//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
-//            period++;
-//            calculateNewTargets();
-//        }
-//
-//        if (InputManager.getKeys().isKeyDownFirst(KeyCode.BACK_SPACE)) {
-//            period--;
-//            calculateNewTargets();
-//        }
 
             for (Npc npc : npcs) {
                 int iteration = (int) Math.floor(timeSinceLastPeriodChange / 100f);
