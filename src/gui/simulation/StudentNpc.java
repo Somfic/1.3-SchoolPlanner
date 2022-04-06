@@ -40,6 +40,11 @@ public class StudentNpc extends Npc {
             return;
         }
 
+        if(period > 10 || period < 0) {
+            this.target = new Vector2(5, 28);
+            return;
+        }
+
         // Get the current period
         ScheduleItem currentPeriod = null;
 
