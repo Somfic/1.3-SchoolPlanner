@@ -40,7 +40,7 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
     private Pane pane;
     private boolean toUpdateBackground;
     private LocalTime gameTime = LocalTime.of(6, 0);
-    private NpcSorter sorter = new NpcSorter();
+    private final NpcSorter sorter = new NpcSorter();
 
     private final MapInfo mapInfo = new MapInfo();
     private final List<Npc> npcs = new ArrayList<>();
@@ -94,6 +94,21 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics = graphics2D;
         graphics.setTransform(camera.getTransform());
 
+        npcs.sort(sorter);
+        for (Npc npc : npcs) {
+            boolean isInSpawn = false;
+            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
+                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
+                    isInSpawn = true;
+                    break;
+                }
+            }
+
+            if (!isInSpawn) {
+                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, (int) (tileSize * 16 / 34 * 1.2), (int) (tileSize * 1.2), null);
+            }
+        }
+
         // Linear interpolation between morning red and evening blue
         double time = gameTime.getHour() + gameTime.getMinute() / 60.0;
 
@@ -118,23 +133,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
         graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
         graphics.drawString(String.format("%02d", gameTime.getHour())+ ":" +  String.format("%02d", gameTime.getMinute()), 10, 50);
         graphics.drawString("Period: " + period, 10, 75);
-
-        graphics.setTransform(camera.getTransform());
-
-        npcs.sort(sorter);
-        for (Npc npc : npcs) {
-            boolean isInSpawn = false;
-            for (Vector2 spawnPoint : mapInfo.getSpawnPoints()) {
-                if (Math.round(npc.position.x) == spawnPoint.x && Math.round(npc.position.y) == spawnPoint.y) {
-                    isInSpawn = true;
-                    break;
-                }
-            }
-
-            if (!isInSpawn) {
-                graphics.drawImage(npc.getSprite(), (int) (npc.getPosition().x * tileSize) + 6, (int) (npc.getPosition().y * tileSize) - 4, (int) (tileSize * 16 / 34 * 1.2), (int) (tileSize * 1.2), null);
-            }
-        }
     }
 
     public void drawBackground(FXGraphics2D graphics) {
