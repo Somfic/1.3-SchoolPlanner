@@ -91,7 +91,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     @Override
     public void draw(FXGraphics2D graphics) {
-        if (isRunning) {
             if (toUpdateBackground)
                 drawBackground(backgroundGraphics);
 
@@ -138,7 +137,6 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
             graphics.drawString(String.format("%02d", fps.getPfs()) + " fps", (int) 10, 25);
             graphics.drawString(String.format("%02d", gameTime.getHour()) + ":" + String.format("%02d", gameTime.getMinute()), 10, 50);
             graphics.drawString("Period: " + period, 10, 75);
-        }
     }
 
     public void drawBackground(FXGraphics2D graphics) {
@@ -175,13 +173,18 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
 
     public void update(double deltaTime) {
         InputManager.update();
-
         if (InputManager.getKeys().isKeyDownFirst(KeyCode.SPACE)) {
             isRunning = !isRunning;
         }
 
         if (InputManager.getKeys().isKeyDown(KeyCode.R)) {
             gameTime = LocalTime.of(6, 0);
+        }
+
+        if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
+            fps.update(deltaTime);
+            lastFps = LocalDateTime.now();
+//            Logger.debug("FPS: " + fps.getPfs());
         }
 
         if (isRunning) {
@@ -205,16 +208,9 @@ public class SimulationView extends VBox implements Resizable, ScheduleChangeCal
                 calculateNewTargets();
             }
 
-            if (LocalDateTime.now().isAfter(lastFps.plusSeconds(1))) {
-                fps.update(deltaTime);
-                lastFps = LocalDateTime.now();
-//            Logger.debug("FPS: " + fps.getPfs());
-            }
-
             for (Npc npc : npcs) {
                 int iteration = (int) Math.floor(timeSinceLastPeriodChange / 100f);
                 double factor = Math.round(timeSinceLastPeriodChange % 100f) / 100f;
-
                 npc.setPosition(npc.calculatePositionOnRoute(iteration, factor));
             }
         }
